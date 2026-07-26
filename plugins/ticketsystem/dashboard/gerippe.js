@@ -67,42 +67,20 @@ function konfAnwenden() {
 }
 
 /* ---------- Daten ---------- */
-var sessions = [
-  { id: 'justdont', name: 'JustDont', live: true, tickets: [
-    { nr: 46, titel: 'Login-Test braucht Zugang', zustand: 'frage', stufe: 'Stufe 4',
-      frage: 'Der Login-Test braucht einen API-Key, um sich am Testserver anzumelden. Wo liegt der?' },
-    { nr: 38, titel: 'Ladebalken beim Start', zustand: 'review', stufe: 'Stufe 4', art: 'Oberfläche',
-      neu: 'Der Balken läuft flüssig und springt nicht mehr auf 100 zurück.',
-      punkte: ['Sprung auf 100 entfernt', 'Bewegung an die echte Ladezeit gekoppelt',
-               'Bei Abbruch bleibt der Balken stehen statt zu verschwinden'],
-      pruefen: 'Einmal laden und einmal mitten drin abbrechen.',
-      dauer: '9 Min · 5 Agenten', dateien: '2 Dateien geändert', ideen: 4 },
-    { nr: 41, titel: 'Fusszeile neu geordnet', zustand: 'review', stufe: 'Stufe 5 · Design', art: 'Entwurf',
-      neu: 'Die Links stehen jetzt in drei Spalten statt in einer langen Reihe.',
-      punkte: ['Drei Spalten statt einer Reihe', 'Kontakt nach oben gezogen',
-               'Auf dem Handy klappen die Spalten untereinander'],
-      pruefen: 'Ob die Reihenfolge der Spalten für dich stimmt.',
-      dauer: '21 Min · 12 Agenten', dateien: '4 Dateien geändert', ideen: 2 },
-    { nr: 44, titel: 'Design der Startseite neu', zustand: 'laeuft', stufe: 'Stufe 6 · Duell',
-      pct: 62, seit: 12, rest: 7, schritt: 'Kreuzangriff, Strang B',
-      straenge: [ { n: 'A · kleinster Eingriff', p: 100 }, { n: 'B · Ursache', p: 70 }, { n: 'C · Risiko zuerst', p: 45 } ] },
-    { nr: 42, titel: 'Login-Knopf reagiert nicht', zustand: 'laeuft', stufe: 'Stufe 4',
-      pct: 38, seit: 12, rest: 9, schritt: 'Prüfung, 2 Agenten' },
-    { nr: 47, titel: 'Texte im Menü kürzen', zustand: 'laeuft', stufe: 'Stufe 2 · Timer',
-      pct: 55, seit: 4, frist: 372, schritt: 'Umsetzung' },
-    { nr: 45, titel: 'Schriftgrösse im Menü', zustand: 'wartet', stufe: 'Stufe 3',
-      wartetAuf: 'T-42', grund: 'dieselbe Datei ist noch belegt' }
-  ], fertig: [
-    { nr: 36, titel: 'Zweiter Anmeldeweg', wann: 'heute 11:20' },
-    { nr: 31, titel: 'Fusszeile aufgeräumt', wann: 'heute 09:04' }
-  ]},
-  { id: 'designgen', name: 'Design Generator', live: true, tickets: [
-    { nr: 12, titel: 'Farbpalette überarbeiten', zustand: 'laeuft', stufe: 'Stufe 5',
-      pct: 24, seit: 3, rest: 14, schritt: 'Drei Ansätze' }
-  ], fertig: [] },
-  { id: 'discord', name: 'Discord AI Server', live: true, tickets: [], fertig: [] },
-  { id: 'aoshi', name: 'Aoshi', live: false, tickets: [], fertig: [] }
-];
+/* Echte Daten. Claude schreibt daneben eine daten.js und setzt darin window.TICKETDATEN.
+   Ohne diese Datei bleibt alles leer, es wird nichts erfunden. */
+var sessions = [];
+var stand = { geschrieben: null, projekt: null };
+
+function datenUebernehmen() {
+  var d = window.TICKETDATEN;
+  if (!d || !Array.isArray(d.sessions)) { sessions = []; return false; }
+  sessions = d.sessions;
+  stand.geschrieben = d.geschrieben || null;
+  stand.projekt = d.projekt || null;
+  if (st.sess >= sessions.length) st.sess = 0;
+  return true;
+}
 
 var DRINGEND  = ['beiläufig', 'normal', 'wichtig', 'brennt'];
 var GRUENDL   = ['automatisch', 'schnell', 'gründlich', 'maximal'];
@@ -132,7 +110,58 @@ var st = { sess: 0, ticket: null, offen: false, einst: false, schritt: 1, mehr: 
 function el(t, c, txt) { var e = document.createElement(t); if (c) e.className = c; if (txt != null) e.textContent = txt; return e; }
 function farbe(nr) { return 'hsl(' + ((nr * 47) % 360) + ',var(--tc-s,68%),var(--tc-l,58%))'; }
 function mmss(s) { var m = Math.floor(s / 60); return m + ':' + String(s % 60).padStart(2, '0'); }
-function sess() { return sessions[st.sess]; }
+
+/* Minuten seit einem Zeitstempel aus der Ticket-Datei */
+function minutenSeit(iso) {
+  if (!iso) return 0;
+  var d = new Date(iso); if (isNaN(d)) return 0;
+  return Math.max(0, Math.round((Date.now() - d) / 60000));
+}
+/* Fortschritt steht als "2/4" in der Datei. Fehlt er, gibt es keinen Balken. */
+function prozent(t) {
+  if (!t.fortschritt) return null;
+  var p = String(t.fortschritt).split('/');
+  var a = parseFloat(p[0]), b = parseFloat(p[1]);
+  if (!(b > 0) || isNaN(a)) return null;
+  return Math.max(0, Math.min(100, Math.round(a / b * 100)));
+}
+/* Text für die Zeitangabe rechts am Balken */
+function restText(t) {
+  if (t.frist) {
+    var rest = Math.max(0, Math.round((new Date(t.frist) - Date.now()) / 1000));
+    return rest > 0 ? 'Frist ' + mmss(rest) : 'Frist abgelaufen';
+  }
+  return t.rest ? 'noch ~' + t.rest + ' min' : '';
+}
+
+/* Befehl in die Zwischenablage legen, weil eine Seite ohne Hintergrundprogramm
+   nicht auf die Platte schreiben darf. Der Nutzer fügt ihn im Chat ein. */
+function befehlKopieren(befehl, knopf) {
+  function melden(ok) {
+    var alt = knopf.textContent;
+    knopf.textContent = ok ? 'kopiert, im Chat einfügen' : befehl;
+    knopf.classList.add('kopiert');
+    setTimeout(function () { knopf.textContent = alt; knopf.classList.remove('kopiert'); }, 2600);
+  }
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(befehl).then(function () { melden(true); }, function () { melden(false); });
+  } else {
+    var h = document.createElement('textarea');
+    h.value = befehl; document.body.appendChild(h); h.select();
+    var ok = false; try { ok = document.execCommand('copy'); } catch (e) {}
+    document.body.removeChild(h); melden(ok);
+  }
+}
+/* Knopf, der einen Befehl kopiert statt so zu tun, als würde er etwas auslösen */
+function befehlKnopf(text, befehl, extra) {
+  var b = el('button', 'btn' + (extra ? ' ' + extra : ''), text);
+  b.title = 'Legt "' + befehl + '" in die Zwischenablage. Im Chat einfügen.';
+  b.onclick = function (ev) { ev.stopPropagation(); befehlKopieren(befehl, b); };
+  return b;
+}
+/* Nie abstürzen, wenn noch keine Daten da sind */
+var LEER = { id: 'leer', name: 'Kein Projekt', live: false, tickets: [], fertig: [] };
+function sess() { return sessions[st.sess] || LEER; }
 function findT(nr) { var l = sess().tickets; for (var i = 0; i < l.length; i++) if (l[i].nr === nr) return l[i]; return null; }
 
 /* Beim Verlassen oder Wechseln des Tickets: alle Zwischenstände der Detailansicht leeren */
@@ -438,8 +467,17 @@ function schreiben() {
     c.appendChild(r2);
   }
   c.appendChild(el('div', 'rechnung', rechnung()));
-  c.appendChild(fussZeile(true, 'Ticket starten', function () {
-    st.offen = false; st.schritt = 1; st.mehr = false; st.anhang = null; zeichne();
+  c.appendChild(fussZeile(true, 'Ticket kopieren', function () {
+    /* Alles Eingestellte in eine Zeile, die Claude versteht */
+    var teile = [(st.text || '').trim()];
+    if (st.wahl.dring !== 1) teile.push('[dringend: ' + DRINGEND[st.wahl.dring] + ']');
+    if (st.wahl.grund !== 0) teile.push('[gründlich: ' + GRUENDL[st.wahl.grund] + ']');
+    if (st.berufe.length) teile.push('[Beruf: ' + st.berufe.map(function (i) { return BERUFE[i]; }).join(', ') + ']');
+    if (st.wahl.timer !== 0) teile.push('[Timer: ' + TIMER[st.wahl.timer] + ']');
+    if (st.wahl.modell !== 0) teile.push('[Modell: ' + MODELL[st.wahl.modell] + ']');
+    if (st.wahl.aufwand !== 0) teile.push('[Aufwand: ' + AUFWAND[st.wahl.aufwand] + ']');
+    if (st.anhang) teile.push('[Anhang: ' + st.anhang.name + ']');
+    befehlKopieren(teile.filter(Boolean).join(' '), document.querySelector('.compose-fuss .btn.primary'));
   }));
   return c;
 }
@@ -447,24 +485,28 @@ function schreiben() {
 /* ---------- Fortschrittsblock, in Kachel und Detail gleich ---------- */
 function fortschritt(t) {
   var fz = el('div', 'fortschritt');
-  var bar = el('div', 'bar'); var sp = el('span'); sp.style.width = t.pct + '%';
-  sp.dataset.bar = t.nr; bar.appendChild(sp); fz.appendChild(bar);
+  var p = prozent(t);
+  /* Balken nur, wenn ein Fortschritt in der Datei steht. Sonst keiner. */
+  if (p !== null) {
+    var bar = el('div', 'bar'); var sp = el('span'); sp.style.width = p + '%';
+    sp.dataset.bar = t.nr; bar.appendChild(sp); fz.appendChild(bar);
+  }
   var meta = el('div', 'tb-meta'); meta.dataset.meta = t.nr;
-  meta.appendChild(el('span', 'pct', Math.round(t.pct) + ' %'));
+  meta.appendChild(el('span', 'pct', p !== null ? p + ' %' : (t.fortschritt || 'läuft')));
   meta.appendChild(el('span', 'spacer'));
-  meta.appendChild(el('span', 'zeit', 'läuft ' + t.seit + ' min'));
-  meta.appendChild(el('span', t.frist != null ? 'zeit frist' : 'zeit',
-    t.frist != null ? 'Frist ' + mmss(t.frist) : 'noch ~' + t.rest + ' min'));
+  meta.appendChild(el('span', 'zeit', t.begonnen ? 'läuft ' + minutenSeit(t.begonnen) + ' min' : ''));
+  meta.appendChild(el('span', t.frist ? 'zeit frist' : 'zeit', restText(t)));
   fz.appendChild(meta);
   return fz;
 }
 function straenge(t) {
   var s = el('div', 'strands');
-  t.straenge.forEach(function (x) {
+  (t.straenge || []).forEach(function (x) {
+    var p = Math.max(0, Math.min(100, Number(x.p) || 0));
     var one = el('div', 'strand');
-    one.appendChild(el('span', null, x.n));
-    var b = el('div', 'bar' + (x.p >= 100 ? ' done' : '')); var sp = el('span');
-    sp.style.width = x.p + '%'; sp.dataset.strang = t.nr + ':' + x.n;
+    one.appendChild(el('span', null, x.n || 'Strang'));
+    var b = el('div', 'bar' + (p >= 100 ? ' done' : '')); var sp = el('span');
+    sp.style.width = p + '%';
     b.appendChild(sp); one.appendChild(b); s.appendChild(one);
   });
   return s;
@@ -484,14 +526,14 @@ function block(t) {
   if (t.zustand === 'frage') {
     d.appendChild(el('p', 'tb-zeile', 'Wartet auf deine Antwort'));
   } else if (t.zustand === 'review') {
-    d.appendChild(el('p', 'tb-zeile', t.neu));
+    d.appendChild(el('p', 'tb-zeile', t.neu || 'Fertig, schau drüber'));
     var vz = el('div', 'tb-meta');
     vz.appendChild(el('span', 'pct', 'fertig'));
     vz.appendChild(el('span', 'spacer'));
-    vz.appendChild(el('span', 'zeit', t.dauer));
+    vz.appendChild(el('span', 'zeit', t.dauer || ''));
     d.appendChild(vz);
   } else if (t.zustand === 'wartet') {
-    d.appendChild(el('p', 'tb-zeile', 'Wartet auf ' + t.wartetAuf + ' · ' + t.grund));
+    d.appendChild(el('p', 'tb-zeile', 'Wartet auf ' + (t.wartetAuf || 'ein anderes Ticket') + (t.grund ? ' · ' + t.grund : '')));
   } else {
     d.appendChild(el('p', 'schritt-zeile', t.schritt));
     var fz = fortschritt(t);
@@ -513,8 +555,21 @@ function uebersicht() {
   var review = s.tickets.filter(function (t) { return t.zustand === 'review'; });
   var laeuft = s.tickets.filter(function (t) { return t.zustand === 'laeuft' || t.zustand === 'wartet'; });
 
-  if (!s.live) { w.appendChild(el('p', 'leer', 'Diese Session ist gestoppt. Übernehmen, um weiterzuarbeiten.')); return w; }
-  if (!s.tickets.length) { w.appendChild(el('p', 'leer', 'Nichts läuft gerade. Schreib oben rein, was ansteht.')); return w; }
+  /* Noch gar keine Daten: ehrlich sagen woran es liegt, statt Beispieldaten zu zeigen */
+  if (!sessions.length) {
+    var k = el('div', 'card einst');
+    k.appendChild(el('b', 'einst-titel', 'Noch keine Daten'));
+    k.appendChild(el('p', 'einst-hilfe',
+      'Claude hat noch nichts geschrieben. Sobald ein Ticket entsteht, steht es hier. ' +
+      'Schreib in die Datei 1-EINGANG.md im Ticketsystem-Ordner, oder sag es Claude im Chat.'));
+    w.appendChild(k);
+    return w;
+  }
+  if (!s.live) { w.appendChild(el('p', 'leer', 'Diese Session ist gestoppt.')); return w; }
+  if (!s.tickets.length && !s.fertig.length) {
+    w.appendChild(el('p', 'leer', 'Nichts läuft gerade. Schreib oben rein, was ansteht.'));
+    return w;
+  }
 
   function raster(liste, ton) {
     var g = el('div', 'tliste ton-' + ton);
@@ -568,7 +623,7 @@ function detail() {
   c.appendChild(k);
 
   if (t.zustand === 'frage') {
-    c.appendChild(el('p', 'q-what', t.frage));
+    c.appendChild(el('p', 'q-what', t.frage || 'Claude braucht eine Antwort.'));
     var ta = el('textarea', 'q-answer'); ta.rows = 3;
     ta.placeholder = 'Antworten, oder ein Bild einfügen';
     ta.value = st.frageText;
@@ -579,17 +634,25 @@ function detail() {
     if (af) c.appendChild(af);
 
     var qb = el('div', 'btns');
-    ['Ja', 'Nein', 'Warum?'].forEach(function (x, i) { qb.appendChild(el('button', 'btn' + (i === 0 ? ' primary' : ''), x)); });
+    qb.appendChild(befehlKnopf('Ja', '!antwort T-' + t.nr + ' ja'));
+    qb.appendChild(befehlKnopf('Nein', '!antwort T-' + t.nr + ' nein'));
+    qb.appendChild(befehlKnopf('Warum?', '!warum T-' + t.nr));
     qb.appendChild(el('span', 'spacer'));
-    var senden = el('button', 'btn primary', 'Antwort senden');
-    senden.onclick = function () { st.ticket = null; detailZuruecksetzen(); zeichne(); };
+    /* Der getippte Text wandert mit in die Zwischenablage */
+    var senden = el('button', 'btn primary', 'Antwort kopieren');
+    senden.title = 'Legt die Antwort in die Zwischenablage. Im Chat einfügen.';
+    senden.onclick = function (ev) {
+      ev.stopPropagation();
+      var txt = (st.frageText || '').trim();
+      befehlKopieren('!antwort T-' + t.nr + (txt ? ' ' + txt : ''), senden);
+    };
     qb.appendChild(senden);
     c.appendChild(qb);
 
   } else if (t.zustand === 'review') {
-    c.appendChild(el('p', 'rev-satz', t.neu));
+    c.appendChild(el('p', 'rev-satz', t.neu || 'Fertig zur Abnahme.'));
     var vor = el('div', 'rev-preview');
-    vor.appendChild(el('span', 'rev-art', t.art));
+    vor.appendChild(el('span', 'rev-art', t.art || 'Ergebnis'));
     vor.appendChild(el('span', 'rev-hint', 'Das fertige Ergebnis, direkt hier'));
     c.appendChild(vor);
 
@@ -597,25 +660,25 @@ function detail() {
     var li = el('div', 'rev-spalte');
     li.appendChild(el('div', 'rev-label', 'Was gemacht wurde'));
     var ul = el('ul', 'rev-liste');
-    t.punkte.forEach(function (p) { ul.appendChild(el('li', null, p)); });
+    (t.punkte || []).forEach(function (p) { ul.appendChild(el('li', null, p)); });
     li.appendChild(ul);
     sp2.appendChild(li);
     var re = el('div', 'rev-spalte');
     re.appendChild(el('div', 'rev-label', 'Schau dir das an'));
-    re.appendChild(el('p', 'rev-pruefen', t.pruefen));
-    re.appendChild(el('div', 'rev-fakten', t.dauer + ' · ' + t.dateien));
+    re.appendChild(el('p', 'rev-pruefen', t.pruefen || 'Schau, ob es so passt.'));
+    re.appendChild(el('div', 'rev-fakten', [t.dauer, t.dateien].filter(Boolean).join(' · ')));
     sp2.appendChild(re);
     c.appendChild(sp2);
 
     var rb = el('div', 'btns');
-    rb.appendChild(el('button', 'btn ok', 'Abschliessen'));
+    rb.appendChild(befehlKnopf('Abschliessen', '!abschliessen T-' + t.nr, 'ok'));
     var nbKnopf = el('button', 'btn' + (st.nachbesserOffen ? ' primary' : ''),
       st.nachbesserOffen ? 'Nachbessern schliessen' : 'Nachbessern');
     nbKnopf.onclick = function () { st.nachbesserOffen = !st.nachbesserOffen; zeichne(); };
     rb.appendChild(nbKnopf);
-    rb.appendChild(el('button', 'btn', 'Verwerfen'));
+    rb.appendChild(befehlKnopf('Verwerfen', '!verwerfen T-' + t.nr));
     rb.appendChild(el('span', 'spacer'));
-    rb.appendChild(el('span', 'ideas', 'Nebenideen: ' + t.ideen + ' zum Anhaken'));
+    if (t.ideen) rb.appendChild(el('span', 'ideas', 'Nebenideen: ' + t.ideen + ' zum Anhaken'));
     c.appendChild(rb);
 
     if (st.nachbesserOffen) {
@@ -635,17 +698,22 @@ function detail() {
       nab.onclick = function () { st.nachbesserOffen = false; st.nachbesserText = ''; st.nachbesserAnhang = null; zeichne(); };
       nf.appendChild(nab);
       nf.appendChild(el('span', 'spacer'));
-      var nsend = el('button', 'btn primary', 'Nachbesserung senden');
-      nsend.onclick = function () { st.ticket = null; detailZuruecksetzen(); zeichne(); };
+      var nsend = el('button', 'btn primary', 'Nachbesserung kopieren');
+      nsend.title = 'Legt den Text in die Zwischenablage. Im Chat einfügen.';
+      nsend.onclick = function (ev) {
+        ev.stopPropagation();
+        var txt = (st.nachbesserText || '').trim();
+        befehlKopieren('!nachbessern T-' + t.nr + (txt ? ' ' + txt : ''), nsend);
+      };
       nf.appendChild(nsend);
       nb.appendChild(nf);
       c.appendChild(nb);
     }
 
   } else if (t.zustand === 'wartet') {
-    c.appendChild(el('p', 'q-what', 'Wartet auf ' + t.wartetAuf + ', weil ' + t.grund + '. Startet von selbst, sobald frei.'));
+    c.appendChild(el('p', 'q-what', 'Wartet auf ' + (t.wartetAuf || 'ein anderes Ticket') + (t.grund ? ', weil ' + t.grund : '') + '. Startet von selbst, sobald frei.'));
     var wb = el('div', 'btns');
-    wb.appendChild(el('button', 'btn primary', 'Vordrängeln'));
+    wb.appendChild(befehlKnopf('Vordrängeln', '!nur T-' + t.nr, 'primary'));
     c.appendChild(wb);
 
   } else {
@@ -657,10 +725,11 @@ function detail() {
     var lk = el('div', 'live-kopf');
     lk.appendChild(el('span', 'live-punkt'));
     lk.appendChild(el('span', 'live-label', 'Läuft gerade'));
-    /* womit gearbeitet wird, ohne dass man erst Anpassen öffnen muss */
-    var stufeNr = parseInt((t.stufe.match(/\d+/) || [4])[0], 10);
-    var mw = modellWahl(stufeNr);
-    lk.appendChild(el('span', 'tag', mw.m + ' · ' + mw.a));
+    /* Womit wirklich gearbeitet wird: steht im Ticket. Nur wenn dort nichts steht,
+       zeigen wir, was die Automatik für diese Stufe wählen würde. */
+    var stufeNr = parseInt((String(t.stufe || '').match(/\d+/) || [4])[0], 10);
+    var auto = modellFuer(stufeNr);
+    lk.appendChild(el('span', 'tag', (t.modell || auto.m) + ' · ' + (t.aufwand || auto.a)));
     lk.appendChild(el('span', 'spacer'));
     lk.appendChild(el('span', 'zeit', t.schritt));
     lv.appendChild(lk);
@@ -671,9 +740,9 @@ function detail() {
     var an = el('button', 'btn' + (st.anpassen ? ' primary' : ''), st.anpassen ? 'fertig' : 'Anpassen');
     an.onclick = function (ev) { ev.stopPropagation(); st.anpassen = !st.anpassen; zeichne(); };
     ab.appendChild(an);
-    ab.appendChild(el('button', 'btn', 'warum diese Stufe?'));
-    ab.appendChild(el('button', 'btn', 'Pause'));
-    ab.appendChild(el('button', 'btn stop', 'Stop'));
+    ab.appendChild(befehlKnopf('warum diese Stufe?', '!warum T-' + t.nr));
+    ab.appendChild(befehlKnopf('Pause', '!pause T-' + t.nr));
+    ab.appendChild(befehlKnopf('Stop', '!stop T-' + t.nr, 'stop'));
     c.appendChild(ab);
 
     if (st.anpassen) {
@@ -710,43 +779,57 @@ function zeichne() {
 }
 
 /* ---------- Leben: Balken bewegen sich ---------- */
+/* Der Takt erfindet nichts. Er rechnet nur die beiden Werte weiter, die sich aus einem
+   echten Zeitstempel ergeben: wie lange etwas schon läuft und wie viel Frist noch bleibt.
+   Prozent und Schritt stehen in der Ticket-Datei und ändern sich nur, wenn Claude schreibt. */
 function takt() {
-  sessions.forEach(function (s) {
-    s.tickets.forEach(function (t) {
-      if (t.zustand !== 'laeuft') return;
-      if (t.pct < 99) t.pct = Math.min(99, t.pct + (t.straenge ? 0.09 : 0.14));
-      if (t.frist != null) t.frist = Math.max(0, t.frist - 1);
-      if (t.straenge) t.straenge.forEach(function (x) { if (x.p < 100) x.p = Math.min(100, x.p + 0.11); });
-    });
-  });
-  /* nur Zahlen und Breiten anfassen, damit Tippen und offene Listen bleiben */
-  document.querySelectorAll('[data-bar]').forEach(function (sp) {
-    var t = findT(+sp.dataset.bar); if (t) sp.style.width = t.pct + '%';
-  });
-  document.querySelectorAll('[data-strang]').forEach(function (sp) {
-    var teile = sp.dataset.strang.split(':');
-    var t = findT(+teile[0]); if (!t || !t.straenge) return;
-    t.straenge.forEach(function (x) {
-      if (x.n === teile[1]) {
-        sp.style.width = x.p + '%';
-        if (x.p >= 100) sp.parentNode.classList.add('done');
-      }
-    });
-  });
   document.querySelectorAll('[data-meta]').forEach(function (m) {
-    var t = findT(+m.dataset.meta); if (!t || t.pct == null) return;
-    var p = m.querySelector('.pct'); if (p) p.textContent = Math.round(t.pct) + ' %';
-    if (t.frist != null) {
-      var z = m.querySelectorAll('.zeit');
-      if (z[1]) z[1].textContent = 'Frist ' + mmss(t.frist);
+    var t = findT(+m.dataset.meta); if (!t) return;
+    var z = m.querySelectorAll('.zeit');
+    if (z[0] && t.begonnen) z[0].textContent = 'läuft ' + minutenSeit(t.begonnen) + ' min';
+    if (z[1] && t.frist) {
+      var rest = Math.max(0, Math.round((new Date(t.frist) - Date.now()) / 1000));
+      z[1].textContent = rest > 0 ? 'Frist ' + mmss(rest) : 'Frist abgelaufen';
     }
   });
+}
+
+/* ---------- Daten nachladen ----------
+   Claude schreibt daten.js neben diese Seite. Wir hängen sie alle paar Sekunden neu ein.
+   Der Zeitstempel umgeht den Zwischenspeicher, so sieht man Änderungen ohne Neuladen.
+   Gezeichnet wird nur, wenn sich wirklich etwas geändert hat, sonst würde jeder
+   halb getippte Text und jede offene Liste alle 5 Sekunden verschwinden. */
+var letzterStand = '';
+function datenNachladen(erstesMal) {
+  var s = document.createElement('script');
+  s.src = 'daten.js?t=' + Date.now();
+  s.onload = function () {
+    s.remove();
+    var neu = JSON.stringify(window.TICKETDATEN || null);
+    if (neu === letzterStand && !erstesMal) return;
+    letzterStand = neu;
+    datenUebernehmen();
+    /* Nicht neu zeichnen, während jemand tippt oder eine Liste offen ist */
+    var tippt = document.activeElement && /TEXTAREA|INPUT/.test(document.activeElement.tagName);
+    var listeOffen = document.querySelector('.chip-wrap.is-open');
+    if (tippt || listeOffen) return;
+    zeichne();
+  };
+  s.onerror = function () {
+    s.remove();
+    /* daten.js fehlt noch. Beim ersten Mal einmal zeichnen, damit der leere
+       Zustand erscheint statt einer weissen Seite. */
+    if (erstesMal) zeichne();
+  };
+  document.head.appendChild(s);
 }
 
 function start() {
   konfLaden();
   konfAnwenden();
   zeichne();
+  datenNachladen(true);
+  setInterval(function () { datenNachladen(false); }, 5000);
   setInterval(takt, 1000);
   document.addEventListener('click', function () {
     var o = document.querySelector('.chip-wrap.is-open');
