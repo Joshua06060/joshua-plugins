@@ -18,6 +18,22 @@ var DESIGNS = [
   { id: 'e10', name: 'Linear',    kurz: 'Blaugrau, ein Violett, streng' }
 ];
 
+/* ---------- Modelle und Aufwand ----------
+   Die Modelle von Claude Code. Kommt ein neues dazu, nur diese eine Liste ändern,
+   dann steht es überall zur Auswahl: im Anlegen, am laufenden Ticket und als Standard. */
+var MODELL  = ['automatisch', 'Haiku 4.5', 'Sonnet 5', 'Opus 5', 'Fable 5'];
+/* Denkaufwand, wie in Claude Code benannt */
+var AUFWAND = ['automatisch', 'low', 'medium', 'high', 'xhigh', 'max'];
+
+/* Was "automatisch" je Stufe wählt. Steht hier, damit die Anzeige nicht rät. */
+function modellFuer(stufe) {
+  if (stufe <= 2) return { m: 'Haiku 4.5', a: 'low' };
+  if (stufe <= 4) return { m: 'Sonnet 5', a: 'high' };
+  if (stufe === 5) return { m: 'Opus 5', a: 'high' };
+  if (stufe === 6) return { m: 'Opus 5', a: 'xhigh' };
+  return { m: 'Opus 5', a: 'max' };
+}
+
 /* ---------- Einstellungen ---------- */
 var EINST = [
   { key: 'design',   titel: 'Design',            art: 'design' },
@@ -27,6 +43,10 @@ var EINST = [
     hilfe: 'Ob vor Erweiterungen wie neuen Werkzeugen gefragt wird.' },
   { key: 'maxWucht', titel: 'Höchste Wucht',     werte: ['Stufe 4', 'Stufe 5', 'Stufe 6', 'Stufe 7', '150 %'],
     hilfe: 'Deckel gegen versehentliche Grosseinsätze.' },
+  { key: 'stdModell', titel: 'Standard-Modell',  werte: MODELL,
+    hilfe: 'Gilt für alle neuen Tickets. Automatisch heisst: passend zur Stufe. Am einzelnen Ticket überschreibbar.' },
+  { key: 'stdAufwand', titel: 'Standard-Aufwand', werte: AUFWAND,
+    hilfe: 'Wie lange das Modell nachdenkt, von low bis max. Automatisch richtet sich nach der Stufe.' },
   { key: 'parallel', titel: 'Gleichzeitig',      werte: ['1 Ticket', '2 Tickets', '3 Tickets', '5 Tickets'],
     hilfe: 'Wie viele Tickets nebeneinander laufen dürfen.' },
   { key: 'isolation', titel: 'Isolation',        werte: ['automatisch', 'Branch', 'Snapshot'],
@@ -43,8 +63,8 @@ var EINST = [
     hilfe: 'Wann Erledigtes aus der Liste verschwindet.' }
 ];
 
-var konf = { design: 7, skala: 1, autonomie: 1, maxWucht: 4, parallel: 2, isolation: 0,
-             hinweise: 0, chat: 0, bewegung: 0, spalten: 0, archiv: 1 };
+var konf = { design: 7, skala: 1, autonomie: 1, maxWucht: 4, stdModell: 0, stdAufwand: 0,
+             parallel: 2, isolation: 0, hinweise: 0, chat: 0, bewegung: 0, spalten: 0, archiv: 1 };
 
 function konfLaden() {
   try {
@@ -115,8 +135,6 @@ var BERUFE = [
 ];
 var TEMPO     = ['automatisch', 'eilig', 'zügig', 'Zeit egal'];
 var TIMER     = ['kein Zeitdruck', '10 Min', '25 Min', '60 Min'];
-var MODELL    = ['automatisch', 'haiku', 'sonnet', 'opus'];
-var AUFWAND   = ['automatisch', 'low', 'medium', 'high', 'xhigh', 'max'];
 var ISOLATION = ['wie eingestellt', 'Branch', 'Snapshot'];
 var FREIGABE  = ['autonom', 'erst fragen'];
 
@@ -134,6 +152,11 @@ function el(t, c, txt) { var e = document.createElement(t); if (c) e.className =
 function farbe(nr) { return 'hsl(' + ((nr * 47) % 360) + ',var(--tc-s,68%),var(--tc-l,58%))'; }
 function mmss(s) { var m = Math.floor(s / 60); return m + ':' + String(s % 60).padStart(2, '0'); }
 function sess() { return sessions[st.sess]; }
+/* Wert einer Einstellung nach Schlüssel, damit die Reihenfolge in EINST frei bleibt */
+function einstWert(key) {
+  for (var i = 0; i < EINST.length; i++) if (EINST[i].key === key) return EINST[i].werte[konf[key]];
+  return '';
+}
 function findT(nr) { var l = sess().tickets; for (var i = 0; i < l.length; i++) if (l[i].nr === nr) return l[i]; return null; }
 
 /* Beim Verlassen oder Wechseln des Tickets: alle Zwischenstände der Detailansicht leeren */
@@ -183,10 +206,22 @@ function rechnung() {
     agenten = Math.min(agenten, [5, 12, 24, 38, 38][konf.maxWucht]);
     min = Math.min(min, [9, 19, 34, 55, 55][konf.maxWucht]);
   }
-  var t = 'Stufe ' + stufe + ' · ' + agenten + ' Agenten · ~' + min + ' Min';
+  var w = modellWahl(stufe);
+  var t = 'Stufe ' + stufe + ' · ' + agenten + ' Agenten · ' + w.m + ' ' + w.a + ' · ~' + min + ' Min';
   if (st.wahl.timer > 0) t += ' · Frist ' + TIMER[st.wahl.timer];
   if (gedeckelt) t += ' · durch Einstellung gedeckelt';
   return t;
+}
+
+/* Welches Modell und welcher Aufwand gelten wirklich:
+   Wahl am Ticket schlägt Standard aus den Einstellungen, der schlägt die Automatik. */
+function modellWahl(stufe) {
+  var auto = modellFuer(stufe);
+  var m = st.wahl.modell > 0 ? MODELL[st.wahl.modell]
+        : (konf.stdModell > 0 ? MODELL[konf.stdModell] : auto.m);
+  var a = st.wahl.aufwand > 0 ? AUFWAND[st.wahl.aufwand]
+        : (konf.stdAufwand > 0 ? AUFWAND[konf.stdAufwand] : auto.a);
+  return { m: m, a: a };
 }
 
 function chip(label, liste, key) {
@@ -265,7 +300,10 @@ function kopf() {
   h.appendChild(c);
   h.appendChild(el('span', 'spacer'));
   h.appendChild(el('span', 'pill', konf.autonomie === 0 ? 'fragt nach' : 'autonom'));
-  h.appendChild(el('span', 'pill', 'max ' + EINST[3].werte[konf.maxWucht]));
+  h.appendChild(el('span', 'pill', 'max ' + einstWert('maxWucht')));
+  h.appendChild(el('span', 'pill', konf.stdModell > 0
+    ? MODELL[konf.stdModell] + ' ' + (konf.stdAufwand > 0 ? AUFWAND[konf.stdAufwand] : 'auto')
+    : 'Modell automatisch'));
   h.appendChild(el('button', 'pill danger', 'Alles anhalten'));
   return h;
 }
@@ -314,8 +352,8 @@ function einstellungen() {
     'Alles wird auf diesem Rechner gemerkt und ist beim nächsten Öffnen wieder da.'));
   var zur = el('button', 'btn', 'Auf Standard zurücksetzen');
   zur.onclick = function () {
-    konf = { design: 7, skala: 1, autonomie: 1, maxWucht: 4, parallel: 2, isolation: 0,
-             hinweise: 0, chat: 0, bewegung: 0, spalten: 0, archiv: 1 };
+    konf = { design: 7, skala: 1, autonomie: 1, maxWucht: 4, stdModell: 0, stdAufwand: 0,
+             parallel: 2, isolation: 0, hinweise: 0, chat: 0, bewegung: 0, spalten: 0, archiv: 1 };
     konfSichern(); konfAnwenden(); zeichne();
   };
   fuss.appendChild(zur);
@@ -659,6 +697,10 @@ function detail() {
     var lk = el('div', 'live-kopf');
     lk.appendChild(el('span', 'live-punkt'));
     lk.appendChild(el('span', 'live-label', 'Läuft gerade'));
+    /* womit gearbeitet wird, ohne dass man erst Anpassen öffnen muss */
+    var stufeNr = parseInt((t.stufe.match(/\d+/) || [4])[0], 10);
+    var mw = modellWahl(stufeNr);
+    lk.appendChild(el('span', 'tag', mw.m + ' · ' + mw.a));
     lk.appendChild(el('span', 'spacer'));
     lk.appendChild(el('span', 'zeit', t.schritt));
     lv.appendChild(lk);

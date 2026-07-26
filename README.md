@@ -90,6 +90,8 @@ Unten links. Alles wird im Browser gemerkt und ist beim nächsten Öffnen wieder
 | Schriftgrösse | 100, 120, 140 Prozent |
 | Autonomie | fragen, selbst entscheiden |
 | Höchste Wucht | Stufe 4 bis 7, oder 150 Prozent |
+| Standard-Modell | automatisch, Haiku 4.5, Sonnet 5, Opus 5, Fable 5 |
+| Standard-Aufwand | automatisch, low, medium, high, xhigh, max |
 | Gleichzeitig | 1, 2, 3 oder 5 Tickets |
 | Isolation | automatisch, Branch, Snapshot |
 | Hinweise | an, aus |
@@ -104,6 +106,50 @@ gedeckelt` dazu.
 
 `Bewegung: reduziert` schaltet Pulsieren und weiche Übergänge ab. Die Systemeinstellung
 `prefers-reduced-motion` wirkt zusätzlich, auch ohne hier etwas umzustellen.
+
+---
+
+## Modell und Aufwand
+
+An drei Stellen einstellbar, mit klarer Rangfolge:
+
+```
+Wahl am einzelnen Ticket   schlägt
+Standard aus Einstellungen schlägt
+Automatik nach Stufe
+```
+
+**Automatik** wählt passend zur Stufe:
+
+| Stufe | Modell | Aufwand |
+|---|---|---|
+| 1 bis 2 | Haiku 4.5 | low |
+| 3 bis 4 | Sonnet 5 | high |
+| 5 | Opus 5 | high |
+| 6 | Opus 5 | xhigh |
+| 7 | Opus 5 | max |
+
+**Am einzelnen Ticket** überschreibbar: beim Anlegen unter `Feineinstellung`, an einem
+laufenden Ticket unter `Anpassen`.
+
+**Sichtbar ohne Klick:** die Klartextzeile beim Anlegen zeigt es mit an
+(`Stufe 5 · 12 Agenten · Opus 5 high · ~19 Min`), ein laufendes Ticket zeigt es im
+Live-Bereich, und die Kopfzeile zeigt den eingestellten Standard.
+
+Die Modell-Liste steht in `gerippe.js` an genau einer Stelle:
+
+```js
+var MODELL  = ['automatisch', 'Haiku 4.5', 'Sonnet 5', 'Opus 5', 'Fable 5'];
+var AUFWAND = ['automatisch', 'low', 'medium', 'high', 'xhigh', 'max'];
+```
+
+Kommt ein neues Modell dazu, wird nur diese Zeile geändert, dann steht es überall zur
+Auswahl. Die Liste aktualisiert sich **nicht** von selbst, sie muss gepflegt werden.
+Welche Modelle die Automatik wählt, steht direkt darunter in `modellFuer()`.
+
+`Fable 5` ist auswählbar, wird von der Automatik aber nicht vergeben. Grund: es gibt
+keine belastbare Grundlage dafür, wofür es die beste Wahl wäre. Wer es einsetzen will,
+wählt es bewusst.
 
 ---
 
