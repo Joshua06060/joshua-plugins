@@ -10,7 +10,57 @@ die Dateien und das Dashboard werden zum Arbeitsplatz.
 
 ## Erster Start
 
-1. Prüfe, ob `TICKETSYSTEM/` im Projekt existiert. Wenn nicht, lege an:
+### Schritt 0: Gibt es das schon?
+
+Suche zuerst nach einer bestehenden Einrichtung, in dieser Reihenfolge:
+
+1. Zeile `Ticketsystem aktiv in:` in `CLAUDE.md` des aktuellen Verzeichnisses
+2. Ordner `TICKETSYSTEM/` direkt im aktuellen Verzeichnis
+3. `TICKETSYSTEM/` eine Ebene tiefer, höchstens zwei Ebenen weit suchen
+
+Wird etwas gefunden, **nichts fragen**. Lies `config.md`, melde in einer Zeile
+`Ticketsystem gefunden in <pfad>, läuft` und mach bei "Dashboard starten" weiter.
+
+### Schritt 1: Wohin?
+
+Nur wenn nichts gefunden wurde. Frage **zuerst** nach dem Ort, mit dem aufgelösten Pfad
+im Klartext, nicht mit einem Platzhalter:
+
+> Wo soll der Ticketsystem-Ordner hin?
+> 1. Hier: `<absoluter Pfad des aktuellen Verzeichnisses>`
+> 2. In einen Unterordner, welchen?
+> 3. Woanders, welcher Pfad?
+
+Prüfe die Antwort, bevor du etwas anlegst:
+
+- Pfad existiert nicht → nachfragen, ob er angelegt werden soll, nicht einfach anlegen
+- Dort liegt schon ein `TICKETSYSTEM/` → nicht überschreiben, sondern übernehmen
+- Kein Schreibrecht → sagen und nach einem anderen Ort fragen
+
+Bei mehreren Projekten unter einem Dach gehört der Ordner **in das einzelne Projekt**,
+nicht in den Dachordner. Ein Ticketsystem gehört zu genau einem Projekt.
+
+### Schritt 2: Drei Fragen
+
+- **Isolation:** Git-Branch pro Ticket, oder Snapshot-Backup? Ohne Git-Repo nur Snapshot,
+  dann nicht fragen, sondern sagen.
+- **Autonomie:** vor Erweiterungen fragen, oder selbst entscheiden?
+- **Browser:** womit soll das Dashboard aufgehen?
+
+Schreibe die Antworten **und den gewählten Pfad** in `config.md`.
+
+### Schritt 3: Anker setzen
+
+Damit spätere Sessions den Ordner wiederfinden, ergänze `CLAUDE.md` im Projekt um genau
+diese Zeile. Gibt es keine `CLAUDE.md`, lege sie an:
+
+```
+Ticketsystem aktiv in: <pfad>  ·  bei Sessionstart Skill `ticketsystem` laden
+```
+
+### Schritt 4: Ordner anlegen
+
+Lege im gewählten Pfad an:
 
 ```
 TICKETSYSTEM/
@@ -25,22 +75,20 @@ TICKETSYSTEM/
   .state/           zaehler, befehle.jsonl, sperren.json, log.jsonl
 ```
 
-2. Stelle **einmal pro Projekt** genau drei Fragen und schreibe die Antworten in
-   `config.md`:
-   - **Isolation:** Git-Branch pro Ticket, oder Snapshot-Backup? (ohne Git nur Snapshot)
-   - **Autonomie:** vor Erweiterungen fragen, oder selbst entscheiden?
-   - **Browser:** womit soll das Dashboard aufgehen?
-
-3. Starte das Dashboard:
+### Schritt 5: Dashboard starten
 
 ```bash
 node "${CLAUDE_PLUGIN_ROOT}/dashboard/server.js"
 ```
 
-   Läuft auf `http://localhost:4322`. Öffne es im gewählten Browser. Dann melde in
-   **einer** Zeile, dass das System läuft.
+Läuft auf `http://localhost:4322`. Öffne es im gewählten Browser. Ist der Port belegt,
+setze `PORT` auf einen freien Wert und sag welchen.
 
-4. Beobachte `TICKETSYSTEM/.state/befehle.jsonl` und die MD-Dateien mit dem `Monitor`-Tool,
+Dann melde in **einer** Zeile, dass das System läuft, mit dem Pfad.
+
+### Schritt 6: Beobachten
+
+Beobachte `<pfad>/TICKETSYSTEM/.state/befehle.jsonl` und die MD-Dateien mit dem `Monitor`-Tool,
    `persistent: true`. Ein Shell-Loop, der Hashes vergleicht, kostet im Ruhezustand keine
    Tokens. Warte **fünf Sekunden Stille**, bevor du eine geänderte MD-Datei liest, sonst
    liest du mitten in einen halb getippten Satz.
