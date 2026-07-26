@@ -1,0 +1,143 @@
+/* E6 · Claude — dunkle Fassung: warmes Dunkel, Ton-Akzent, Serifen-Überschriften, ruhig */
+html[data-stil="e6"]{
+  --f:"Styrene B",-apple-system,"Segoe UI",system-ui,sans-serif;
+  --fs:"Tiempos Text",Georgia,"Iowan Old Style",serif;
+  --fm:ui-monospace,Menlo,monospace;
+  --bg:#1c1a18;--fg:#eeeae0;--line:#3a3630;
+  --panel:#262320;--panel2:#201e1b;--tief:#171512;
+  --clay:#d97757;--clay-t:rgba(217,119,87,.13);
+  --live:#7ba36b;--off:#4d4740;--ink:#a19a8d;--fokus:#d97757;
+  --tc-s:52%;--tc-l:60%;
+  --ton-arbeit:linear-gradient(180deg,rgba(160,180,200,.04),rgba(160,180,200,.04)),var(--panel);
+  --ton-fragen:linear-gradient(180deg,rgba(220,190,110,.05),rgba(220,190,110,.05)),var(--panel);
+  --ton-review:linear-gradient(180deg,rgba(217,119,87,.06),rgba(217,119,87,.06)),var(--panel);
+
+  & body{-webkit-font-smoothing:antialiased}
+  & .app{max-width:1520px;margin:0 auto}
+
+  & .sidebar{background:var(--panel2);border-right:1px solid var(--line);padding:24px 15px}
+  & .logo{font-family:var(--fs);font-size:18px;font-weight:400;letter-spacing:-.01em}
+  & .logo::before{content:"✳ ";color:var(--clay)}
+  & .side-label{letter-spacing:.14em;color:var(--ink);opacity:1}
+  & .proj{border-radius:9px}
+  & .proj:hover{background:var(--panel)}
+  & .proj.is-active{background:var(--panel);box-shadow:0 0 0 1px var(--line)}
+  & .pname{font-weight:500}
+  & .badge{background:var(--clay);color:#2a140c;border-radius:99px;font-weight:600}
+  & .psub{color:var(--ink);opacity:1}
+  & .dot.on{background:var(--live)}
+  & .side-fuss{border-top:1px solid var(--line)}
+  & .side-knopf{border-radius:9px;color:var(--ink)}
+  & .side-knopf:hover{background:var(--panel);color:var(--fg)}
+  & .side-knopf.is-active{background:var(--clay-t);color:var(--clay)}
+  & .side-wert{color:var(--clay)}
+  & .side-foot{color:var(--ink);opacity:1}
+
+  & .topbar{padding:0 0 16px;border-bottom:1px solid var(--line)}
+  & .back{border:1px solid var(--line);border-radius:99px;color:var(--ink)}
+  & .crumbs{font-size:13px;color:var(--ink)}
+  & .crumbs b{font-family:var(--fs);font-weight:400;color:var(--fg)}
+  & .crumb{color:var(--ink)}
+  & .pill{border-radius:99px;border:1px solid var(--line);background:var(--panel);color:var(--ink)}
+  & .pill.danger{color:#e0876c;border-color:rgba(217,119,87,.4);background:var(--clay-t)}
+
+  & .card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:20px 22px}
+  & .leer{color:var(--ink);opacity:1}
+
+  & .compose-zu{border-radius:14px;color:var(--ink);opacity:1}
+  & .compose-zu:hover{background:var(--panel2);color:var(--fg)}
+  & .plus{color:var(--clay)}
+  & .compose textarea{border:1px solid var(--line);border-radius:11px;background:var(--tief);
+    font-family:var(--fs);font-size:17px;line-height:1.6;color:var(--fg)}
+  & .compose textarea:focus{border-color:var(--clay)}
+  & .schreib-titel{font-family:var(--fs);font-size:22px;font-weight:400;letter-spacing:-.02em}
+  & .schreib-hilfe{color:var(--ink);opacity:1}
+  & .anhang{border-radius:99px;background:var(--clay-t);border:1px solid rgba(217,119,87,.3);color:#e8a288}
+  & .anhang-weg{color:var(--clay)}
+
+  & .schritt-kopf{border-bottom:1px solid var(--line);padding-bottom:12px}
+  & .schritt{border-radius:99px;color:var(--ink)}
+  & .schritt.is-on{background:var(--clay-t);color:var(--clay)}
+  & .schritt-nr{background:var(--tief);color:var(--ink)}
+  & .schritt.is-on .schritt-nr{background:var(--clay);color:#2a140c}
+  & .schritt.is-fertig .schritt-nr{background:var(--live);color:#12210e}
+  & .wahl-label{color:var(--ink);opacity:1}
+  & .wahl-knopf{border-radius:99px;border:1px solid var(--line);background:var(--panel2);color:var(--ink)}
+  & .wahl-knopf:hover{background:var(--tief);color:var(--fg)}
+  & .wahl-knopf.is-on{background:var(--clay);border-color:var(--clay);color:#2a140c;font-weight:500}
+  & .beruf{border-radius:99px;border:1px solid var(--line);background:var(--panel2);color:var(--ink)}
+  & .beruf:hover{background:var(--tief);color:var(--fg)}
+  & .beruf.is-on{background:var(--clay-t);border-color:rgba(217,119,87,.5);color:#e8a288;font-weight:500}
+  & .haken{border-radius:50%;border:1px solid var(--line);color:#2a140c}
+  & .beruf.is-on .haken{background:var(--clay);border-color:var(--clay)}
+  & .hinweis{border-radius:11px;background:var(--clay-t);border:1px solid rgba(217,119,87,.35);color:#e8a288}
+  & .chip{border-radius:99px;border:1px solid var(--line);background:var(--panel2);color:var(--ink)}
+  & .chip:hover{color:var(--fg)}
+  & .chip-wrap.is-open .chip{border-color:var(--clay);color:#e8a288}
+  & .pop{border-radius:12px;background:#2e2a26;border:1px solid var(--line);
+    box-shadow:0 20px 46px -18px rgba(0,0,0,.8)}
+  & .pop-item{border-radius:8px;color:var(--ink)}
+  & .pop-item:hover{background:var(--panel);color:var(--fg)}
+  & .pop-item.is-on{background:var(--clay-t);color:#e8a288}
+  & .mehr{border-radius:99px;color:var(--ink)}
+  & .rechnung{border-radius:11px;background:var(--clay-t);border:1px solid rgba(217,119,87,.25);color:#e8a288}
+
+  & .einst-titel{font-family:var(--fs);font-size:17px;font-weight:400}
+  & .einst-hilfe{color:var(--ink);opacity:1}
+  & .design-kachel{border-radius:12px;border:1px solid var(--line);background:var(--panel2);color:var(--ink)}
+  & .design-kachel:hover{background:var(--tief)}
+  & .design-kachel.is-on{border-color:var(--clay);background:var(--clay-t)}
+  & .design-name{font-family:var(--fs);font-weight:400;color:var(--fg);font-size:13px}
+
+  & .gruppe{color:var(--ink);opacity:1}
+  & .gr-arbeit{color:#9fb3c8}
+  & .gr-fragen{color:#dcbe6e}
+  & .gr-review{color:var(--clay)}
+
+  & .tblock{border:1px solid var(--line);border-left-width:3px;border-radius:12px}
+  & .tblock:hover{background:var(--panel2)}
+  & .tb-kopf b{font-family:var(--fs);font-size:15px;font-weight:400;letter-spacing:-.01em}
+  & .tid{color:var(--ink);opacity:1}
+  & .tag{border-radius:99px;background:var(--panel2);border:1px solid var(--line);color:var(--ink)}
+  & .tag.hot{background:var(--clay-t);border-color:rgba(217,119,87,.4);color:#e8a288}
+  & .tag.wait{background:rgba(220,190,110,.1);border-color:rgba(220,190,110,.3);color:#dcbe6e}
+  & .tb-zeile,& .schritt-zeile{color:var(--ink);opacity:1}
+  & .pct{color:var(--clay)}
+  & .zeit{color:var(--ink);opacity:1}
+  & .zeit.frist{color:#dcbe6e}
+  & .bar{background:var(--tief);border-radius:99px}
+  & .bar span{background:var(--clay);border-radius:99px}
+  & .bar.done span{background:var(--live)}
+  & .strand{border-radius:10px;background:var(--panel2);border:1px solid var(--line)}
+  & .strand span{color:var(--ink);opacity:1}
+
+  & .q-what{font-family:var(--fs);font-size:18px;line-height:1.6}
+  & .q-answer{border-radius:10px;border:1px solid var(--line);background:var(--tief);
+    font-family:var(--fs);color:var(--fg)}
+  & .rev-satz{font-family:var(--fs);font-size:18px}
+  & .rev-preview{border-radius:11px;background:var(--tief);border:1px solid var(--line);color:var(--ink)}
+  & .rev-art{border-radius:99px;background:var(--clay-t);border:1px solid rgba(217,119,87,.3);color:#e8a288}
+  & .rev-label{color:var(--ink);opacity:1}
+  & .rev-liste li::before{color:var(--clay);opacity:1}
+  & .rev-fakten{color:var(--ink);opacity:1}
+  & .btn{border-radius:99px;border:1px solid var(--line);background:var(--panel2);color:var(--fg)}
+  & .btn:hover{background:var(--tief)}
+  & .btn.primary{background:var(--clay);border-color:var(--clay);color:#2a140c;font-weight:500}
+  & .btn.ok{background:var(--live);border-color:var(--live);color:#12210e;font-weight:500}
+  & .btn.stop{color:#e0876c;border-color:rgba(217,119,87,.4)}
+  & .btn.ghost{background:none;border-color:transparent;color:var(--ink)}
+  & .ideas{color:var(--ink);opacity:1}
+
+  & .live-punkt{background:var(--live)}
+  & .live-label{color:var(--live)}
+  & .live-flaeche{border-radius:11px;background:var(--tief);border:1px solid var(--line);color:var(--ink)}
+
+  & .anpassen{border-top:1px solid var(--line)}
+  & .srow label{color:var(--ink);opacity:1}
+  & .track{background:var(--tief);border-radius:99px}
+  & .track span{background:var(--clay);border-radius:99px}
+  & .track i{background:var(--panel);border:2px solid var(--clay)}
+  & .srow output{font-family:var(--fs);color:var(--fg)}
+  & .over{border-radius:99px;background:var(--fg);color:#1c1a18;font-weight:500}
+  & .arow{color:var(--ink)}
+}

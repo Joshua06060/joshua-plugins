@@ -1,0 +1,144 @@
+/* E3 · Diktavo — dunkle Fassung: riesige fette Grotesk, Elektroblau, Haarlinien */
+html[data-stil="e3"]{
+  --f:"Schibsted Grotesk","Helvetica Neue",Helvetica,Arial,system-ui,sans-serif;
+  --fm:ui-monospace,Menlo,monospace;
+  --bg:#0b0c0f;--fg:#fbfbfd;--line:#22242b;
+  --panel:#131519;--panel2:#0e1013;--tief:#0a0b0e;
+  --blau:#4d78ff;--blau-t:rgba(77,120,255,.12);
+  --live:#2fd07a;--off:#3a3d45;--ink:#8b8f99;--rot:#ff5f56;--fokus:#4d78ff;
+  --tc-s:66%;--tc-l:60%;
+  --ton-arbeit:linear-gradient(180deg,rgba(77,120,255,.05),rgba(77,120,255,.05)),var(--panel);
+  --ton-fragen:linear-gradient(180deg,rgba(255,193,7,.05),rgba(255,193,7,.05)),var(--panel);
+  --ton-review:linear-gradient(180deg,rgba(47,208,122,.05),rgba(47,208,122,.05)),var(--panel);
+
+  & body{-webkit-font-smoothing:antialiased}
+  & .app{max-width:1560px;margin:0 auto}
+
+  & .sidebar{padding:26px 16px;border-right:1px solid var(--line);background:var(--panel2)}
+  & .logo{font-weight:700;font-size:17px;letter-spacing:-.03em}
+  & .side-label{color:var(--ink);opacity:1;letter-spacing:.12em}
+  & .proj{border-radius:10px}
+  & .proj:hover{background:var(--panel)}
+  & .proj.is-active{background:var(--blau-t);box-shadow:inset 0 0 0 1.5px var(--blau)}
+  & .pname{font-weight:600;letter-spacing:-.015em}
+  & .badge{background:var(--blau);color:#fff;font-weight:700;border-radius:99px}
+  & .psub{color:var(--ink);opacity:1}
+  & .dot.on{background:var(--live)}
+  & .side-fuss{border-top:1px solid var(--line)}
+  & .side-knopf{border-radius:10px;border:1px solid var(--line);color:var(--ink);font-weight:600}
+  & .side-knopf:hover{color:var(--fg);border-color:#343841}
+  & .side-knopf.is-active{background:var(--blau-t);border-color:var(--blau);color:#a9c0ff}
+  & .side-wert{color:var(--blau)}
+  & .side-foot{color:var(--ink);opacity:1}
+
+  & .topbar{padding:0 0 18px;border-bottom:1px solid var(--line)}
+  & .crumbs{font-size:12px;color:var(--ink)}
+  & .crumbs b{color:var(--fg);font-weight:700}
+  & .crumb{color:var(--ink)}
+  & .back{border:1px solid var(--line);border-radius:99px;color:var(--ink)}
+  & .pill{border:1px solid var(--line);background:var(--panel);padding:5px 12px;font-weight:500;color:var(--ink)}
+  & .pill.danger{color:var(--rot);border-color:rgba(255,95,86,.3);background:rgba(255,95,86,.07)}
+
+  & .card{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:22px 24px}
+  & .leer{color:var(--ink);opacity:1}
+
+  & .compose-zu{border-radius:16px;color:var(--ink);opacity:1;font-weight:600}
+  & .compose-zu:hover{color:var(--fg);background:var(--panel2)}
+  & .plus{color:var(--blau)}
+  & .compose textarea{border:1.5px solid var(--line);border-radius:12px;background:var(--tief);
+    font-size:20px;font-weight:500;letter-spacing:-.02em;line-height:1.4}
+  & .compose textarea:focus{border-color:var(--blau)}
+  & .schreib-titel{font-size:30px;font-weight:700;letter-spacing:-.04em}
+  & .schreib-hilfe{color:var(--ink);opacity:1}
+  & .anhang{border-radius:99px;background:var(--blau-t);border:1px solid rgba(77,120,255,.3);
+    color:#a9c0ff;font-weight:600}
+  & .anhang-weg{color:var(--rot)}
+
+  & .schritt-kopf{border-bottom:1px solid var(--line);padding-bottom:12px}
+  & .schritt{border-radius:99px;color:var(--ink);font-weight:600}
+  & .schritt.is-on{color:var(--fg);background:var(--blau-t)}
+  & .schritt-nr{background:var(--tief);color:var(--ink)}
+  & .schritt.is-on .schritt-nr{background:var(--blau);color:#fff}
+  & .schritt.is-fertig .schritt-nr{background:var(--live);color:#062b16}
+  & .wahl-label{color:var(--ink);opacity:1;font-weight:600;letter-spacing:.02em}
+  & .wahl-knopf{border-radius:99px;border:1px solid var(--line);background:var(--panel2);
+    color:var(--ink);font-weight:600}
+  & .wahl-knopf:hover{border-color:var(--fg);color:var(--fg)}
+  & .wahl-knopf.is-on{background:var(--fg);border-color:var(--fg);color:#0b0c0f}
+  & .beruf{border-radius:99px;border:1px solid var(--line);background:var(--panel2);color:var(--ink);font-weight:600}
+  & .beruf:hover{border-color:#343841;color:var(--fg)}
+  & .beruf.is-on{background:var(--blau);border-color:var(--blau);color:#fff}
+  & .haken{border-radius:50%;border:1px solid var(--line);color:var(--blau)}
+  & .beruf.is-on .haken{background:#fff;border-color:#fff}
+  & .hinweis{border-radius:12px;background:rgba(255,95,86,.08);border:1px solid rgba(255,95,86,.28);color:var(--rot)}
+  & .chip{border-radius:99px;border:1px solid var(--line);background:var(--panel2);color:var(--ink);font-weight:500}
+  & .chip:hover{border-color:#343841;color:var(--fg)}
+  & .chip-wrap.is-open .chip{border-color:var(--blau);color:#a9c0ff}
+  & .pop{border-radius:12px;background:#1a1d22;border:1px solid var(--line);
+    box-shadow:0 22px 50px -18px rgba(0,0,0,.85)}
+  & .pop-item{border-radius:8px;color:var(--ink)}
+  & .pop-item:hover{background:var(--panel);color:var(--fg)}
+  & .pop-item.is-on{background:var(--blau-t);color:#a9c0ff;font-weight:600}
+  & .mehr{border-radius:99px;color:var(--ink);font-weight:600}
+  & .rechnung{border-radius:12px;background:var(--blau-t);color:#a9c0ff;font-weight:500;
+    border:1px solid rgba(77,120,255,.22)}
+
+  & .einst-titel{font-size:18px;font-weight:700;letter-spacing:-.03em}
+  & .einst-hilfe{color:var(--ink);opacity:1}
+  & .design-kachel{border-radius:12px;border:1px solid var(--line);background:var(--panel2);color:var(--ink)}
+  & .design-kachel:hover{border-color:#343841}
+  & .design-kachel.is-on{border-color:var(--blau);background:var(--blau-t)}
+  & .design-name{color:var(--fg);font-weight:700}
+
+  & .gruppe{color:var(--ink);opacity:1;font-weight:700}
+  & .gr-arbeit{color:#7d9cff}
+  & .gr-fragen{color:#ffc107}
+  & .gr-review{color:var(--live)}
+
+  & .tblock{border:1px solid var(--line);border-left-width:3px;border-radius:14px}
+  & .tblock:hover{border-color:#343841}
+  & .tb-kopf b{font-size:15px;font-weight:700;letter-spacing:-.025em}
+  & .tid{color:var(--ink);opacity:1;font-weight:600}
+  & .tag{border-radius:99px;background:var(--tief);border:1px solid var(--line);font-weight:600;color:var(--ink)}
+  & .tag.hot{background:var(--blau);border-color:var(--blau);color:#fff}
+  & .tag.wait{background:rgba(255,193,7,.12);border-color:rgba(255,193,7,.3);color:#ffc107}
+  & .tb-zeile,& .schritt-zeile{color:var(--ink);opacity:1}
+  & .pct{color:var(--blau);font-weight:700}
+  & .zeit{color:var(--ink);opacity:1;font-weight:500}
+  & .zeit.frist{color:#ffc107}
+  & .bar{background:var(--tief);border-radius:99px}
+  & .bar span{background:var(--blau);border-radius:99px}
+  & .bar.done span{background:var(--live)}
+  & .strand{border-radius:10px;background:var(--panel2);border:1px solid var(--line)}
+  & .strand span{color:var(--ink);opacity:1;font-weight:600}
+
+  & .q-what{font-size:20px;font-weight:600;letter-spacing:-.02em}
+  & .q-answer{border-radius:10px;border:1px solid var(--line);background:var(--tief);color:var(--fg)}
+  & .q-answer:focus{border-color:var(--blau)}
+  & .rev-satz{font-size:20px;font-weight:600;letter-spacing:-.02em}
+  & .rev-preview{border-radius:12px;background:var(--tief);border:1px solid var(--line);color:var(--ink)}
+  & .rev-art{border-radius:99px;background:var(--blau-t);border:1px solid rgba(77,120,255,.3);color:#a9c0ff}
+  & .rev-label{color:var(--ink);opacity:1}
+  & .rev-liste li::before{color:var(--blau);opacity:1}
+  & .rev-fakten{color:var(--ink);opacity:1}
+  & .btn{border-radius:99px;border:1px solid var(--line);background:var(--panel2);font-weight:600;color:var(--fg)}
+  & .btn:hover{border-color:var(--fg)}
+  & .btn.primary{background:var(--blau);border-color:var(--blau);color:#fff}
+  & .btn.ok{background:var(--live);border-color:var(--live);color:#062b16}
+  & .btn.stop{color:var(--rot);border-color:rgba(255,95,86,.35)}
+  & .btn.ghost{background:none;border-color:transparent;color:var(--ink)}
+  & .ideas{color:var(--ink);opacity:1;font-weight:500}
+
+  & .live-punkt{background:var(--live)}
+  & .live-label{color:var(--live)}
+  & .live-flaeche{border-radius:12px;background:var(--tief);border:1px solid var(--line);color:var(--ink)}
+
+  & .anpassen{border-top:1px solid var(--line)}
+  & .srow label{color:var(--ink);opacity:1;font-weight:600}
+  & .track{background:var(--tief);border-radius:99px}
+  & .track span{background:var(--blau);border-radius:99px}
+  & .track i{background:#fff;border:2.5px solid var(--blau)}
+  & .srow output{font-weight:700;color:var(--fg)}
+  & .over{border-radius:99px;background:var(--fg);color:#0b0c0f;font-weight:700}
+  & .arow{font-weight:500;color:var(--ink)}
+}

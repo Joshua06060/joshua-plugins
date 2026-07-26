@@ -1,0 +1,157 @@
+/* E10 · Linear — sehr dunkles Blaugrau, ein einziges Violett, enge Typografie, keine Verzierung.
+   Empfehlung fürs tägliche Arbeiten: sieht am wenigsten nach Design aus, am meisten nach Werkzeug. */
+html[data-stil="e10"]{
+  --f:"Inter Variable","Inter",-apple-system,"Segoe UI",system-ui,sans-serif;
+  --fm:ui-monospace,"Berkeley Mono","SF Mono",Menlo,monospace;
+  --bg:#08090c;--fg:#f7f8f8;--line:#1f2126;
+  --panel:#101116;--panel2:#0c0d11;--tief:#08090c;
+  --vio:#5e6ad2;--vio-h:#7b86e8;--vio-t:rgba(94,106,210,.14);
+  --live:#4cb782;--gelb:#f2c94c;--rot:#eb5757;
+  --off:#3a3d45;--ink:#8a8f98;--fokus:#5e6ad2;
+  --tc-s:48%;--tc-l:64%;
+  --ton-arbeit:linear-gradient(180deg,rgba(94,106,210,.045),rgba(94,106,210,.045)),var(--panel);
+  --ton-fragen:linear-gradient(180deg,rgba(242,201,76,.045),rgba(242,201,76,.045)),var(--panel);
+  --ton-review:linear-gradient(180deg,rgba(76,183,130,.05),rgba(76,183,130,.05)),var(--panel);
+
+  & body{-webkit-font-smoothing:antialiased;letter-spacing:-.008em}
+
+  & .sidebar{background:var(--panel2);border-right:1px solid var(--line);padding:14px 9px}
+  & .logo{font-size:13px;font-weight:600;letter-spacing:-.01em}
+  & .logo::before{content:"◆ ";color:var(--vio)}
+  & .side-label{font-size:11px;letter-spacing:0;text-transform:none;color:var(--ink);opacity:1;
+    font-weight:500;padding-left:8px}
+  & .proj{border-radius:6px;padding:7px 9px}
+  & .proj:hover{background:rgba(255,255,255,.04)}
+  & .proj.is-active{background:rgba(255,255,255,.06)}
+  & .pname{font-size:13px;font-weight:500}
+  & .badge{background:var(--vio);color:#fff;border-radius:4px;font-weight:500;font-size:10px}
+  & .psub{color:var(--ink);opacity:1;font-size:10px}
+  & .dot{width:6px;height:6px}
+  & .dot.on{background:var(--live)}
+  & .side-fuss{border-top:1px solid var(--line)}
+  & .side-knopf{border-radius:6px;color:var(--ink);font-size:12px;padding:7px 9px}
+  & .side-knopf:hover{background:rgba(255,255,255,.04);color:var(--fg)}
+  & .side-knopf.is-active{background:rgba(255,255,255,.06);color:var(--fg)}
+  & .side-wert{color:var(--vio-h);font-weight:500}
+  & .side-foot{color:var(--ink);opacity:.75;font-size:10px}
+
+  & .main{padding:12px 22px 48px}
+  & .topbar{padding:0 0 11px;border-bottom:1px solid var(--line)}
+  & .back{border-radius:5px;border:1px solid var(--line);color:var(--ink);font-size:13px}
+  & .back:hover{background:rgba(255,255,255,.04);color:var(--fg)}
+  & .crumbs{font-size:13px;color:var(--ink)}
+  & .crumbs b{color:var(--fg);font-weight:500}
+  & .crumb{color:var(--ink);font-size:13px}
+  & .pill{border-radius:5px;border:1px solid var(--line);color:var(--ink);font-weight:500;padding:3px 8px}
+  & .pill.danger{color:var(--rot);border-color:rgba(235,87,87,.35)}
+
+  & .card{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:13px 15px}
+  & .leer{color:var(--ink);opacity:1;font-size:13px}
+
+  & .compose-zu{border-radius:8px;color:var(--ink);opacity:1;font-size:14px;font-weight:500}
+  & .compose-zu:hover{background:rgba(255,255,255,.03);color:var(--fg)}
+  & .plus{color:var(--vio-h)}
+  & .compose.is-open{border-color:#2a2d34}
+  & .compose textarea{border:1px solid var(--line);border-radius:6px;background:var(--tief);
+    font-size:15px;color:var(--fg)}
+  & .compose textarea:focus{border-color:var(--vio)}
+  & .schreib-titel{font-size:16px;font-weight:600;letter-spacing:-.015em}
+  & .schreib-hilfe{color:var(--ink);opacity:1}
+  & .anhang{border-radius:6px;background:var(--vio-t);border:1px solid rgba(94,106,210,.3);color:#b5bcf0}
+  & .anhang-weg{color:var(--rot)}
+
+  & .schritt-kopf{border-bottom:1px solid var(--line);padding-bottom:10px}
+  & .schritt{border-radius:5px;color:var(--ink);font-weight:500}
+  & .schritt.is-on{background:var(--vio-t);color:var(--vio-h)}
+  & .schritt-nr{background:rgba(255,255,255,.06);color:var(--ink);border-radius:4px;font-size:9px}
+  & .schritt.is-on .schritt-nr{background:var(--vio);color:#fff}
+  & .schritt.is-fertig .schritt-nr{background:rgba(76,183,130,.2);color:var(--live)}
+  & .wahl-label{color:var(--ink);opacity:1;font-weight:500}
+  & .wahl-knopf{border-radius:5px;border:1px solid var(--line);background:var(--panel2);
+    color:var(--ink);font-weight:500}
+  & .wahl-knopf:hover{background:rgba(255,255,255,.04);color:var(--fg)}
+  & .wahl-knopf.is-on{background:var(--vio);border-color:var(--vio);color:#fff}
+  & .beruf{border-radius:5px;border:1px solid var(--line);background:var(--panel2);color:var(--ink)}
+  & .beruf:hover{background:rgba(255,255,255,.04);color:var(--fg)}
+  & .beruf.is-on{background:var(--vio-t);border-color:rgba(94,106,210,.5);color:var(--vio-h);font-weight:500}
+  & .haken{border-radius:3px;border:1px solid var(--line);color:#fff}
+  & .beruf.is-on .haken{background:var(--vio);border-color:var(--vio)}
+  & .hinweis{border-radius:6px;background:rgba(235,87,87,.09);border:1px solid rgba(235,87,87,.3);color:var(--rot)}
+  & .chip{border-radius:5px;border:1px solid var(--line);background:var(--panel2);color:var(--ink);font-weight:500}
+  & .chip:hover{background:rgba(255,255,255,.04);color:var(--fg)}
+  & .chip-wrap.is-open .chip{border-color:var(--vio);color:var(--vio-h)}
+  & .pop{border-radius:7px;background:#16171c;border:1px solid var(--line);
+    box-shadow:0 16px 40px -14px rgba(0,0,0,.9)}
+  & .pop-item{border-radius:4px;color:var(--ink)}
+  & .pop-item:hover{background:rgba(255,255,255,.05);color:var(--fg)}
+  & .pop-item.is-on{background:var(--vio-t);color:var(--vio-h);font-weight:500}
+  & .mehr{border-radius:5px;color:var(--ink);font-weight:500}
+  & .rechnung{border-radius:6px;background:var(--vio-t);border:1px solid rgba(94,106,210,.24);
+    color:#b5bcf0;font-family:var(--fm);font-size:11px}
+
+  & .einst-titel{font-size:14px;font-weight:600;letter-spacing:-.01em}
+  & .einst-hilfe{color:var(--ink);opacity:1}
+  & .design-kachel{border-radius:7px;border:1px solid var(--line);background:var(--panel2);color:var(--ink)}
+  & .design-kachel:hover{background:rgba(255,255,255,.04)}
+  & .design-kachel.is-on{border-color:var(--vio);background:var(--vio-t)}
+  & .design-name{color:var(--fg);font-weight:600}
+  & .design-kachel.is-on .design-name{color:var(--vio-h)}
+
+  & .gruppe{color:var(--ink);opacity:1;font-size:11px;letter-spacing:.02em;text-transform:none;font-weight:500}
+  & .gr-arbeit{color:var(--vio-h)}
+  & .gr-fragen{color:var(--gelb)}
+  & .gr-review{color:var(--live)}
+  & .klapp:hover{color:var(--fg)}
+
+  & .tblock{border:1px solid var(--line);border-left-width:2px;border-radius:8px;padding:10px 12px 11px}
+  & .tblock:hover{background:rgba(255,255,255,.03);border-color:#2a2d34}
+  & .tb-kopf b{font-size:13px;font-weight:500;letter-spacing:-.01em}
+  & .tid{color:var(--ink);opacity:1;font-family:var(--fm);font-size:10px}
+  & .tag{border-radius:4px;border:1px solid var(--line);background:var(--panel2);color:var(--ink);font-weight:500}
+  & .tag.hot{border-color:rgba(94,106,210,.45);background:var(--vio-t);color:var(--vio-h)}
+  & .tag.wait{border-color:rgba(242,201,76,.3);background:rgba(242,201,76,.09);color:var(--gelb)}
+  & .tb-zeile,& .schritt-zeile{color:var(--ink);opacity:1}
+  & .pct{color:var(--fg);font-family:var(--fm)}
+  & .zeit{color:var(--ink);opacity:1;font-family:var(--fm);font-size:10px}
+  & .zeit.frist{color:var(--gelb)}
+  & .bar{background:rgba(255,255,255,.07);border-radius:99px;height:3px}
+  & .bar span{background:var(--vio);border-radius:99px}
+  & .bar.done span{background:var(--live)}
+  & .strand{border-radius:6px;background:var(--panel2);border:1px solid var(--line)}
+  & .strand span{color:var(--ink);opacity:1;font-family:var(--fm);font-size:9px}
+
+  & .q-what{font-size:15px;line-height:1.6}
+  & .q-answer{border-radius:6px;border:1px solid var(--line);background:var(--tief);color:var(--fg)}
+  & .q-answer:focus{border-color:var(--vio)}
+  & .rev-satz{font-size:15px}
+  & .rev-preview{border-radius:7px;background:var(--tief);border:1px solid var(--line);color:var(--ink)}
+  & .rev-art{border-radius:4px;background:var(--vio-t);border:1px solid rgba(94,106,210,.32);
+    color:var(--vio-h);font-family:var(--fm)}
+  & .rev-label{color:var(--ink);opacity:1;letter-spacing:.02em;text-transform:none;font-size:11px}
+  & .rev-liste li::before{color:var(--vio-h);opacity:1}
+  & .rev-fakten{color:var(--ink);opacity:1;font-family:var(--fm)}
+  & .btn{border-radius:5px;border:1px solid var(--line);background:var(--panel2);
+    color:var(--fg);font-weight:500}
+  & .btn:hover{background:rgba(255,255,255,.05)}
+  & .btn.primary{background:var(--vio);border-color:var(--vio);color:#fff}
+  & .btn.primary:hover{background:var(--vio-h)}
+  & .btn.ok{background:var(--live);border-color:var(--live);color:#04240f}
+  & .btn.stop{color:var(--rot);border-color:rgba(235,87,87,.32)}
+  & .btn.ghost{background:none;border-color:transparent;color:var(--ink)}
+  & .ideas{color:var(--ink);opacity:1;font-family:var(--fm)}
+
+  & .live-punkt{background:var(--live)}
+  & .live-label{color:var(--live);letter-spacing:.02em;text-transform:none;font-size:11px}
+  & .live-flaeche{border-radius:7px;background:var(--tief);border:1px solid var(--line);color:var(--ink)}
+
+  & .anpassen{border-top:1px solid var(--line)}
+  & .srow label{color:var(--ink);opacity:1;font-weight:500}
+  & .track{background:rgba(255,255,255,.07);border-radius:99px;height:4px}
+  & .track span{background:var(--vio);border-radius:99px}
+  & .track i{background:#fff;width:11px;height:11px;margin:-5.5px 0 0 -5.5px;
+    box-shadow:0 1px 4px rgba(0,0,0,.6)}
+  & .srow output{color:var(--fg);font-family:var(--fm)}
+  & .over{border-radius:5px;border:1px solid rgba(235,87,87,.32);background:rgba(235,87,87,.09);
+    color:var(--rot);font-weight:500}
+  & .arow{color:var(--ink);font-size:12px}
+}

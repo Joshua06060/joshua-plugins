@@ -1,0 +1,165 @@
+/* E9 · Minecraft — Pixeloptik: harte 3D-Kanten, Steingrau, Erdbraun, Grasgrün, keine Rundungen */
+html[data-stil="e9"]{
+  --f:ui-monospace,"Lucida Console",Monaco,monospace;
+  --fm:ui-monospace,"Lucida Console",monospace;
+  --bg:#1a1a1f;--fg:#ffffff;--line:#000;
+  --stone:#8b8b8b;--stone-l:#c6c6c6;--stone-d:#555;
+  --dirt:#6b4a2f;--dirt-d:#3f2a1a;
+  --grass:#5eba3a;--grass-l:#8be060;--grass-d:#3a7a22;
+  --gold:#fcdb05;--rot:#d43b2f;--water:#3b6bd4;
+  --panel:#2c2c33;--panel2:#22222a;--tief:#14141a;
+  --live:#5eba3a;--off:#555;--ink:#a8a8a8;--fokus:#fcdb05;
+  --tc-s:60%;--tc-l:56%;
+  --ton-arbeit:linear-gradient(180deg,rgba(59,107,212,.09),rgba(59,107,212,.09)),var(--panel);
+  --ton-fragen:linear-gradient(180deg,rgba(252,219,5,.07),rgba(252,219,5,.07)),var(--panel);
+  --ton-review:linear-gradient(180deg,rgba(94,186,58,.09),rgba(94,186,58,.09)),var(--panel);
+
+  & body{image-rendering:pixelated;text-shadow:2px 2px 0 rgba(0,0,0,.55);
+    background:
+      linear-gradient(45deg,rgba(255,255,255,.014) 25%,transparent 25%,transparent 75%,rgba(255,255,255,.014) 75%) 0 0/8px 8px,
+      linear-gradient(45deg,rgba(255,255,255,.014) 25%,transparent 25%,transparent 75%,rgba(255,255,255,.014) 75%) 4px 4px/8px 8px,
+      #1a1a1f}
+
+  /* Der Klotz-Look: helle Kante oben links, dunkle unten rechts */
+  & .proj,& .card,& .topbar,& .btn,& .beruf,& .wahl-knopf,& .schritt,& .pill,& .chip,& .over,
+  & .strand,& .q-answer,& .compose textarea,& .rev-preview,& .rechnung,& .side-knopf,
+  & .design-kachel,& .back,& .pop,& .anhang,& .hinweis,& .live-flaeche,& .tblock{
+    border-style:solid;border-width:3px;border-radius:0 !important;
+    border-color:var(--stone-l) var(--stone-d) var(--stone-d) var(--stone-l)}
+
+  & .sidebar{background:var(--dirt);border-right:4px solid var(--dirt-d);padding:14px 10px}
+  & .logo{font-weight:700;font-size:15px;letter-spacing:.06em;text-transform:uppercase;color:var(--gold)}
+  & .side-label{letter-spacing:.14em;color:#e0cdb8;opacity:1}
+  & .proj{background:var(--stone);color:#fff}
+  & .proj:hover{background:#9c9c9c}
+  & .proj.is-active{background:var(--grass);border-color:var(--grass-l) var(--grass-d) var(--grass-d) var(--grass-l)}
+  & .pname{font-weight:700}
+  & .badge{background:var(--rot);border:2px solid #7d1f17;font-weight:700;border-radius:0}
+  & .psub{color:#efefef;opacity:.85}
+  & .dot{border-radius:0;box-shadow:0 0 0 2px #000}
+  & .dot.on{background:var(--grass)}
+  & .side-fuss{border-top:4px solid var(--dirt-d)}
+  & .side-knopf{background:var(--stone);color:#fff;font-weight:700;letter-spacing:.04em;text-transform:uppercase;font-size:11px}
+  & .side-knopf:hover{background:#9c9c9c}
+  & .side-knopf.is-active{background:var(--grass);border-color:var(--grass-l) var(--grass-d) var(--grass-d) var(--grass-l)}
+  & .side-wert{color:var(--gold);text-transform:none}
+  & .side-foot{color:#e0cdb8;opacity:.8}
+
+  & .topbar{background:var(--stone)}
+  & .back{background:var(--stone-d);color:#fff}
+  & .crumbs{font-size:12px;letter-spacing:.04em;color:#efefef}
+  & .crumbs b{color:var(--gold)}
+  & .crumb{color:#efefef}
+  & .pill{background:var(--stone-d);letter-spacing:.06em;text-transform:uppercase;color:#fff}
+  & .pill.danger{background:var(--rot);border-color:#e8695e #7d1f17 #7d1f17 #e8695e}
+
+  & .card{background:var(--panel);border-color:#4a4a54 #14141a #14141a #4a4a54}
+  & .leer{color:var(--ink);opacity:1}
+
+  & .compose-zu{background:none;color:var(--gold);font-weight:700;letter-spacing:.08em;text-transform:uppercase;opacity:1}
+  & .compose-zu:hover{background:rgba(255,255,255,.04)}
+  & .plus{color:var(--gold)}
+  & .compose textarea{background:var(--tief);color:#fff;border-color:#000 #4a4a54 #4a4a54 #000;font-size:13px}
+  & .schreib-titel{color:var(--gold);letter-spacing:.1em;text-transform:uppercase;font-size:16px}
+  & .schreib-hilfe{color:var(--ink);opacity:1}
+  & .anhang{background:var(--water);border-color:#6f95e8 #1f3f8f #1f3f8f #6f95e8;color:#fff}
+  & .anhang-weg{color:#ffb4ae}
+
+  & .schritt-kopf{border-bottom:3px solid var(--tief);padding-bottom:12px}
+  & .schritt{background:var(--stone);color:#fff;letter-spacing:.06em;text-transform:uppercase;font-size:11px}
+  & .schritt.is-on{background:var(--grass);border-color:var(--grass-l) var(--grass-d) var(--grass-d) var(--grass-l)}
+  & .schritt-nr{background:var(--tief);color:#fff;border-radius:0;box-shadow:0 0 0 2px #000}
+  & .schritt.is-on .schritt-nr{background:var(--gold);color:#3a2f00;text-shadow:none}
+  & .schritt.is-fertig .schritt-nr{background:var(--grass);color:#0d2606}
+  & .wahl-label{color:var(--gold);opacity:1;letter-spacing:.1em;text-transform:uppercase}
+  & .wahl-knopf{background:var(--stone);color:#fff;font-weight:700;letter-spacing:.05em;text-transform:uppercase}
+  & .wahl-knopf:hover{background:#9c9c9c}
+  & .wahl-knopf.is-on{background:var(--grass);border-color:var(--grass-l) var(--grass-d) var(--grass-d) var(--grass-l)}
+  & .beruf{background:var(--stone);color:#fff;font-weight:700;letter-spacing:.03em;text-transform:uppercase;font-size:10px}
+  & .beruf:hover{background:#9c9c9c}
+  & .beruf.is-on{background:var(--grass);border-color:var(--grass-l) var(--grass-d) var(--grass-d) var(--grass-l)}
+  & .haken{border-radius:0;background:var(--tief);box-shadow:0 0 0 2px #000;color:var(--gold)}
+  & .beruf.is-on .haken{background:var(--gold);color:#0d2606;text-shadow:none}
+  & .hinweis{background:var(--rot);border-color:#e8695e #7d1f17 #7d1f17 #e8695e;color:#fff}
+  & .chip{background:var(--stone-d);color:#fff;letter-spacing:.03em;font-size:11px}
+  & .chip:hover{background:#6a6a6a}
+  & .chip-wrap.is-open .chip{background:var(--grass);border-color:var(--grass-l) var(--grass-d) var(--grass-d) var(--grass-l)}
+  & .pop{background:var(--panel2);border-color:#4a4a54 #14141a #14141a #4a4a54;padding:4px}
+  & .pop-item{color:#fff;border-radius:0;font-size:11px}
+  & .pop-item:hover{background:var(--stone-d)}
+  & .pop-item.is-on{background:var(--grass);color:#0d2606;text-shadow:none}
+  & .mehr{color:var(--gold);letter-spacing:.08em;text-transform:uppercase}
+  & .rechnung{background:var(--tief);border-color:#000 #4a4a54 #4a4a54 #000;color:#c7f0b0;font-size:12px}
+
+  & .einst-titel{color:var(--gold);letter-spacing:.08em;text-transform:uppercase;font-size:13px}
+  & .einst-hilfe{color:var(--ink);opacity:1}
+  & .design-kachel{background:var(--stone);color:#fff}
+  & .design-kachel:hover{background:#9c9c9c}
+  & .design-kachel.is-on{background:var(--grass);border-color:var(--grass-l) var(--grass-d) var(--grass-d) var(--grass-l)}
+  & .design-name{color:#fff;font-weight:700;letter-spacing:.05em;text-transform:uppercase}
+  & .design-kurz{color:#efefef;opacity:.85}
+
+  & .gruppe{color:var(--gold);opacity:1;letter-spacing:.14em}
+  & .gr-arbeit{color:#7fa8ff}
+  & .gr-fragen{color:var(--gold)}
+  & .gr-review{color:var(--grass-l)}
+
+  /* kein eigenes background hier, sonst überschreibt es die Gruppen-Tönung aus basis.css */
+  & .tblock{border-color:#4a4a54 #14141a #14141a #4a4a54;
+    border-left:4px solid var(--tc) !important}
+  & .tblock:hover{background:#36363e}
+  & .tb-kopf b{font-size:13px;font-weight:700;letter-spacing:.03em}
+  & .tid{color:var(--gold);opacity:1;font-weight:700}
+  & .tag{background:var(--stone-d);border:3px solid;border-radius:0;
+    border-color:var(--stone-l) var(--stone-d) var(--stone-d) var(--stone-l);
+    letter-spacing:.05em;text-transform:uppercase;color:#fff;padding:1px 7px}
+  & .tag.hot{background:var(--rot);border-color:#e8695e #7d1f17 #7d1f17 #e8695e}
+  & .tag.wait{background:var(--gold);border-color:#fff0a0 #a89000 #a89000 #fff0a0;color:#3a2f00;text-shadow:none}
+  & .tb-zeile,& .schritt-zeile{color:#d6d6d6;opacity:1;font-size:11px}
+  & .pct{color:var(--grass-l);font-weight:700}
+  & .zeit{color:var(--ink);opacity:1;letter-spacing:.04em}
+  & .zeit.frist{color:var(--gold)}
+  /* Balken wie die Erfahrungsleiste */
+  & .bar{background:var(--tief);border:3px solid;border-color:#000 #4a4a54 #4a4a54 #000;height:13px;border-radius:0}
+  & .bar span{background:var(--grass);border-radius:0;
+    box-shadow:inset 0 3px 0 var(--grass-l),inset 0 -3px 0 var(--grass-d)}
+  & .bar.done span{background:var(--gold);box-shadow:inset 0 3px 0 #fff0a0,inset 0 -3px 0 #a89000}
+  & .strand{background:var(--panel2);border-color:#3a3a44 #14141a #14141a #3a3a44}
+  & .strand span{color:var(--gold);opacity:1;letter-spacing:.05em;text-transform:uppercase}
+  & .tblock .strand .bar{height:9px}
+
+  & .q-what{font-size:13px;line-height:1.7}
+  & .q-answer{background:var(--tief);border-color:#000 #4a4a54 #4a4a54 #000;color:#fff}
+  & .rev-satz{font-size:13px;line-height:1.7}
+  & .rev-preview{background:var(--tief);border-color:#000 #4a4a54 #4a4a54 #000;color:var(--ink);
+    letter-spacing:.06em;text-transform:uppercase;font-size:11px}
+  & .rev-art{background:var(--water);border:3px solid;border-radius:0;
+    border-color:#6f95e8 #1f3f8f #1f3f8f #6f95e8;color:#fff}
+  & .rev-label{color:var(--gold);opacity:1;letter-spacing:.12em}
+  & .rev-liste li::before{color:var(--grass-l);opacity:1}
+  & .rev-fakten{color:var(--ink);opacity:1}
+  & .btn{background:var(--stone);font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:#fff;font-size:11px}
+  & .btn:hover{background:#9c9c9c}
+  & .btn.primary,& .btn.ok{background:var(--grass);border-color:var(--grass-l) var(--grass-d) var(--grass-d) var(--grass-l)}
+  & .btn.stop{background:var(--rot);border-color:#e8695e #7d1f17 #7d1f17 #e8695e}
+  & .btn.ghost{background:var(--stone-d)}
+  & .ideas{color:var(--ink);opacity:1}
+
+  & .live-punkt{border-radius:0;background:var(--grass);box-shadow:0 0 0 2px #000}
+  & .live-label{color:var(--grass-l);letter-spacing:.12em}
+  & .live-flaeche{background:var(--tief);border-color:#000 #4a4a54 #4a4a54 #000;color:var(--ink);
+    letter-spacing:.04em;font-size:11px}
+
+  & .anpassen{border-top:3px solid var(--tief)}
+  & .srow label{color:var(--gold);opacity:1;letter-spacing:.1em;text-transform:uppercase;font-size:11px}
+  & .track{background:var(--tief);border:3px solid;border-color:#000 #4a4a54 #4a4a54 #000;height:13px;border-radius:0}
+  & .track span{background:var(--grass);border-radius:0;
+    box-shadow:inset 0 3px 0 var(--grass-l),inset 0 -3px 0 var(--grass-d)}
+  & .track i{border-radius:0;background:var(--stone-l);width:9px;height:19px;margin:-9.5px 0 0 -4.5px;
+    box-shadow:0 0 0 3px #000}
+  & .srow output{font-weight:700;color:#fff}
+  & .over{background:var(--rot);border-color:#e8695e #7d1f17 #7d1f17 #e8695e;color:#fff;
+    font-weight:700;letter-spacing:.05em}
+  & .arow{font-size:12px;color:var(--ink)}
+  & .arow+.arow{border-top:3px solid var(--tief)}
+}

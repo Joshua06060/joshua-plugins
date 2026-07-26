@@ -1,0 +1,170 @@
+/* E5 · Arcane — gemalt statt gerendert: Piltover-Gold gegen Zaun-Magenta, Hextech-Blau, Korn */
+html[data-stil="e5"]{
+  --f:"Optima","Palatino Linotype",Palatino,Georgia,serif;
+  --fm:ui-monospace,Menlo,monospace;
+  --bg:#0a0d16;--fg:#e6e2d6;--line:rgba(232,196,106,.22);
+  --panel:rgba(18,24,40,.72);--panel2:rgba(10,14,24,.8);--tief:rgba(0,0,0,.42);
+  --gold:#e8c46a;--gold2:#a8863a;--hex:#4fd8e8;--zaun:#e0329b;--tox:#7fe05a;
+  --live:#7fe05a;--off:#4a5468;--ink:#9aa3b8;--fokus:#e8c46a;
+  --tc-s:64%;--tc-l:60%;
+  --ton-arbeit:linear-gradient(180deg,rgba(79,216,232,.05),rgba(79,216,232,.05)),var(--panel);
+  --ton-fragen:linear-gradient(180deg,rgba(232,196,106,.06),rgba(232,196,106,.06)),var(--panel);
+  --ton-review:linear-gradient(180deg,rgba(224,50,155,.06),rgba(224,50,155,.06)),var(--panel);
+
+  & body{background:
+    radial-gradient(120% 80% at 12% 0%,rgba(79,216,232,.10),transparent 60%),
+    radial-gradient(100% 70% at 92% 8%,rgba(224,50,155,.10),transparent 62%),
+    radial-gradient(90% 60% at 50% 100%,rgba(232,196,106,.06),transparent 65%),
+    #0a0d16}
+  & body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:9;opacity:.09;
+    background-image:radial-gradient(#fff 0.5px,transparent 0.6px);background-size:3px 3px}
+  & body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:8;
+    box-shadow:inset 0 0 220px 60px rgba(0,0,0,.75)}
+  & .app{position:relative;z-index:1}
+
+  & .sidebar{background:var(--panel2);border-right:1px solid var(--line)}
+  & .logo{font-size:16px;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);
+    text-shadow:0 0 18px rgba(232,196,106,.4)}
+  & .side-label{letter-spacing:.28em;color:var(--gold2);opacity:1}
+  & .proj{border:1px solid transparent}
+  & .proj:hover{border-color:var(--line);background:rgba(232,196,106,.04)}
+  & .proj.is-active{border-color:var(--gold);background:rgba(232,196,106,.08);
+    box-shadow:0 0 24px -6px rgba(232,196,106,.35)}
+  & .pname{letter-spacing:.04em}
+  & .badge{background:var(--zaun);color:#fff;border-radius:0;font-family:var(--fm);
+    box-shadow:0 0 12px rgba(224,50,155,.6)}
+  & .psub{color:var(--ink);opacity:1;letter-spacing:.05em}
+  & .dot.on{background:var(--tox);box-shadow:0 0 9px var(--tox)}
+  & .side-fuss{border-top:1px solid var(--line)}
+  & .side-knopf{border:1px solid var(--line);background:rgba(232,196,106,.04);color:var(--gold);
+    letter-spacing:.1em;text-transform:uppercase;font-size:11px}
+  & .side-knopf:hover{background:rgba(232,196,106,.1)}
+  & .side-knopf.is-active{background:var(--gold);color:#0a0d16}
+  & .side-wert{color:var(--hex);letter-spacing:.06em}
+  & .side-foot{color:var(--gold2);opacity:1;letter-spacing:.05em}
+
+  & .topbar{border:1px solid var(--line);background:var(--panel);position:relative}
+  & .topbar::before,& .topbar::after{content:"";position:absolute;width:9px;height:9px;border:1px solid var(--gold)}
+  & .topbar::before{top:-1px;left:-1px;border-right:0;border-bottom:0}
+  & .topbar::after{bottom:-1px;right:-1px;border-left:0;border-top:0}
+  & .back{border:1px solid var(--line);color:var(--gold);background:rgba(232,196,106,.05)}
+  & .crumbs{font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink)}
+  & .crumbs b{color:var(--hex);text-shadow:0 0 14px rgba(79,216,232,.55)}
+  & .crumb{color:var(--ink);letter-spacing:.1em;text-transform:uppercase}
+  & .pill{border:1px solid var(--line);background:rgba(232,196,106,.05);letter-spacing:.12em;
+    text-transform:uppercase;border-radius:0;color:var(--gold)}
+  & .pill.danger{border-color:rgba(224,50,155,.5);color:var(--zaun);background:rgba(224,50,155,.08)}
+
+  & .card{background:var(--panel);border:1px solid var(--line);border-radius:0;padding:20px 22px;
+    position:relative;backdrop-filter:blur(3px)}
+  & .card::before{content:"";position:absolute;inset:4px;border:1px solid rgba(232,196,106,.09);pointer-events:none}
+  & .leer{color:var(--ink);opacity:1;letter-spacing:.04em}
+
+  & .compose-zu{color:var(--gold);opacity:1;letter-spacing:.12em;text-transform:uppercase;font-size:13px}
+  & .compose-zu:hover{background:rgba(232,196,106,.06)}
+  & .plus{color:var(--gold)}
+  & .compose textarea{border:1px solid var(--line);background:rgba(0,0,0,.42);border-radius:0;
+    font-size:16px;letter-spacing:.02em;line-height:1.5}
+  & .schreib-titel{letter-spacing:.08em;text-transform:uppercase;color:var(--gold);font-weight:400;font-size:20px}
+  & .schreib-hilfe{color:var(--ink);opacity:1;letter-spacing:.03em}
+  & .anhang{border:1px solid rgba(79,216,232,.35);background:rgba(79,216,232,.08);color:var(--hex);
+    font-family:var(--fm);border-radius:0}
+  & .anhang-weg{color:var(--zaun)}
+
+  & .schritt-kopf{border-bottom:1px solid var(--line);padding-bottom:12px}
+  & .schritt{color:var(--ink);letter-spacing:.12em;text-transform:uppercase;font-size:11px}
+  & .schritt.is-on{color:var(--gold)}
+  & .schritt-nr{background:rgba(232,196,106,.12);color:var(--gold);border-radius:0;
+    transform:rotate(45deg);width:16px;height:16px}
+  & .schritt-nr{font-family:var(--fm)}
+  & .schritt.is-on .schritt-nr{background:var(--gold);color:#0a0d16}
+  & .schritt.is-fertig .schritt-nr{background:var(--tox);color:#0a1a06}
+  & .wahl-label{color:var(--gold2);opacity:1;letter-spacing:.14em;text-transform:uppercase}
+  & .wahl-knopf{border:1px solid var(--line);background:rgba(232,196,106,.04);border-radius:0;
+    letter-spacing:.1em;text-transform:uppercase;color:var(--gold);font-size:11px}
+  & .wahl-knopf:hover{background:rgba(232,196,106,.12)}
+  & .wahl-knopf.is-on{background:var(--gold);color:#0a0d16;box-shadow:0 0 22px -4px rgba(232,196,106,.6)}
+  & .beruf{border:1px solid var(--line);background:rgba(232,196,106,.04);border-radius:0;
+    color:var(--gold);letter-spacing:.05em;font-size:11px}
+  & .beruf:hover{background:rgba(232,196,106,.1)}
+  & .beruf.is-on{background:rgba(79,216,232,.14);border-color:var(--hex);color:var(--hex)}
+  & .haken{border:1px solid var(--line);border-radius:0;color:#0a0d16}
+  & .beruf.is-on .haken{background:var(--hex);border-color:var(--hex)}
+  & .hinweis{border:1px solid var(--zaun);background:rgba(224,50,155,.12);color:var(--zaun);border-radius:0}
+  & .chip{border:1px solid var(--line);background:rgba(232,196,106,.04);border-radius:0;
+    letter-spacing:.06em;color:var(--ink)}
+  & .chip:hover{color:var(--gold)}
+  & .chip-wrap.is-open .chip{border-color:var(--gold);color:var(--gold)}
+  & .pop{border:1px solid var(--line);background:#0d1220;border-radius:0;
+    box-shadow:0 20px 46px -16px rgba(0,0,0,.9)}
+  & .pop-item{color:var(--ink);border-radius:0;letter-spacing:.04em}
+  & .pop-item:hover{background:rgba(232,196,106,.08);color:var(--gold)}
+  & .pop-item.is-on{background:rgba(232,196,106,.16);color:var(--gold)}
+  & .mehr{color:var(--gold2);letter-spacing:.1em;text-transform:uppercase}
+  & .rechnung{border:1px solid rgba(79,216,232,.3);background:rgba(79,216,232,.08);color:var(--hex);
+    border-radius:0;letter-spacing:.03em}
+
+  & .einst-titel{letter-spacing:.1em;text-transform:uppercase;color:var(--gold);font-weight:400}
+  & .einst-hilfe{color:var(--ink);opacity:1;letter-spacing:.03em}
+  & .design-kachel{border:1px solid var(--line);background:rgba(232,196,106,.04);border-radius:0;color:var(--ink)}
+  & .design-kachel:hover{background:rgba(232,196,106,.1)}
+  & .design-kachel.is-on{border-color:var(--gold);background:rgba(232,196,106,.14)}
+  & .design-name{color:var(--gold);letter-spacing:.08em;text-transform:uppercase;font-weight:400}
+
+  & .gruppe{color:var(--gold2);opacity:1;letter-spacing:.2em}
+  & .gr-arbeit{color:var(--hex)}
+  & .gr-fragen{color:var(--gold)}
+  & .gr-review{color:var(--zaun)}
+
+  /* kein eigenes background hier, sonst überschreibt es die Gruppen-Tönung aus basis.css */
+  & .tblock{border:1px solid var(--line);border-left-width:3px;border-radius:0}
+  & .tblock:hover{background:rgba(232,196,106,.06)}
+  & .tb-kopf b{letter-spacing:.04em;color:var(--fg)}
+  & .tid{font-family:var(--fm);color:var(--gold2);opacity:1}
+  & .tag{border:1px solid var(--line);background:rgba(232,196,106,.06);border-radius:0;
+    letter-spacing:.1em;text-transform:uppercase;color:var(--gold)}
+  & .tag.hot{border-color:var(--zaun);background:rgba(224,50,155,.14);color:var(--zaun)}
+  & .tag.wait{border-color:rgba(232,196,106,.5);background:rgba(232,196,106,.1);color:var(--gold)}
+  & .tb-zeile,& .schritt-zeile{color:var(--ink);opacity:1;letter-spacing:.02em}
+  & .pct{font-family:var(--fm);color:var(--gold)}
+  & .zeit{color:var(--ink);opacity:1;letter-spacing:.06em}
+  & .zeit.frist{color:var(--zaun)}
+  & .bar{background:rgba(255,255,255,.07);border:1px solid var(--line)}
+  & .bar span{background:linear-gradient(90deg,var(--hex),var(--gold))}
+  & .bar.done span{background:var(--tox);box-shadow:0 0 12px rgba(127,224,90,.6)}
+  & .strand{border:1px solid var(--line);background:rgba(0,0,0,.32);border-radius:0}
+  & .strand span{color:var(--gold2);opacity:1;letter-spacing:.1em;text-transform:uppercase}
+
+  & .q-what{letter-spacing:.02em;line-height:1.6}
+  & .q-answer{border:1px solid var(--line);background:rgba(0,0,0,.42);border-radius:0;color:var(--fg)}
+  & .rev-satz{letter-spacing:.02em;color:var(--fg)}
+  & .rev-preview{border:1px solid var(--line);background:rgba(0,0,0,.42);color:var(--ink);letter-spacing:.06em}
+  & .rev-art{border:1px solid var(--zaun);background:rgba(224,50,155,.14);color:var(--zaun);border-radius:0}
+  & .rev-label{color:var(--gold2);opacity:1;letter-spacing:.16em}
+  & .rev-liste li::before{color:var(--gold);opacity:1}
+  & .rev-fakten{color:var(--ink);opacity:1;font-family:var(--fm)}
+  & .btn{border:1px solid var(--line);background:rgba(232,196,106,.05);border-radius:0;
+    letter-spacing:.1em;text-transform:uppercase;color:var(--gold);font-size:11px}
+  & .btn:hover{background:rgba(232,196,106,.12)}
+  & .btn.primary{background:var(--gold);color:#0a0d16;border-color:var(--gold)}
+  & .btn.ok{background:var(--tox);color:#0a1a06;border-color:var(--tox);box-shadow:0 0 20px -4px rgba(127,224,90,.6)}
+  & .btn.stop{border-color:rgba(224,50,155,.5);color:var(--zaun);background:rgba(224,50,155,.08)}
+  & .btn.ghost{background:none;border-color:transparent;color:var(--ink)}
+  & .ideas{color:var(--ink);opacity:1;letter-spacing:.04em}
+
+  & .live-punkt{background:var(--tox);box-shadow:0 0 8px var(--tox);border-radius:0;transform:rotate(45deg)}
+  & .live-label{color:var(--tox);letter-spacing:.16em}
+  & .live-flaeche{border:1px solid var(--line);background:rgba(0,0,0,.42);color:var(--ink);letter-spacing:.04em}
+
+  & .anpassen{border-top:1px solid var(--line)}
+  & .srow label{color:var(--gold2);opacity:1;letter-spacing:.14em;text-transform:uppercase}
+  & .track{background:rgba(255,255,255,.08);border:1px solid var(--line);height:7px}
+  & .track span{background:linear-gradient(90deg,var(--hex),var(--gold));box-shadow:0 0 14px rgba(79,216,232,.5)}
+  & .track i{background:var(--gold);border-radius:0;transform:rotate(45deg);width:11px;height:11px;
+    margin:-5.5px 0 0 -5.5px;box-shadow:0 0 14px rgba(232,196,106,.8)}
+  & .srow output{font-family:var(--fm);color:var(--gold)}
+  & .over{border:1px solid var(--zaun);background:rgba(224,50,155,.14);color:var(--zaun);border-radius:0;
+    letter-spacing:.12em}
+  & .arow{letter-spacing:.03em;color:var(--ink)}
+  & .arow+.arow{border-top:1px solid var(--line)}
+}

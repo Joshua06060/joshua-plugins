@@ -1,0 +1,41 @@
+/* Farbstreifen auf den Design-Kacheln in den Einstellungen.
+   Steht ausserhalb der Designs, weil dort alle zehn gleichzeitig gezeigt werden. */
+.design-kachel[data-vorschau="e1"]  .ds1{background:#000}
+.design-kachel[data-vorschau="e1"]  .ds2{background:linear-gradient(135deg,#e8e6e1,#8e8880)}
+.design-kachel[data-vorschau="e1"]  .ds3{background:#2997ff}
+
+.design-kachel[data-vorschau="e2"]  .ds1{background:#0b0b0f}
+.design-kachel[data-vorschau="e2"]  .ds2{background:linear-gradient(100deg,#8b5cf6,#ec4899,#f59e0b)}
+.design-kachel[data-vorschau="e2"]  .ds3{background:#34d399}
+
+.design-kachel[data-vorschau="e3"]  .ds1{background:#0b0c0f}
+.design-kachel[data-vorschau="e3"]  .ds2{background:#1b4dff}
+.design-kachel[data-vorschau="e3"]  .ds3{background:#fbfbfd}
+
+.design-kachel[data-vorschau="e4"]  .ds1{background:#232527}
+.design-kachel[data-vorschau="e4"]  .ds2{background:#e2231a}
+.design-kachel[data-vorschau="e4"]  .ds3{background:#00a2ff}
+
+.design-kachel[data-vorschau="e5"]  .ds1{background:#0a0d16}
+.design-kachel[data-vorschau="e5"]  .ds2{background:#e8c46a}
+.design-kachel[data-vorschau="e5"]  .ds3{background:#e0329b}
+
+.design-kachel[data-vorschau="e6"]  .ds1{background:#232120}
+.design-kachel[data-vorschau="e6"]  .ds2{background:#d97757}
+.design-kachel[data-vorschau="e6"]  .ds3{background:#e8e3d8}
+
+.design-kachel[data-vorschau="e7"]  .ds1{background:#212121}
+.design-kachel[data-vorschau="e7"]  .ds2{background:#303030}
+.design-kachel[data-vorschau="e7"]  .ds3{background:#10a37f}
+
+.design-kachel[data-vorschau="e8"]  .ds1{background:#05050b}
+.design-kachel[data-vorschau="e8"]  .ds2{background:#00e27b}
+.design-kachel[data-vorschau="e8"]  .ds3{background:#06b6d4}
+
+.design-kachel[data-vorschau="e9"]  .ds1{background:#6b4a2f}
+.design-kachel[data-vorschau="e9"]  .ds2{background:#8b8b8b}
+.design-kachel[data-vorschau="e9"]  .ds3{background:#5eba3a}
+
+.design-kachel[data-vorschau="e10"] .ds1{background:#08090c}
+.design-kachel[data-vorschau="e10"] .ds2{background:#5e6ad2}
+.design-kachel[data-vorschau="e10"] .ds3{background:#8a8f98}
