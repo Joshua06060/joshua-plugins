@@ -187,13 +187,19 @@ Funktioniert:
 - Alle Knöpfe erzeugen echte Befehle mit richtiger Ticketnummer
 - Fünfzehn Designs, geprüft mit echten Daten
 - Bilder per `Strg+V` in jedem Textfeld
+- Dreissig Berufe: Sicherheit, Fehlersuche, Design, 3D, Recht, Finanzen und mehr.
+  Jeder mit Besetzung, Ablauf, Prüfliste und Berichtsformat
+- Sieben Stufen mit gewichteter Punkte-Rubrik und Hartregeln
+- Duell ab Stufe 6: getrennte Stränge, Kreuzangriff, Synthese
+- Datei-Sperren, damit parallele Tickets sich nicht in die Quere kommen
+- Playbook-Cache, damit Recherche einmal pro Themengebiet bezahlt wird
+- Verhalten bei Fehlern: dreizehn benannte Fälle, vom fehlenden Ordner bis zum hängenden Ticket
 
 Noch nicht gebaut:
 
 - Eingefügte Bilder werden angezeigt, aber nicht gespeichert
-- Die dreissig Berufe aus dem Entwurf
-- Datei-Sperren, wenn zwei Tickets dieselbe Datei anfassen
-- Playbook-Cache je Themengebiet
+- Ein Duell braucht Git für getrennte Arbeitsbereiche. Ohne Git laufen die Stränge über
+  Snapshot-Ordner, das ist geprüft, aber langsamer
 
 ---
 

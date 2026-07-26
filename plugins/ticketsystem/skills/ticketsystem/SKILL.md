@@ -212,60 +212,35 @@ Nach jedem Befehl: Ticket-Datei ändern, `daten.js` neu schreiben, **eine** Zeil
 
 ---
 
-## Einstufen
+## Einstufen, Stufen, Duell, Sperren, Playbooks, Timer
 
-Gewichtete Punkte, nicht gezählte Signale:
+Steht vollständig in **`routing.md`** neben dieser Datei. Lies sie, sobald du ein Ticket
+einstufst. Für einen Tippfehler brauchst du sie nicht.
 
-| Punkte | Merkmal |
-|---|---|
-| +1 | mehrere Dateien betroffen |
-| +2 | mehrere Bereiche |
-| +2 | Design, UX, Layout beteiligt |
-| +2 | Anforderung unklar, mehrere Wege denkbar |
-| +3 | „nie wieder", „kritisch", „immer wieder" |
-| +4 | Sicherheit, Keys, Passwörter |
-| +4 | Datenverlust möglich, nicht umkehrbar |
-| +5 | schon zweimal gescheitert |
-| −2 | reine Textänderung ohne Logik |
+Das Wichtigste in Kürze, damit du weisst, wann du nachschlagen musst:
 
-`0 → Stufe 1` · `1–2 → 3` · `3–4 → 4` · `5–7 → 5` · `8–11 → 6` · `ab 12 → 7`
-Mehr als fünf gleichartige Einzelfälle → fest Stufe 2.
+- Punkte werden **gewichtet**, nicht gezählt. Sicherheit oder Datenverlust wiegt +4.
+- Hartregeln über allem: Sicherheit oder Datenverlust nie unter Stufe 5, zweimal
+  gescheitert nie unter Stufe 6.
+- Ab Stufe 6 läuft ein **Duell** mit getrennten Strängen und Kreuzangriff.
+- Vor Arbeitsbeginn **Datei-Sperren** eintragen, sonst kollidieren parallele Tickets.
+- Ab Stufe 5 einer neuen Domäne einmal recherchieren und ein **Playbook** ablegen.
 
-**Hartregeln:** Sicherheit oder Datenverlust nie unter Stufe 5. Zweimal gescheitert nie
-unter Stufe 6. Widerspricht eine Vorgabe einer Hartregel, ändere nichts still, sondern
-frage in `2-FRAGEN.md`.
+## Berufe
 
-| Stufe | Wer arbeitet | Modell · Aufwand |
-|---|---|---|
-| 1 | du direkt | — |
-| 2 | 3–8 parallel, gleichartige Kleinigkeiten | Haiku 4.5 · low |
-| 3 | 2 Agenten | Sonnet 5 · medium |
-| 4 | 4–6 Agenten | Sonnet 5 · high |
-| 5 | 10–14, drei Ansätze und Jury | Opus 5 · high |
-| 6 | 20–28, Duell | Opus 5 · xhigh |
-| 7 | 30–45, Duell plus Lücken-Kritiker | Opus 5 · max |
+Wählt der Nutzer einen Beruf, wird das Ticket als **Studio** bearbeitet: mehrere
+Mitarbeiter mit festen Rollen, eigener Ablauf, eigene Prüfliste, eigenes Berichtsformat.
 
-Ab Stufe 6: **eine** Zeile melden mit geschätzter Agentenzahl, zwei Minuten auf Widerspruch
-warten, dann starten.
+Übersicht und Zuordnung Name zu Datei steht in **`berufe/README.md`**. Die einzelne
+Berufsdatei liest du **erst**, wenn der Beruf gewählt wurde. Dreissig Berufe kosten im
+Ruhezustand nichts.
 
----
+Höchstens zwei Berufe gleichzeitig. Bei einem dritten sagst du das und nimmst ihn nicht an.
 
-## Duell, ab Stufe 6
+Zwei Berufe haben eine harte Grenze: **Recht und Datenschutz** sowie **Finanzen** geben
+keine Rechts- oder Anlageberatung. Ihre Berichte beginnen mit dem entsprechenden Satz, auch
+bei voller Autonomie.
 
-Drei Stränge, feste Strategien, je ein eigener Git-Worktree:
-
-- **A, kleinster Eingriff** — nichts anfassen, was läuft
-- **B, Ursache statt Symptom** — darf sauber neu bauen
-- **C, Risiko zuerst** — fragt erst, was kaputtgehen kann
-
-Während der Arbeit sehen sie einander **nicht**. Danach **Kreuzangriff**: jeder bekommt die
-fremden Ergebnisse mit dem Auftrag zu widerlegen, nicht zu loben. Dann Synthese: Sieger
-nehmen, beste Einzelideen der Verlierer einpflanzen. Übrige Funde als Kästchenliste unter
-das Review, nicht als eigene Tickets.
-
-Schreibe den Fortschritt der Stränge in `straenge:`, damit das Dashboard drei Balken zeigt.
-
----
 
 ## Grenzen, unabhängig von der Autonomie-Einstellung
 
@@ -297,3 +272,49 @@ T-38 ▸ erledigt
 Auf `/ticketsystem stop`: Monitor beenden, letzten Stand in die MD-Dateien und `daten.js`
 schreiben, eine Abschlusszeile melden. Das Dashboard bleibt benutzbar und zeigt den letzten
 Stand, auch wenn nichts mehr läuft.
+
+---
+
+## Wenn etwas schiefgeht
+
+Diese Fälle treten wirklich auf. Behandle sie so, statt zu improvisieren.
+
+| Lage | Was du tust |
+|---|---|
+| `TICKETSYSTEM/` fehlt, obwohl `CLAUDE.md` darauf zeigt | Sagen, dass der Ordner weg ist, und fragen: neu anlegen oder Pfad korrigieren. Nicht stillschweigend neu anlegen. |
+| `.state/zaehler.txt` fehlt oder ist kaputt | Höchste Nummer aus den Dateinamen in `.tickets/` ermitteln, Zähler daraus neu schreiben, eine Zeile ins Protokoll. |
+| Zwei Ticket-Dateien mit derselben Nummer | Die jüngere umbenennen auf die nächste freie Nummer, Verweise mitziehen, im Protokoll vermerken. |
+| Ticket-Datei hat kaputten Kopf | Nicht raten. Ticket in `daten.js` mit `zustand: frage` und dem Hinweis aufnehmen, dass die Datei von Hand geprüft werden muss. |
+| `zustand` ist ein unbekannter Wert | Wie `laeuft` behandeln und im Protokoll vermerken. Das Dashboard verträgt das. |
+| `dashboard/` fehlt im Ticketsystem-Ordner | Erneut aus `${CLAUDE_PLUGIN_ROOT}/dashboard/` kopieren. Fehlt auch das, sagen, dass das Plugin neu installiert werden muss. |
+| Browser öffnet sich nicht | Den vollständigen Pfad zu `index.html` in den Chat schreiben, zum selbst Öffnen. Nicht mehrfach versuchen. |
+| Kein Git im Projekt, Isolation steht auf Branch | Auf Snapshot umstellen, `config.md` anpassen, eine Zeile sagen. Nicht fragen, das ist eindeutig. |
+| Ein Ticket ist seit über zwei Stunden `laeuft`, ohne dass sich etwas ändert | Als hängend behandeln: Sperren freigeben, `zustand: frage`, in `2-FRAGEN.md` erklären was fehlt. |
+| Der Nutzer schreibt einen Befehl mit unbekannter Ticketnummer | Sagen, dass es diese Nummer nicht gibt, und die nächstliegenden nennen. Nichts raten. |
+| Zwei Befehle widersprechen sich | Der spätere gewinnt. Sagen, dass der frühere überschrieben wurde. |
+| Der Eingang enthält nur einen `!`-Befehl | Als Befehl behandeln, kein Ticket anlegen, den Text aus dem Eingang entfernen. |
+| Schreiben schlägt fehl, kein Recht oder Platz | Sofort sagen, mit dem konkreten Pfad. Keine Teilzustände hinterlassen: entweder ganz schreiben oder gar nicht. |
+
+**Grundsatz:** Wenn du unsicher bist, ob etwas kaputt ist, ändere nichts und frage in
+`2-FRAGEN.md`. Ein blockiertes Ticket ist besser als ein zerstörter Bestand.
+
+---
+
+## Erster Lauf für jemanden, der das noch nie benutzt hat
+
+Wenn `/ticketsystem` zum ersten Mal in einem Projekt läuft, melde nach der Einrichtung
+**einmal** diesen Block, damit man weiss, wie man es benutzt:
+
+```
+Ticketsystem läuft · <pfad>
+
+So arbeitest du damit:
+1. Schreib in 1-EINGANG.md, was ansteht. Ein Satz reicht.
+2. Ich mache daraus Tickets und arbeite sie ab.
+3. Fertige Arbeit erscheint im Dashboard unter Review.
+4. Klick dort auf Abschliessen, das kopiert einen Befehl. Füg ihn mir hier ein.
+
+Dashboard: <pfad>/TICKETSYSTEM/dashboard/index.html
+```
+
+Danach nie wieder. Ab dem zweiten Start reicht die eine Statuszeile.

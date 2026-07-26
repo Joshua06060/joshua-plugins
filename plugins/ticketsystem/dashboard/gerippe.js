@@ -553,7 +553,9 @@ function uebersicht() {
   var s = sess();
   var warte = s.tickets.filter(function (t) { return t.zustand === 'frage'; });
   var review = s.tickets.filter(function (t) { return t.zustand === 'review'; });
-  var laeuft = s.tickets.filter(function (t) { return t.zustand === 'laeuft' || t.zustand === 'wartet'; });
+  /* Alles, was nicht Frage oder Review ist, landet unter In Arbeit. Auch ein unbekannter
+     Zustand. Ein Ticket darf nie stillschweigend verschwinden. */
+  var laeuft = s.tickets.filter(function (t) { return t.zustand !== 'frage' && t.zustand !== 'review'; });
 
   /* Noch gar keine Daten: ehrlich sagen woran es liegt, statt Beispieldaten zu zeigen */
   if (!sessions.length) {
