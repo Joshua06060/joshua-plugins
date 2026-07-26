@@ -1,0 +1,11 @@
+{
+  "name": "ticketsystem",
+  "description": "Arbeit als Tickets führen statt im Chat verhandeln. Eingang, Fragen an dich, Review, Archiv. Dazu ein Live-Dashboard im Browser mit fünfzehn Designs.",
+  "version": "1.0.0",
+  "author": {
+    "name": "Joshua Böhme"
+  },
+  "homepage": "https://github.com/Joshua06060/joshua-plugins",
+  "license": "MIT",
+  "keywords": ["ticket", "dashboard", "workflow", "deutsch", "review"]
+}

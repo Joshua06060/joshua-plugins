@@ -1,0 +1,163 @@
+/* E12 · Blueprint — technische Zeichnung: Cyan auf Marineblau, Millimeterraster,
+   gestrichelte Masslinien, Eckwinkel. Richtung: Konstruktionsplan statt Oberfläche. */
+html[data-stil="e12"]{
+  --f:"Roboto Condensed","Arial Narrow",-apple-system,system-ui,sans-serif;
+  --fm:ui-monospace,"Roboto Mono",Consolas,monospace;
+  --bg:#0a1628;--fg:#d6ecff;--line:rgba(122,196,255,.26);
+  --panel:rgba(16,36,62,.72);--panel2:#0c1c33;--tief:#071120;
+  --cyan:#7ac4ff;--cyan-h:#b8e0ff;--weiss:#eaf6ff;
+  --live:#5fe3c0;--gelb:#ffd36e;--rot:#ff7b7b;--fokus:#7ac4ff;
+  --off:#2d4a6b;--ink:#7f9dc0;
+  --tc-s:72%;--tc-l:66%;
+  --ton-arbeit:linear-gradient(180deg,rgba(122,196,255,.05),rgba(122,196,255,.05)),var(--panel);
+  --ton-fragen:linear-gradient(180deg,rgba(255,211,110,.05),rgba(255,211,110,.05)),var(--panel);
+  --ton-review:linear-gradient(180deg,rgba(95,227,192,.05),rgba(95,227,192,.05)),var(--panel);
+
+  /* Millimeterraster, fein und grob */
+  & body{background:
+    linear-gradient(rgba(122,196,255,.05) 1px,transparent 1px) 0 0/100% 40px,
+    linear-gradient(90deg,rgba(122,196,255,.05) 1px,transparent 1px) 0 0/40px 100%,
+    linear-gradient(rgba(122,196,255,.02) 1px,transparent 1px) 0 0/100% 8px,
+    linear-gradient(90deg,rgba(122,196,255,.02) 1px,transparent 1px) 0 0/8px 100%,
+    #0a1628}
+
+  & *{border-radius:0 !important}
+
+  & .sidebar{background:var(--panel2);border-right:1px solid var(--cyan)}
+  & .logo{letter-spacing:.2em;text-transform:uppercase;color:var(--cyan-h);font-weight:700;font-size:14px}
+  & .side-label{color:var(--ink);opacity:1;letter-spacing:.22em}
+  & .proj{border:1px dashed transparent;padding:8px 10px}
+  & .proj:hover{border-color:var(--line)}
+  & .proj.is-active{border:1px solid var(--cyan);background:rgba(122,196,255,.08)}
+  & .pname{letter-spacing:.06em;text-transform:uppercase;font-weight:700;font-size:12px}
+  & .badge{background:var(--cyan);color:#0a1628;font-weight:700}
+  & .psub{color:var(--ink);opacity:1;letter-spacing:.05em}
+  & .dot{border-radius:50% !important;box-shadow:0 0 0 1px var(--line)}
+  & .dot.on{background:var(--live)}
+  & .side-fuss{border-top:1px dashed var(--line)}
+  & .side-knopf{border:1px solid var(--line);color:var(--cyan);letter-spacing:.14em;
+    text-transform:uppercase;font-size:11px;font-weight:700}
+  & .side-knopf:hover{border-color:var(--cyan)}
+  & .side-knopf.is-active{background:var(--cyan);color:#0a1628}
+  & .side-wert{color:var(--gelb);letter-spacing:.04em}
+  & .side-foot{color:var(--ink);opacity:1;letter-spacing:.04em}
+
+  /* Eckwinkel wie auf einem Zeichnungsrahmen */
+  & .topbar{border:1px solid var(--line);background:var(--panel);position:relative}
+  & .topbar::before,& .topbar::after{content:"";position:absolute;width:12px;height:12px;border:1px solid var(--cyan)}
+  & .topbar::before{top:-1px;left:-1px;border-right:0;border-bottom:0}
+  & .topbar::after{bottom:-1px;right:-1px;border-left:0;border-top:0}
+  & .back{border:1px solid var(--line);color:var(--cyan)}
+  & .crumbs{letter-spacing:.14em;text-transform:uppercase;color:var(--ink);font-size:11px}
+  & .crumbs b{color:var(--cyan-h)}
+  & .crumb{color:var(--ink);letter-spacing:.14em;text-transform:uppercase}
+  & .pill{border:1px solid var(--line);color:var(--cyan);letter-spacing:.14em;text-transform:uppercase}
+  & .pill.danger{border-color:var(--rot);color:var(--rot)}
+
+  & .card{background:var(--panel);border:1px solid var(--line);position:relative}
+  & .leer{color:var(--ink);opacity:1;letter-spacing:.06em}
+
+  & .compose-zu{color:var(--cyan);opacity:1;letter-spacing:.16em;text-transform:uppercase;font-weight:700}
+  & .compose-zu:hover{background:rgba(122,196,255,.06)}
+  & .plus{color:var(--gelb)}
+  & .compose textarea{border:1px solid var(--line);background:var(--tief);color:var(--fg);font-size:15px}
+  & .compose textarea:focus{border-color:var(--cyan)}
+  & .schreib-titel{letter-spacing:.18em;text-transform:uppercase;color:var(--cyan-h);font-size:15px}
+  & .schreib-hilfe{color:var(--ink);opacity:1;letter-spacing:.04em}
+  & .anhang{border:1px dashed var(--cyan);background:rgba(122,196,255,.07);color:var(--cyan-h)}
+  & .anhang-weg{color:var(--rot)}
+
+  & .schritt-kopf{border-bottom:1px dashed var(--line);padding-bottom:11px}
+  & .schritt{color:var(--ink);letter-spacing:.14em;text-transform:uppercase;font-size:11px;font-weight:700}
+  & .schritt.is-on{color:var(--cyan-h)}
+  & .schritt-nr{border:1px solid var(--line);background:var(--tief);color:var(--ink);border-radius:50% !important}
+  & .schritt.is-on .schritt-nr{background:var(--cyan);color:#0a1628;border-color:var(--cyan)}
+  & .schritt.is-fertig .schritt-nr{background:var(--live);color:#052b23;border-color:var(--live)}
+  & .wahl-label{color:var(--ink);opacity:1;letter-spacing:.16em;text-transform:uppercase}
+  & .wahl-knopf{border:1px solid var(--line);color:var(--cyan);letter-spacing:.1em;
+    text-transform:uppercase;font-weight:700}
+  & .wahl-knopf:hover{border-color:var(--cyan)}
+  & .wahl-knopf.is-on{background:var(--cyan);color:#0a1628}
+  & .beruf{border:1px dashed var(--line);color:var(--ink);letter-spacing:.05em;
+    text-transform:uppercase;font-size:10px;font-weight:700}
+  & .beruf:hover{border-style:solid;border-color:var(--cyan);color:var(--cyan)}
+  & .beruf.is-on{border-style:solid;border-color:var(--cyan);background:rgba(122,196,255,.12);color:var(--cyan-h)}
+  & .haken{border:1px solid var(--line);color:#0a1628}
+  & .beruf.is-on .haken{background:var(--cyan);border-color:var(--cyan)}
+  & .hinweis{border:1px solid var(--rot);color:var(--rot);background:rgba(255,123,123,.08)}
+  & .chip{border:1px solid var(--line);color:var(--ink);letter-spacing:.06em}
+  & .chip:hover{border-color:var(--cyan);color:var(--cyan)}
+  & .chip-wrap.is-open .chip{border-color:var(--gelb);color:var(--gelb)}
+  & .pop{border:1px solid var(--cyan);background:var(--tief)}
+  & .pop-item{color:var(--ink);letter-spacing:.04em}
+  & .pop-item:hover{background:rgba(122,196,255,.1);color:var(--cyan-h)}
+  & .pop-item.is-on{background:var(--cyan);color:#0a1628}
+  & .mehr{color:var(--gelb);letter-spacing:.12em;text-transform:uppercase}
+  & .rechnung{border:1px dashed var(--cyan);background:rgba(122,196,255,.06);color:var(--cyan-h);
+    letter-spacing:.04em;font-family:var(--fm);font-size:11px}
+
+  & .einst-titel{letter-spacing:.16em;text-transform:uppercase;color:var(--cyan-h);font-size:13px}
+  & .einst-hilfe{color:var(--ink);opacity:1;letter-spacing:.03em}
+  & .design-kachel{border:1px dashed var(--line);color:var(--ink)}
+  & .design-kachel:hover{border-style:solid;border-color:var(--cyan)}
+  & .design-kachel.is-on{border-style:solid;border-color:var(--cyan);background:rgba(122,196,255,.1)}
+  & .design-name{color:var(--cyan-h);letter-spacing:.1em;text-transform:uppercase}
+  & .design-kurz{color:var(--ink)}
+
+  & .gruppe{color:var(--ink);opacity:1;letter-spacing:.22em}
+  & .gr-arbeit{color:var(--cyan)}
+  & .gr-fragen{color:var(--gelb)}
+  & .gr-review{color:var(--live)}
+
+  & .tblock{border:1px solid var(--line);border-left:3px solid var(--tc)}
+  & .tblock:hover{border-color:var(--cyan);border-left-color:var(--tc)}
+  & .tb-kopf b{letter-spacing:.06em;text-transform:uppercase;font-size:13px;font-weight:700;color:var(--fg)}
+  & .tid{color:var(--gelb);opacity:1;font-family:var(--fm)}
+  & .tag{border:1px solid var(--line);color:var(--ink);letter-spacing:.1em;text-transform:uppercase}
+  & .tag.hot{border-color:var(--cyan);color:var(--cyan)}
+  & .tag.wait{border-color:var(--gelb);color:var(--gelb)}
+  & .tb-zeile,& .schritt-zeile{color:var(--ink);opacity:1;letter-spacing:.03em}
+  & .pct{color:var(--cyan-h);font-family:var(--fm)}
+  & .zeit{color:var(--ink);opacity:1;font-family:var(--fm)}
+  & .zeit.frist{color:var(--gelb)}
+  /* Balken wie eine Masslinie mit Endmarken */
+  & .bar{background:var(--tief);border:1px solid var(--line);height:9px}
+  & .bar span{background:var(--cyan);box-shadow:inset -1px 0 0 var(--cyan-h)}
+  & .bar.done span{background:var(--live)}
+  & .strand{border:1px dashed var(--line);background:var(--tief)}
+  & .strand span{color:var(--ink);opacity:1;letter-spacing:.08em;text-transform:uppercase}
+
+  & .q-what{line-height:1.65;color:var(--fg)}
+  & .q-answer{border:1px solid var(--line);background:var(--tief);color:var(--fg)}
+  & .q-answer:focus{border-color:var(--cyan)}
+  & .rev-satz{color:var(--cyan-h)}
+  & .rev-preview{border:1px dashed var(--cyan);background:var(--tief);color:var(--ink);
+    letter-spacing:.14em;text-transform:uppercase}
+  & .rev-art{border:1px solid var(--cyan);color:var(--cyan);letter-spacing:.14em}
+  & .rev-label{color:var(--ink);opacity:1;letter-spacing:.2em}
+  & .rev-liste li::before{content:"▸";color:var(--cyan);opacity:1}
+  & .rev-fakten{color:var(--ink);opacity:1;font-family:var(--fm)}
+  & .btn{border:1px solid var(--line);color:var(--cyan);letter-spacing:.12em;
+    text-transform:uppercase;font-weight:700;font-size:11px}
+  & .btn:hover{border-color:var(--cyan);background:rgba(122,196,255,.08)}
+  & .btn.primary{background:var(--cyan);color:#0a1628;border-color:var(--cyan)}
+  & .btn.ok{background:var(--live);color:#052b23;border-color:var(--live)}
+  & .btn.stop{border-color:var(--rot);color:var(--rot)}
+  & .btn.ghost{border-color:transparent;color:var(--ink)}
+  & .ideas{color:var(--ink);opacity:1;letter-spacing:.04em}
+
+  & .live-punkt{background:var(--live);border-radius:50% !important;box-shadow:0 0 8px var(--live)}
+  & .live-label{color:var(--live);letter-spacing:.2em}
+  & .live-flaeche{border:1px dashed var(--line);background:var(--tief);color:var(--ink);letter-spacing:.06em}
+
+  & .anpassen{border-top:1px dashed var(--line)}
+  & .srow label{color:var(--ink);opacity:1;letter-spacing:.14em;text-transform:uppercase;font-size:11px}
+  & .track{background:var(--tief);border:1px solid var(--line);height:9px}
+  & .track span{background:var(--cyan)}
+  & .track i{background:var(--gelb);width:3px;height:17px;margin:-8.5px 0 0 -1.5px;
+    box-shadow:0 0 0 1px var(--tief)}
+  & .srow output{color:var(--cyan-h);font-family:var(--fm)}
+  & .over{border:1px solid var(--rot);color:var(--rot);letter-spacing:.1em}
+  & .arow{color:var(--ink);letter-spacing:.04em}
+  & .arow+.arow{border-top:1px dashed var(--line)}
+}

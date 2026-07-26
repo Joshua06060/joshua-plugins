@@ -1,182 +1,133 @@
-# Ticketsystem-Dashboard
+# joshua-plugins
 
-Eine Oberfläche, um KI-Arbeit als Tickets zu führen: hinschreiben was ansteht, zusehen wie
-daran gearbeitet wird, das Ergebnis abnehmen. Zehn umschaltbare Designs, elf Einstellungen,
-keine Abhängigkeiten, kein Netzzugriff.
+Ein Plugin-Marktplatz für [Claude Code](https://claude.com/claude-code), auf Deutsch.
 
-Dies ist der **Oberflächen-Entwurf**. Die Daten sind Beispieldaten, damit man den Ablauf
-wirklich durchklicken kann. Die Anbindung an ein echtes Ticketsystem ist noch nicht drin.
+## Installieren
 
----
-
-## Starten
-
-Zwei Wege, beide ohne Installation:
-
-```bash
-node server.js
 ```
-Dann `http://localhost:4322` öffnen.
+/plugin marketplace add Joshua06060/joshua-plugins
+/plugin install ticketsystem@joshua-plugins
+/reload-plugins
+```
 
-Oder `index.html` einfach im Browser öffnen. Funktioniert genauso, weil nichts nachgeladen
-wird, was einen Server bräuchte.
-
-Gebraucht wird nur ein aktueller Browser auf Chromium-Basis (Chrome, Brave, Edge) oder
-Firefox 117 und neuer. Für den Server zusätzlich Node.js.
+Danach im Chat `/ticketsystem` eingeben.
 
 ---
 
-## Wie es sich bedient
+## Enthaltene Plugins
 
-**Links** stehen immer die Sessions, also die Projekte, in denen gerade gearbeitet wird.
-Ein Klick wechselt, die Tasten `1` bis `4` auch.
+### ticketsystem
 
-**In der Mitte** steht, was gerade läuft, gruppiert und farblich leicht getrennt:
+Arbeit als Tickets führen, statt sie im Chat zu verhandeln. Hinschreiben was ansteht,
+autonom abarbeiten lassen, das Ergebnis abnehmen. Dazu ein Live-Dashboard im Browser.
 
-| Gruppe | Was drinsteht |
-|---|---|
-| In Arbeit | läuft gerade, mit Balken, Prozent und Restzeit |
-| Fragen an dich | das System kommt nicht weiter und braucht eine Antwort |
-| Review, fertig zur Abnahme | fertige Arbeit, wartet auf dein Ja |
-| Archiv | erledigt, eingeklappt |
+**Was der Skill macht**
 
-**Ein Klick auf eine Kachel** öffnet das Ticket. Je nach Zustand steht dort genau eine
-Sache: die Frage mit Antwortfeld, das fertige Ergebnis mit Abnahme-Knöpfen, oder der
-Fortschritt mit einem Knopf `Anpassen`. Regler erscheinen erst, wenn man sie anfordert.
+- Legt `TICKETSYSTEM/` im Projekt an: Eingang, Fragen, Review, In Arbeit, Archiv
+- Fragt einmal pro Projekt drei Dinge: Isolation, Autonomie, Browser
+- Stuft jede Eingabe nach einer gewichteten Punkte-Tabelle in sieben Stufen ein
+- Ab Stufe 6 Duell: drei Stränge mit festen Strategien, danach Kreuzangriff und Synthese
+- Startet das Dashboard und beobachtet die Dateien, im Ruhezustand ohne Tokenkosten
+- Hält harte Grenzen ein: Zugangsdaten, Geld, Veröffentlichen, Löschen und
+  Systemeinstellungen brauchen immer eine Freigabe
 
-**Neues Ticket** läuft in drei Schritten: erst beschreiben, dann einstufen
-(wie dringend, wie gründlich), dann optional einen Beruf anhaken. Unter den Reglern steht
-in Klartext mit, was das bedeutet: `Stufe 5 · 12 Agenten · ~19 Min`.
+**Das Dashboard**
 
-**Bilder** lassen sich überall mit `Strg+V` einfügen, im Eingabefeld, in der Antwort auf
-eine Frage und in der Nachbesserung eines Reviews.
+Links die Sessions, in der Mitte was gerade läuft, gruppiert nach *In Arbeit*,
+*Fragen an dich*, *Review* und *Archiv*, jede Gruppe leicht eigen getönt. Klick auf eine
+Kachel öffnet das Ticket, dort steht je nach Zustand genau eine Sache.
 
-### Tastatur
+Neues Ticket in drei Schritten: beschreiben, einstufen, Beruf wählen. Unter den Reglern
+rechnet eine Zeile mit, was das bedeutet: `Stufe 5 · 12 Agenten · Opus 5 high · ~19 Min`.
+
+Bilder lassen sich überall mit `Strg+V` einfügen: im Eingang, in der Antwort auf eine
+Frage und in der Nachbesserung eines Reviews.
+
+---
+
+## Die fünfzehn Designs
+
+| | Name | Charakter |
+|---|---|---|
+| e1 | Apple | Schwarz, Titan-Verläufe, viel Luft |
+| e2 | Raycast | Farbnebel, Glaskarten, Mono-Etiketten |
+| e3 | Diktavo | Grosse fette Grotesk, Elektroblau |
+| e4 | Roblox | Klotzkanten, kräftiges Rot und Blau |
+| e5 | Arcane | Gold gegen Magenta, Korn und Vignette |
+| e6 | Claude | Warmes Dunkel, Serifen, ruhig |
+| e7 | ChatGPT | Grautöne, dünne Linien, fast keine Farbe |
+| e8 | Joshua | Neongrün, feines Cyan-Raster |
+| e9 | Minecraft | Pixelkanten, Stein und Erde |
+| e10 | **Linear** | Blaugrau, ein Violett, streng. Fürs tägliche Arbeiten |
+| e11 | Terminal | Phosphorgrün, alles Mono, Zeilenraster |
+| e12 | Blueprint | Konstruktionsplan, Cyan auf Marineblau |
+| e13 | Synthwave | Magenta gegen Cyan, laut und neon |
+| e14 | Brutalist | Schwarzweiss, ein Rot, Plakatschrift |
+| e15 | Nord | Arktisch gedämpft, das ruhigste von allen |
+
+Alle sind dunkel. Umschalten unten links unter `Einstellungen`, oder mit der Taste `D`.
+
+**Es gibt bewusst nur zwei Einstellungen**, Design und Schriftgrösse. Alles andere wird
+am einzelnen Ticket entschieden oder einmal beim Einrichten des Skills. Eine Oberfläche,
+die man einmal einstellt und nie wieder anfasst, braucht keine Schalter.
+
+---
+
+## Tastatur
 
 | Taste | Wirkung |
 |---|---|
 | `1` bis `4` | Session wechseln |
 | `D` | nächstes Design |
 | `Esc` | zurück zur Übersicht |
+| `Strg+V` | Bild einfügen, in jedem Textfeld |
 
 ---
 
-## Die zehn Designs
+## Dashboard einzeln starten
 
-| Kürzel | Name | Charakter |
-|---|---|---|
-| `e1` | Apple | Schwarz, Titan-Verläufe, viel Luft |
-| `e2` | Raycast | Farbnebel, Glaskarten, Mono-Etiketten |
-| `e3` | Diktavo | Grosse fette Grotesk, Elektroblau |
-| `e4` | Roblox | Klotzkanten, kräftiges Rot und Blau |
-| `e5` | Arcane | Gold gegen Magenta, Korn und Vignette |
-| `e6` | Claude | Warmes Dunkel, Serifen, ruhig |
-| `e7` | ChatGPT | Grautöne, dünne Linien, fast keine Farbe |
-| `e8` | Joshua | Neongrün, feines Cyan-Raster |
-| `e9` | Minecraft | Pixelkanten, Stein und Erde |
-| `e10` | **Linear** | Blaugrau, ein Violett, streng. Empfehlung fürs tägliche Arbeiten |
+Ohne Claude Code, nur zum Anschauen:
 
-Alle sind dunkel. Umschalten über `Einstellungen` unten links oder die Taste `D`.
-
----
-
-## Einstellungen
-
-Unten links. Alles wird im Browser gemerkt und ist beim nächsten Öffnen wieder da.
-
-| Einstellung | Auswahl |
-|---|---|
-| Design | zehn Stile |
-| Schriftgrösse | 100, 120, 140 Prozent |
-| Autonomie | fragen, selbst entscheiden |
-| Höchste Wucht | Stufe 4 bis 7, oder 150 Prozent |
-| Standard-Modell | automatisch, Haiku 4.5, Sonnet 5, Opus 5, Fable 5 |
-| Standard-Aufwand | automatisch, low, medium, high, xhigh, max |
-| Gleichzeitig | 1, 2, 3 oder 5 Tickets |
-| Isolation | automatisch, Branch, Snapshot |
-| Hinweise | an, aus |
-| Chat-Meldungen | nur Wichtiges, alles, still |
-| Bewegung | normal, reduziert |
-| Kacheln je Reihe | automatisch, 2, 3, 4 |
-| Archiv behalten | 7, 30, 90 Tage |
-
-`Höchste Wucht` wirkt sofort: stellt man ein Ticket auf `maximal`, während der Deckel bei
-Stufe 4 steht, rechnet die Klartextzeile herunter und schreibt `durch Einstellung
-gedeckelt` dazu.
-
-`Bewegung: reduziert` schaltet Pulsieren und weiche Übergänge ab. Die Systemeinstellung
-`prefers-reduced-motion` wirkt zusätzlich, auch ohne hier etwas umzustellen.
-
----
-
-## Modell und Aufwand
-
-An drei Stellen einstellbar, mit klarer Rangfolge:
-
-```
-Wahl am einzelnen Ticket   schlägt
-Standard aus Einstellungen schlägt
-Automatik nach Stufe
+```bash
+node plugins/ticketsystem/dashboard/server.js
 ```
 
-**Automatik** wählt passend zur Stufe:
+Dann `http://localhost:4322` öffnen. Oder
+`plugins/ticketsystem/dashboard/index.html` direkt im Browser öffnen, geht genauso.
 
-| Stufe | Modell | Aufwand |
-|---|---|---|
-| 1 bis 2 | Haiku 4.5 | low |
-| 3 bis 4 | Sonnet 5 | high |
-| 5 | Opus 5 | high |
-| 6 | Opus 5 | xhigh |
-| 7 | Opus 5 | max |
-
-**Am einzelnen Ticket** überschreibbar: beim Anlegen unter `Feineinstellung`, an einem
-laufenden Ticket unter `Anpassen`.
-
-**Sichtbar ohne Klick:** die Klartextzeile beim Anlegen zeigt es mit an
-(`Stufe 5 · 12 Agenten · Opus 5 high · ~19 Min`), ein laufendes Ticket zeigt es im
-Live-Bereich, und die Kopfzeile zeigt den eingestellten Standard.
-
-Die Modell-Liste steht in `gerippe.js` an genau einer Stelle:
-
-```js
-var MODELL  = ['automatisch', 'Haiku 4.5', 'Sonnet 5', 'Opus 5', 'Fable 5'];
-var AUFWAND = ['automatisch', 'low', 'medium', 'high', 'xhigh', 'max'];
-```
-
-Kommt ein neues Modell dazu, wird nur diese Zeile geändert, dann steht es überall zur
-Auswahl. Die Liste aktualisiert sich **nicht** von selbst, sie muss gepflegt werden.
-Welche Modelle die Automatik wählt, steht direkt darunter in `modellFuer()`.
-
-`Fable 5` ist auswählbar, wird von der Automatik aber nicht vergeben. Grund: es gibt
-keine belastbare Grundlage dafür, wofür es die beste Wahl wäre. Wer es einsetzen will,
-wählt es bewusst.
+Gebraucht wird ein Browser auf Chromium-Basis (Chrome, Brave, Edge) oder Firefox 117 und
+neuer. Keine Abhängigkeiten, kein Netzzugriff, kein Build.
 
 ---
 
 ## Aufbau
 
 ```
-index.html            lädt alles
-gerippe.js            Daten, Ansichten, Einstellungen, Zustand
-server.js             winziger Dateiserver, keine Abhängigkeiten
-stil/basis.css        Aufbau und Abstände, ohne Farben
-stil/vorschau.css     Farbstreifen der Design-Kacheln
-stil/e1..e10.css      je ein Design
+.claude-plugin/marketplace.json      der Katalog
+plugins/ticketsystem/
+  .claude-plugin/plugin.json         das Plugin
+  skills/ticketsystem/SKILL.md       was Claude tut
+  dashboard/
+    index.html                       lädt alles
+    gerippe.js                       Daten, Ansichten, Zustand
+    server.js                        winziger Dateiserver
+    stil/basis.css                   Aufbau und Abstände, ohne Farben
+    stil/vorschau.css                Farbstreifen der Design-Kacheln
+    stil/e1..e15.css                 je ein Design
 ```
 
 Der Trick: **`basis.css` legt die Struktur fest, die Designs färben nur.** Jedes Design
-ist in `html[data-stil="eN"] { … }` eingefasst und nutzt verschachteltes CSS, damit nicht
-jede Zeile ein Präfix braucht. Umschalten heisst, ein Attribut am `<html>` zu setzen.
-Kein Neuladen, kein Flackern.
+ist in `html[data-stil="eN"] { … }` eingefasst und nutzt verschachteltes CSS. Umschalten
+heisst, ein Attribut am `<html>` zu setzen. Kein Neuladen, kein Flackern.
 
 ### Ein eigenes Design ergänzen
 
-1. `stil/e11-meins.css` anlegen, nach dem Muster von `stil/e10-linear.css`.
-2. In `index.html` eine `<link>`-Zeile ergänzen.
-3. In `gerippe.js` einen Eintrag in `DESIGNS` hinzufügen.
-4. In `stil/vorschau.css` drei Farben für die Vorschaukachel setzen.
+1. `stil/e16-meins.css` nach dem Muster von `stil/e15-nord.css` anlegen
+2. `<link>`-Zeile in `index.html` ergänzen
+3. Eintrag in `DESIGNS` in `gerippe.js` hinzufügen
+4. Drei Farben in `stil/vorschau.css` für die Vorschaukachel setzen
 
-Damit ein Design vollständig ist, muss es diese Klassen bedienen:
+Ein Design ist vollständig, wenn es diese Klassen bedient:
 
 ```
 sidebar proj topbar crumbs pill card compose-zu plus schritt-kopf schritt-nr
@@ -187,17 +138,36 @@ mehr leer back badge psub side-foot schreib-hilfe
 ```
 
 Wichtig: bei `.tblock` **kein eigenes `background`** setzen, sonst überschreibt es die
-Gruppen-Tönung. Statt dessen die drei Variablen `--ton-arbeit`, `--ton-fragen`,
-`--ton-review` belegen.
+Gruppen-Tönung. Statt dessen `--ton-arbeit`, `--ton-fragen` und `--ton-review` belegen.
+
+---
+
+## Modell und Aufwand
+
+Am einzelnen Ticket wählbar, sonst automatisch nach Stufe:
+
+| Stufe | Modell | Aufwand |
+|---|---|---|
+| 1 bis 2 | Haiku 4.5 | low |
+| 3 bis 4 | Sonnet 5 | high |
+| 5 | Opus 5 | high |
+| 6 | Opus 5 | xhigh |
+| 7 | Opus 5 | max |
+
+Die Liste steht in `gerippe.js` an einer Stelle (`var MODELL`). Sie aktualisiert sich
+nicht von selbst, sie muss gepflegt werden. `Fable 5` ist wählbar, wird von der Automatik
+aber nicht vergeben, weil es keine belastbare Grundlage dafür gibt, wofür es die beste
+Wahl wäre.
 
 ---
 
 ## Was ehrlich noch fehlt
 
-- Keine Anbindung an echte Daten, alles sind Beispieldaten im `gerippe.js`.
-- Eingefügte Bilder werden als Anhang angezeigt, aber nicht gespeichert oder hochgeladen.
-- Die Knöpfe `Abschliessen`, `Verwerfen`, `Pause`, `Stop` schliessen die Ansicht, lösen
-  aber noch keine Aktion aus.
+- Das Dashboard zeigt Beispieldaten und ist noch nicht an die echten Ticket-Dateien
+  angebunden. Der Ablauf läuft über die Dateien in `TICKETSYSTEM/`.
+- Eingefügte Bilder werden angezeigt, aber nicht gespeichert.
+- Abschliessen, Verwerfen, Pause und Stop schliessen die Ansicht, lösen aber noch keine
+  Aktion aus.
 - Restzeiten sind Schätzungen und mit `~` gekennzeichnet. Nur beim Timer-Ticket ist es
   eine echte Frist.
 
