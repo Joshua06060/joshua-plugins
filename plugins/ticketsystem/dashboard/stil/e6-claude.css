@@ -52,7 +52,6 @@ html[data-stil="e6"]{
   & .compose textarea:focus{border-color:var(--clay)}
   & .schreib-titel{font-family:var(--fs);font-size:22px;font-weight:400;letter-spacing:-.02em}
   & .schreib-hilfe{color:var(--ink);opacity:1}
-  & .anhang{border-radius:99px;background:var(--clay-t);border:1px solid rgba(217,119,87,.3);color:#e8a288}
   & .anhang-weg{color:var(--clay)}
 
   & .schritt-kopf{border-bottom:1px solid var(--line);padding-bottom:12px}

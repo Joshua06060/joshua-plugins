@@ -55,7 +55,6 @@ html[data-stil="e15"]{
   & .compose textarea:focus{border-color:var(--frost2)}
   & .schreib-titel{font-size:19px;font-weight:600;color:var(--frost2);letter-spacing:-.015em}
   & .schreib-hilfe{color:var(--ink);opacity:1}
-  & .anhang{border-radius:8px;border:1px solid rgba(143,188,187,.4);background:rgba(143,188,187,.1);
     color:var(--frost1)}
   & .anhang-weg{color:var(--rot)}
 

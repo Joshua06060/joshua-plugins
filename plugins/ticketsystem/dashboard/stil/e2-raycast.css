@@ -56,7 +56,6 @@ html[data-stil="e2"]{
   & .compose.is-open{box-shadow:inset 0 0 0 1px rgba(139,92,246,.35),0 20px 50px -22px rgba(139,92,246,.5)}
   & .compose textarea{border-radius:9px;background:var(--tief);box-shadow:inset 0 0 0 1px var(--line);font-size:14px}
   & .schreib-hilfe{font-family:var(--fm);color:var(--ink);opacity:1}
-  & .anhang{border-radius:8px;background:rgba(139,92,246,.12);box-shadow:inset 0 0 0 1px rgba(139,92,246,.28);
     color:#ddd6fe;font-family:var(--fm)}
   & .anhang-weg{color:var(--rose)}
 

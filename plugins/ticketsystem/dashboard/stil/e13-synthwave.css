@@ -66,7 +66,6 @@ html[data-stil="e13"]{
   & .schreib-titel{font-weight:800;letter-spacing:.02em;background:var(--neon);
     -webkit-background-clip:text;background-clip:text;color:transparent;font-size:20px}
   & .schreib-hilfe{color:var(--ink);opacity:1}
-  & .anhang{border-radius:99px;border:1px solid var(--cyan);background:rgba(38,240,241,.1);color:var(--cyan)}
   & .anhang-weg{color:var(--rot)}
 
   & .schritt-kopf{border-bottom:1px solid var(--line);padding-bottom:11px}

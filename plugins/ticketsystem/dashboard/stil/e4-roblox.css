@@ -51,7 +51,6 @@ html[data-stil="e4"]{
     font-size:15px;font-weight:600;color:var(--fg)}
   & .schreib-titel{font-weight:800;letter-spacing:-.02em}
   & .schreib-hilfe{color:var(--ink);opacity:1;font-weight:600}
-  & .anhang{border-radius:99px;background:#0e3f5c;box-shadow:0 2px 0 #072536;color:#9fdcff;font-weight:700}
   & .anhang-weg{color:#ff8a80}
 
   & .schritt-kopf{border-bottom:3px solid var(--tief);padding-bottom:12px}

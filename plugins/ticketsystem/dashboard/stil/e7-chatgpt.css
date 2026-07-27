@@ -50,7 +50,6 @@ html[data-stil="e7"]{
   & .compose textarea:focus{border-color:var(--ink)}
   & .schreib-titel{font-size:18px;font-weight:600;letter-spacing:-.01em}
   & .schreib-hilfe{color:var(--ink);opacity:1}
-  & .anhang{border-radius:99px;background:var(--tief);border:1px solid var(--line);color:var(--ink)}
   & .anhang-weg{color:var(--rot)}
 
   & .schritt-kopf{border-bottom:1px solid var(--line);padding-bottom:12px}

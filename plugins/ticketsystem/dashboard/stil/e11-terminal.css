@@ -59,7 +59,6 @@ html[data-stil="e11"]{
   & .schreib-titel{letter-spacing:.12em;text-transform:uppercase;font-weight:400;color:var(--gelb);font-size:16px}
   & .schreib-titel::before{content:"// "}
   & .schreib-hilfe{color:var(--ink);opacity:1}
-  & .anhang{border:1px solid var(--line);background:var(--tief);color:var(--gelb)}
   & .anhang-weg{color:var(--rot)}
 
   & .schritt-kopf{border-bottom:1px solid var(--line);padding-bottom:11px}

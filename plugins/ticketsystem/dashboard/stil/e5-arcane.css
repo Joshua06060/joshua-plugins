@@ -67,7 +67,6 @@ html[data-stil="e5"]{
     font-size:16px;letter-spacing:.02em;line-height:1.5}
   & .schreib-titel{letter-spacing:.08em;text-transform:uppercase;color:var(--gold);font-weight:400;font-size:20px}
   & .schreib-hilfe{color:var(--ink);opacity:1;letter-spacing:.03em}
-  & .anhang{border:1px solid rgba(79,216,232,.35);background:rgba(79,216,232,.08);color:var(--hex);
     font-family:var(--fm);border-radius:0}
   & .anhang-weg{color:var(--zaun)}
 

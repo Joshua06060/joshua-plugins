@@ -6,6 +6,9 @@ Tickets nicht in die Quere kommen, und wie Recherche nur einmal bezahlt wird.
 Diese Datei liest du, sobald du ein Ticket einstufst. Für einen Tippfehler brauchst du sie
 nicht.
 
+**Stufe 6 ist der Standard**, ab der ein Duell läuft. Steht in `config.md` ein anderer Wert
+unter `duellAbStufe` (im Dashboard unter Einstellungen einstellbar), gilt der.
+
 ---
 
 ## Einstufen

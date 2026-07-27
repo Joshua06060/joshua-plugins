@@ -37,6 +37,12 @@ html[data-bewegung="reduziert"] *{animation:none !important;transition:none !imp
 
 /* ---------- Hauptfläche ---------- */
 .main{flex:1;min-width:0;padding:16px 26px 56px;display:flex;flex-direction:column;gap:14px}
+
+/* Verbindungsband: fehlt der Ordner oder die Erlaubnis, steht das hier statt still zu bleiben */
+.connect-band{display:flex;align-items:center;gap:12px;flex-wrap:wrap;padding:11px 15px;
+  font-size:13px;border:1px solid var(--line,#333);border-radius:8px;background:var(--panel2,var(--tief,#161616))}
+.connect-hilfe{font-size:12px;opacity:.6}
+.connect-fehler{width:100%;font-size:12px;color:var(--rot,#e5484d)}
 .topbar{display:flex;align-items:center;gap:9px;padding:8px 12px;flex-wrap:wrap}
 .back{font-size:15px;padding:2px 9px;line-height:1}
 .crumbs{display:flex;align-items:center;gap:7px;font-size:13px}
@@ -62,12 +68,28 @@ html[data-bewegung="reduziert"] *{animation:none !important;transition:none !imp
 .compose.is-open{padding:20px 22px;gap:14px}
 .schreib-titel{font-size:17px;font-weight:600}
 .compose textarea{width:100%;padding:13px 14px;resize:vertical;line-height:1.6;font-size:16px}
+.compose textarea.is-ueber{outline:2px dashed var(--fokus,#7aa2ff);outline-offset:2px}
 .schreib-hilfe{font-size:12px;opacity:.5}
-.anhang{display:flex;align-items:center;gap:8px;font-size:12px;padding:7px 11px}
-.anhang-symbol{font-size:14px}
-.anhang-name{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .anhang-weg{font-size:12px;opacity:.5;flex:0 0 auto}
 .anhang-weg:hover{opacity:1}
+
+/* Bild-Anhänge: beliebig viele, echte Vorschau */
+.anhang-hilfe-zeile{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.anhang-waehlen{position:relative;display:inline-flex;align-items:center;flex:0 0 auto;
+  font-size:12px;padding:6px 13px;border-radius:6px;border:1px solid var(--line,#333);
+  background:var(--panel2,var(--tief,#181818));color:var(--ink,#999);cursor:pointer;white-space:nowrap}
+.anhang-waehlen:hover{color:var(--fg,#eee)}
+.anhang-waehlen input{position:absolute;inset:0;opacity:0;cursor:pointer}
+.anhang-wrap{display:flex;flex-direction:column;gap:7px}
+.anhang-zahl{font-size:11px;opacity:.55}
+.anhang-grid{display:flex;flex-wrap:wrap;gap:8px}
+.anhang-kachel{position:relative;width:76px;height:76px;border-radius:8px;overflow:hidden;
+  border:1px solid var(--line,#333);background:var(--tief,#111)}
+.anhang-kachel img{width:100%;height:100%;object-fit:cover;display:block}
+.anhang-kachel .anhang-weg{position:absolute;top:2px;right:2px;width:18px;height:18px;
+  display:flex;align-items:center;justify-content:center;border-radius:50%;
+  background:rgba(0,0,0,.55);opacity:1;font-size:11px}
+.anhang-kachel .anhang-weg:hover{background:rgba(0,0,0,.8)}
 /* Beim Schreiben und in den Einstellungen ist die Karte das einzige auf der Fläche */
 .nur-schreiben{max-width:720px}
 
@@ -192,16 +214,57 @@ html[data-bewegung="reduziert"] *{animation:none !important;transition:none !imp
 .anpassen{display:flex;flex-direction:column;gap:10px;padding-top:11px}
 .srow{display:flex;align-items:center;gap:11px}
 .srow label{flex:0 0 84px;font-size:12px;opacity:.6}
-.track{flex:1;height:5px;position:relative}
-.track span{position:absolute;inset:0 auto 0 0;height:100%}
-.track i{position:absolute;top:50%;width:13px;height:13px;margin:-6.5px 0 0 -6.5px;border-radius:50%}
-.srow output{flex:0 0 42px;text-align:right;font-size:12px;font-variant-numeric:tabular-nums}
+.srow output{flex:0 0 64px;text-align:right;font-size:12px;font-variant-numeric:tabular-nums}
 .over{font-size:10px;padding:4px 9px;flex:0 0 auto}
+.duell-zeile{display:flex;align-items:center;gap:11px;padding-top:2px}
+.duell-zeile .srow{flex:1}
+
+/* Echter Schieberegler, ein <input type=range>, in jedem Design gleich gebaut */
+.regler-input{-webkit-appearance:none;appearance:none;flex:1;height:5px;background:transparent;cursor:pointer}
+.regler-input::-webkit-slider-runnable-track{height:5px;border-radius:99px;background:var(--line,#333)}
+.regler-input::-moz-range-track{height:5px;border-radius:99px;background:var(--line,#333)}
+.regler-input::-webkit-slider-thumb{-webkit-appearance:none;width:14px;height:14px;margin-top:-4.5px;
+  border-radius:50%;background:var(--fokus,#7aa2ff);border:2px solid var(--bg,#111)}
+.regler-input::-moz-range-thumb{width:14px;height:14px;border-radius:50%;background:var(--fokus,#7aa2ff);
+  border:2px solid var(--bg,#111)}
+.regler-input:focus-visible{outline:0}
+.regler-input:focus-visible::-webkit-slider-thumb{outline:2px solid var(--fokus,#7aa2ff);outline-offset:2px}
+.regler-input:focus-visible::-moz-range-thumb{outline:2px solid var(--fokus,#7aa2ff);outline-offset:2px}
 
 /* Archiv */
 .arch{gap:0;padding:4px 15px}
-.arow{display:flex;align-items:center;gap:9px;padding:9px 0;font-size:13px}
+.archiv-suche{width:100%;padding:9px 4px;font-size:13px;border-bottom:1px solid var(--line,rgba(128,128,128,.2));margin-bottom:4px}
+.archiv-suche::placeholder{opacity:.5}
+.arow{display:flex;align-items:center;gap:9px;padding:9px 0;font-size:13px;cursor:pointer}
 .arow+.arow{border-top:1px solid var(--line,rgba(128,128,128,.2))}
+.arow:hover{opacity:.75}
+
+/* Markdown-Anzeige: Claudes Bericht und der Freitext eines Tickets, gezeichnet statt roh */
+.md{font-size:13px;line-height:1.6;display:flex;flex-direction:column;gap:8px;padding-top:2px}
+.md h3,.md h4,.md h5,.md h6{font-size:13px;font-weight:600;margin-top:4px}
+.md p{margin:0}
+.md ul{list-style:none;display:flex;flex-direction:column;gap:3px;padding-left:2px}
+.md li{padding-left:15px;position:relative}
+.md li::before{content:"›";position:absolute;left:2px;opacity:.5}
+.md code{font-family:var(--fm,ui-monospace,monospace);font-size:12px;padding:1px 5px;
+  border-radius:4px;background:var(--panel2,var(--tief,#181818))}
+.md pre{padding:10px 12px;border-radius:8px;background:var(--tief,#111);overflow-x:auto}
+.md pre code{padding:0;background:none}
+.md a{color:var(--fokus,#7aa2ff);text-decoration:underline}
+
+/* Geänderte Dateien inline, statt "mach mal die Datei auf" */
+.dateien-abschnitt{display:flex;flex-direction:column;gap:8px}
+.dateien-inhalt{display:flex;flex-direction:column;gap:8px}
+.datei-ansicht{border:1px solid var(--line,#333);border-radius:8px;overflow:hidden}
+.datei-kopf{font-size:11px;font-family:var(--fm,ui-monospace,monospace);padding:7px 11px;
+  background:var(--panel2,var(--tief,#181818));opacity:.75}
+.datei-inhalt{margin:0;padding:11px;max-height:320px;overflow:auto;font-size:12px}
+.datei-inhalt code{font-family:var(--fm,ui-monospace,monospace)}
+
+/* Knopfzustände, wenn ein Befehl ausgelöst wird statt kopiert */
+.btn.sendet{opacity:.6;cursor:wait}
+.btn.kopiert{color:var(--live,#4cb782)}
+.btn.fehler{color:var(--rot,#e5484d)}
 
 @media (max-width:900px){
   .app{flex-direction:column}

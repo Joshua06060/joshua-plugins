@@ -64,7 +64,6 @@ html[data-stil="e12"]{
   & .compose textarea:focus{border-color:var(--cyan)}
   & .schreib-titel{letter-spacing:.18em;text-transform:uppercase;color:var(--cyan-h);font-size:15px}
   & .schreib-hilfe{color:var(--ink);opacity:1;letter-spacing:.04em}
-  & .anhang{border:1px dashed var(--cyan);background:rgba(122,196,255,.07);color:var(--cyan-h)}
   & .anhang-weg{color:var(--rot)}
 
   & .schritt-kopf{border-bottom:1px dashed var(--line);padding-bottom:11px}

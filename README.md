@@ -16,66 +16,102 @@ Danach im Chat `/ticketsystem` eingeben.
 
 ## ticketsystem
 
-Arbeit als Tickets führen, statt sie im Chat zu verhandeln. Du schreibst hin, was ansteht,
-Claude arbeitet es ab, du nimmst das Ergebnis ab. Ein Dashboard im Browser zeigt den Stand.
+Arbeit als Tickets führen, statt sie im Chat zu verhandeln. Ein Ticket anlegen, eine Frage
+beantworten, ein Ergebnis abnehmen — alles im Dashboard, kein Wechsel in den Chat nötig.
 
 ### Wie es funktioniert
 
-**Claude ist der Motor. Die Dateien sind die Wahrheit. Das Dashboard ist die Anzeige.**
+**Claude ist der Motor. Die Dateien sind die Wahrheit. Das Dashboard liest und schreibt sie
+direkt.**
 
 ```
-Du schreibst in 1-EINGANG.md  oder sagst es Claude im Chat
+Du legst im Dashboard ein Ticket an, oder schreibst in 1-EINGANG.md
         ↓
-Claude bemerkt es und arbeitet
+Das Dashboard schreibt .tickets/T-0042.md sofort selbst        ← direkt, kein Umweg
         ↓
-Claude schreibt .tickets/T-0042.md          ← die Wahrheit
+Claude bemerkt die neue Datei (Monitor auf dem ganzen Ordner) und arbeitet
         ↓
-Claude schreibt dashboard/daten.js neu      ← nur die Daten
+Claude schreibt den Fortschritt in dieselbe Datei
         ↓
-Die offene Seite lädt daten.js alle 5 Sekunden nach und zeichnet neu
+Das Dashboard liest den Ordner alle 2 Sekunden neu und zeigt den Stand
+        ↓
+Du klickst Abschliessen — das Dashboard hängt den Befehl an .state/befehle.jsonl an
+        ↓
+Claude sieht die Zeile, führt sie aus
 ```
 
 Es läuft **kein Hintergrundprogramm**, kein Server, kein Port, kein Netz. Nur Dateien.
-Node.js wird nicht gebraucht.
+Node.js wird nicht gebraucht. Das Dashboard bekommt die Erlaubnis, den Ordner zu lesen und
+zu schreiben, über einen einzigen Klick beim ersten Öffnen — dieselbe Art Erlaubnis, die
+jede Website-Downloadfunktion auch braucht.
 
-### Was das Dashboard kann und was nicht
+### Welcher Browser
 
-**Es zeigt** deine echten Tickets: was läuft, mit welchem Fortschritt, welche Fragen offen
-sind, was zur Abnahme bereitliegt, was im Archiv liegt. Immer aktuell, ohne Neuladen.
+Lesen und Schreiben direkt aus dem Dashboard braucht die File-System-Access-API. Die gibt
+es in jedem Chromium-Browser:
 
-**Es kann nichts auslösen.** Eine Seite, die per Doppelklick geöffnet wird, darf aus
-Sicherheitsgründen nicht auf die Festplatte schreiben. Deshalb legt jeder Knopf den
-passenden Befehl in die **Zwischenablage**, den du im Chat einfügst. Klick auf
-`Abschliessen` bei T-3 kopiert `!abschliessen T-3`. Ein Einfügen statt null, dafür ehrlich.
+**Chrome, Edge, Brave, Arc, Opera** — voll bedienbar, alles oben beschrieben.
+**Firefox, Safari** — die API fehlt komplett. Das Dashboard fällt automatisch auf reine
+Anzeige über `daten.js` zurück, die Claude weiterhin mitschreibt. Ein Band oben im
+Dashboard sagt das ehrlich, keine toten Knöpfe, kein Vortäuschen.
+
+Edge ist auf jedem Windows-PC vorinstalliert, das trifft also kaum jemanden.
+
+### Was das Dashboard kann
+
+**Ticket anlegen, direkt im Dashboard.** Text schreiben, Screenshots hineinziehen
+(beliebig viele auf einmal, mit echter Vorschau), Dringlichkeit und Gründlichkeit wählen,
+Beruf und Modell — „Ticket anlegen" schreibt die Datei sofort. Nichts zum Einfügen.
+
+**Jeder Knopf löst wirklich etwas aus.** Abschliessen, Verwerfen, Nachbessern, eine Frage
+beantworten: das hängt einen Befehl an eine Warteschlange an, die Claude abarbeitet. Der
+Knopf zeigt „wird ausgelöst…", dann eine Bestätigung.
+
+**Alles einstellbar, nichts versteckt.** Modell, Aufwand, Isolation, Freigabe, Timer, Stufe:
+immer sichtbar, mit Schiebereglern wo es eine Skala ist. Jedes Feld hat **automatisch** als
+erste Stellung — das ist der Normalmodus, der ohne ein einziges Anfassen genau den
+ursprünglich geplanten Weg läuft (gewichtete Einstufung, Modell nach Stufe, Duell ab der
+eingestellten Schwelle). Ein Knopf setzt alles zurück.
+
+**Ergebnis, Dateien, Verlauf — alles lesbar im Dashboard.** Claudes Bericht erscheint als
+gezeichnetes Markdown, nicht als Rohtext. Geänderte Dateien lassen sich aufklappen und
+direkt lesen. Kein Editor, kein zweites Fenster nötig.
+
+**Vorgaben für neue Tickets** stehen unter Einstellungen: Isolation, Autonomie,
+Gründlichkeit, Modell, Aufwand, Duell-Schwelle. Gilt für jedes neue Ticket, solange am
+Ticket selbst nichts anderes gewählt wird.
 
 **Der Balken bewegt sich nur, wenn Claude etwas schreibt.** Claude arbeitet in Schüben. Der
-Balken springt also, statt zu kriechen. Zwischen den Schüben steht er still. Nur Laufzeit
-und Frist zählen selbständig weiter, weil die aus echten Zeitstempeln kommen.
+Balken springt also, statt zu kriechen. Laufzeit und Frist zählen selbständig weiter, weil
+die aus echten Zeitstempeln kommen.
 
-**Ein Dashboard pro Projekt.** Jede Session hat ihr eigenes Ticketsystem im eigenen Ordner.
+**Ein Dashboard pro Projekt**, mit dem echten Namen der Session, die es führt.
 
 ### Was entsteht
 
 ```
 DEIN-PROJEKT/
   TICKETSYSTEM/
-    1-EINGANG.md      hier schreibst du rein
+    1-EINGANG.md      hier kannst du auch von Hand reinschreiben
     2-FRAGEN.md       Claude fragt zurück
     3-REVIEW.md       fertig zur Abnahme
     4-IN-ARBEIT.md
     5-ARCHIV.md
-    config.md
+    config.md         Vorgaben, vom Dashboard und von Claude gelesen und geschrieben
     .tickets/T-0001.md …    die Wahrheit, ein Ticket je Datei
     .state/zaehler.txt
-    dashboard/              einmal kopiert, daten.js von Claude gepflegt
+    .state/befehle.jsonl    Warteschlange, Dashboard hängt an, Claude arbeitet ab
+    .state/session.json     der echte Sitzungsname
+    .state/anhaenge/        Bilder aus dem Dashboard
+    dashboard/               einmal kopiert, daten.js von Claude als Rückfalloption gepflegt
 ```
 
 `/ticketsystem` fragt zuerst, **wo** der Ordner hin soll, dann nach Isolation und
 Autonomie. Bei mehreren Projekten unter einem Dach gehört er ins einzelne Projekt.
 
-### Befehle
+### Befehle im Chat
 
-Im Chat, oder aus dem Dashboard kopiert:
+Alles geht auch im Chat, falls kein Dashboard offen ist:
 
 | Befehl | Wirkung |
 |---|---|
@@ -115,8 +151,9 @@ Im Chat, oder aus dem Dashboard kopiert:
 
 Alle dunkel. Umschalten unten links unter `Einstellungen` oder mit der Taste `D`.
 
-**Es gibt bewusst nur zwei Einstellungen**, Design und Schriftgrösse. Alles andere wird am
-einzelnen Ticket entschieden.
+**Design und Schriftgrösse** sind die einzigen reinen Anzeige-Einstellungen. Alles andere —
+Vorgaben für neue Tickets, Modell, Aufwand — steht ebenfalls unter Einstellungen, wirkt aber
+auf die Arbeit, nicht nur die Anzeige.
 
 ### Tastatur
 
@@ -124,7 +161,7 @@ einzelnen Ticket entschieden.
 |---|---|
 | `D` | nächstes Design |
 | `Esc` | zurück zur Übersicht |
-| `Strg+V` | Bild einfügen, in jedem Textfeld |
+| `Strg+V` | Bild einfügen, in jedem Textfeld, beliebig oft |
 
 ---
 
@@ -135,9 +172,14 @@ einzelnen Ticket entschieden.
 plugins/ticketsystem/
   .claude-plugin/plugin.json         das Plugin
   skills/ticketsystem/SKILL.md       was Claude tut, wortgenau
+  skills/ticketsystem/routing.md     Einstufen, Duell, Sperren, Playbooks
+  skills/ticketsystem/berufe/        dreissig Berufsdateien, lazy geladen
   dashboard/
     index.html                       lädt alles
-    gerippe.js                       Anzeige, liest window.TICKETDATEN
+    ordner.js                        File-System-Access: verbinden, lesen, schreiben
+    ticketdatei.js                   YAML-Kopf einer Ticket-Datei lesen und schreiben
+    anzeigen.js                      Markdown zeichnen, Dateien und Bilder inline
+    gerippe.js                       Anzeige und Bedienung, verbindet die drei obigen
     stil/basis.css                   Aufbau und Abstände, ohne Farben
     stil/vorschau.css                Farbstreifen der Design-Kacheln
     stil/e1..e15.css                 je ein Design
@@ -157,11 +199,17 @@ setzen.
 Wichtig: bei `.tblock` **kein eigenes `background`**, sonst überschreibt es die
 Gruppen-Tönung. Statt dessen `--ton-arbeit`, `--ton-fragen`, `--ton-review` belegen.
 
+Neuere Bedienelemente (Schieberegler, Verbindungsband, Markdown-Ansicht, Datei-Ansicht)
+sind bewusst **nicht** je Design gestylt, sondern in `basis.css` mit den immer vorhandenen
+Variablen `--line`, `--panel2`, `--tief`, `--fokus`, `--rot`, `--live` gebaut. Jedes Design
+färbt sie automatisch mit, ohne fünfzehn Mal dieselbe Regel zu brauchen.
+
 ---
 
 ## Modell und Aufwand
 
-Am einzelnen Ticket wählbar, sonst automatisch nach Stufe:
+Am einzelnen Ticket wählbar, sonst aus `config.md` (Einstellungen im Dashboard), sonst
+automatisch nach Stufe:
 
 | Stufe | Modell | Aufwand |
 |---|---|---|
@@ -181,25 +229,33 @@ vergeben, weil es dafür keine belastbare Grundlage gibt.
 
 Funktioniert:
 
-- Dashboard zeigt echte Tickets aus den Dateien, aktualisiert sich ohne Neuladen
+- Dashboard liest `.tickets/*.md` direkt vom Ordner, aktualisiert sich alle 2 Sekunden
+- Ticket anlegen, Abschliessen, Verwerfen, Nachbessern, Fragen beantworten: alles im
+  Dashboard, kein Kopieren in den Chat mehr nötig, in jedem Chromium-Browser
 - Fortschritt, Laufzeit und Fristen kommen aus den Dateien, nichts wird erfunden
-- Ehrlicher leerer Zustand, wenn noch nichts da ist
-- Alle Knöpfe erzeugen echte Befehle mit richtiger Ticketnummer
+- Ehrlicher leerer Zustand, wenn noch nichts da ist, ehrliches Band ohne verbundenen Ordner
+- Bilder anhängen: Einfügen, Hineinziehen oder Dateiauswahl, beliebig viele auf einmal, mit
+  echter Vorschau, werden als echte Dateien in `.state/anhaenge/` gespeichert
+- Alle Einstellungen immer sichtbar, mit Schiebereglern, Automatik als Normalmodus,
+  Ein-Klick-Rücksetzung
+- Vorgaben für neue Tickets in `config.md`, im Dashboard editierbar
+- Claudes Bericht als gezeichnetes Markdown, geänderte Dateien inline lesbar im Dashboard
+- Firefox/Safari-Rückfall auf reine Anzeige über `daten.js`, ehrlich benannt
 - Fünfzehn Designs, geprüft mit echten Daten
-- Bilder per `Strg+V` in jedem Textfeld
 - Dreissig Berufe: Sicherheit, Fehlersuche, Design, 3D, Recht, Finanzen und mehr.
   Jeder mit Besetzung, Ablauf, Prüfliste und Berichtsformat
 - Sieben Stufen mit gewichteter Punkte-Rubrik und Hartregeln
-- Duell ab Stufe 6: getrennte Stränge, Kreuzangriff, Synthese
+- Duell ab konfigurierbarer Stufe: getrennte Stränge, Kreuzangriff, Synthese
 - Datei-Sperren, damit parallele Tickets sich nicht in die Quere kommen
 - Playbook-Cache, damit Recherche einmal pro Themengebiet bezahlt wird
-- Verhalten bei Fehlern: dreizehn benannte Fälle, vom fehlenden Ordner bis zum hängenden Ticket
+- Verhalten bei Fehlern: benannte Fälle, vom fehlenden Ordner bis zur kaputten Warteschlangen-Zeile
 
 Noch nicht gebaut:
 
-- Eingefügte Bilder werden angezeigt, aber nicht gespeichert
 - Ein Duell braucht Git für getrennte Arbeitsbereiche. Ohne Git laufen die Stränge über
   Snapshot-Ordner, das ist geprüft, aber langsamer
+- Playbooks und Beruf-Besetzung erscheinen nicht als eigene Ansicht im Dashboard, nur als
+  Kurzangabe am Ticket
 
 ---
 
