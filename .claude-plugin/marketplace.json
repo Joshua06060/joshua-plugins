@@ -6,14 +6,14 @@
   },
   "metadata": {
     "description": "Plugins für Claude Code, auf Deutsch.",
-    "version": "1.0.0"
+    "version": "1.1.0"
   },
   "plugins": [
     {
       "name": "ticketsystem",
       "source": "./plugins/ticketsystem",
       "description": "Arbeit als Tickets führen statt im Chat verhandeln: Eingang, Fragen, Review, Archiv, mit Live-Dashboard und fünfzehn Designs.",
-      "version": "1.0.0",
+      "version": "1.1.0",
       "author": { "name": "Joshua Böhme" },
       "keywords": ["ticket", "dashboard", "workflow", "deutsch", "review"]
     }
