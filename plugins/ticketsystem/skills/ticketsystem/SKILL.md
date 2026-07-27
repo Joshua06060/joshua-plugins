@@ -309,7 +309,9 @@ Wenn `/ticketsystem` zum ersten Mal in einem Projekt läuft, melde nach der Einr
 Ticketsystem läuft · <pfad>
 
 So arbeitest du damit:
-1. Schreib in 1-EINGANG.md, was ansteht. Ein Satz reicht.
+1. Neues Ticket: entweder in 1-EINGANG.md schreiben, oder im Dashboard auf
+   „Neues Ticket erstellen" klicken, ausfüllen, „Ticket kopieren" — das kopiert einen
+   Befehl. Füg ihn mir hier ein.
 2. Ich mache daraus Tickets und arbeite sie ab.
 3. Fertige Arbeit erscheint im Dashboard unter Review.
 4. Klick dort auf Abschliessen, das kopiert einen Befehl. Füg ihn mir hier ein.
