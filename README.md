@@ -242,7 +242,14 @@ Funktioniert:
 - Vorgaben für neue Tickets in `config.md`, im Dashboard editierbar
 - Claudes Bericht als gezeichnetes Markdown, geänderte Dateien inline lesbar im Dashboard
 - Firefox/Safari-Rückfall auf reine Anzeige über `daten.js`, ehrlich benannt
-- Fünfzehn Designs, geprüft mit echten Daten
+- Fünfzehn Designs, geprüft mit echten Daten. Fünf davon (Synthwave, Terminal, Arcane,
+  Joshua, Raycast) auf Lesbarkeit korrigiert, überzogenes Leuchten zurückgenommen
+- Ein gemeinsames Bewegungssystem: Hover, Kachel-Eintritt, Ansichtswechsel, respektiert
+  Bewegung-reduzieren aus den Einstellungen und dem Betriebssystem
+- Nach Antwort/Nachbessern sofort sichtbar "Claude arbeitet…" statt der unveränderten
+  Eingabemaske. Abschliessen/Verwerfen/Stop navigieren zurück zur Übersicht
+- Feste Fensterhöhe: "Einstellungen" bleibt immer erreichbar, auch bei langer Ticketliste
+  und bei 140 % Schriftgrösse, kein Scrollen der ganzen Seite mehr nötig
 - Dreissig Berufe: Sicherheit, Fehlersuche, Design, 3D, Recht, Finanzen und mehr.
   Jeder mit Besetzung, Ablauf, Prüfliste und Berichtsformat
 - Sieben Stufen mit gewichteter Punkte-Rubrik und Hartregeln

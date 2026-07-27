@@ -5,14 +5,14 @@ html[data-stil="e11"]{
   --fm:ui-monospace,"IBM Plex Mono",Consolas,monospace;
   --bg:#000600;--fg:#33ff66;--line:#0d3d1a;
   --panel:#020d05;--panel2:#000a03;--tief:#000400;
-  --dim:#1f8f42;--ink:#177a35;--gelb:#c8ff33;--rot:#ff4444;--fokus:#33ff66;
+  --dim:#1f8f42;--ink:#28aa4b;--gelb:#c8ff33;--rot:#ff4444;--fokus:#33ff66;
   --live:#33ff66;--off:#0d3d1a;
   --tc-s:100%;--tc-l:52%;
   --ton-arbeit:linear-gradient(180deg,rgba(51,255,102,.03),rgba(51,255,102,.03)),var(--panel);
   --ton-fragen:linear-gradient(180deg,rgba(200,255,51,.045),rgba(200,255,51,.045)),var(--panel);
   --ton-review:linear-gradient(180deg,rgba(51,255,102,.06),rgba(51,255,102,.06)),var(--panel);
 
-  & body{background:#000600;text-shadow:0 0 6px rgba(51,255,102,.35)}
+  & body{background:#000600}
   /* Zeilenraster wie auf einem Röhrenmonitor */
   & body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:9;opacity:.35;
     background:repeating-linear-gradient(180deg,rgba(0,0,0,0) 0 2px,rgba(0,0,0,.5) 2px 3px)}
@@ -27,6 +27,7 @@ html[data-stil="e11"]{
   & .proj{border:1px solid transparent;padding:7px 9px}
   & .proj:hover{border-color:var(--line);background:var(--panel)}
   & .proj.is-active{border-color:var(--fg);background:rgba(51,255,102,.07)}
+  & .proj.is-active .pname{text-shadow:0 0 6px rgba(51,255,102,.5)}
   & .proj.is-active .pname::before{content:"> "}
   & .pname{letter-spacing:.03em}
   & .badge{background:var(--fg);color:#000600;text-shadow:none;font-weight:700}
@@ -138,7 +139,7 @@ html[data-stil="e11"]{
   & .ideas{color:var(--ink);opacity:1}
 
   & .live-punkt{background:var(--fg);box-shadow:0 0 8px var(--fg);border-radius:0}
-  & .live-label{color:var(--fg);letter-spacing:.16em}
+  & .live-label{color:var(--fg);letter-spacing:.16em;text-shadow:0 0 6px rgba(51,255,102,.5)}
   & .live-flaeche{border:1px dashed var(--line);background:var(--tief);color:var(--ink);letter-spacing:.05em}
 
   & .anpassen{border-top:1px solid var(--line)}

@@ -193,6 +193,7 @@ var st = { ticket: null, offen: false, einst: false, schritt: 1,
            text: '',
            frageText: '', frageAnhaenge: [],
            nachbesserOffen: false, nachbesserText: '', nachbesserAnhaenge: [],
+           wartet: null,
            wahl: { dring: 1, grund: 0, timerMin: 0, modell: 0, aufwand: 0, iso: 0, frei: 0,
                     stufeUeb: 0, straenge: 3 } };
 
@@ -232,6 +233,7 @@ function detailZuruecksetzen() {
   st.nachbesserOffen = false; st.nachbesserText = ''; st.nachbesserAnhaenge = [];
   st.frageText = ''; st.frageAnhaenge = [];
   st.wahl.stufeUeb = 0; st.wahl.straenge = 3;
+  st.wartet = null;
 }
 function allesZu() { st.ticket = null; st.offen = false; st.einst = false; st.schritt = 1; detailZuruecksetzen(); }
 
@@ -316,18 +318,24 @@ function neueBefehlId() {
   return Date.now().toString(36) + '-' + Math.random().toString(36).slice(2, 8) + '-' + befehlZaehler;
 }
 
+/* Jede Zeile bekommt eine eindeutige id. Das Anhängen ist ein Lesen-Ändern-Schreiben:
+   leert Claude die Datei genau dazwischen, schreibt das Dashboard eine bereits
+   ausgeführte Zeile versehentlich zurück. Ohne id würde Claude sie ein zweites Mal
+   ausführen — bei "verwerfen" hiesse das, Änderungen zweimal zurückzunehmen. Mit id
+   erkennt Claude die Wiederholung und überspringt sie. */
+function befehlSenden(befehl) {
+  var zeile = JSON.stringify(Object.assign(
+    { id: neueBefehlId(), zeit: new Date().toISOString() }, befehl));
+  return Ordner.anhaengen('.state/befehle.jsonl', zeile);
+}
+
+/* Ticket bleibt offen (antwort, nachbessern, anpassen, duell, pause, nur, warum): der
+   Knopf blinkt kurz auf, mehr ändert sich hier nicht sichtbar. */
 function befehlAusloesen(befehl, knopf) {
   var alt = knopf.textContent;
   knopf.disabled = true; knopf.classList.remove('kopiert', 'fehler'); knopf.classList.add('sendet');
   knopf.textContent = 'wird ausgelöst…';
-  /* Jede Zeile bekommt eine eindeutige id. Das Anhängen ist ein Lesen-Ändern-Schreiben:
-     leert Claude die Datei genau dazwischen, schreibt das Dashboard eine bereits
-     ausgeführte Zeile versehentlich zurück. Ohne id würde Claude sie ein zweites Mal
-     ausführen — bei "verwerfen" hiesse das, Änderungen zweimal zurückzunehmen. Mit id
-     erkennt Claude die Wiederholung und überspringt sie. */
-  var zeile = JSON.stringify(Object.assign(
-    { id: neueBefehlId(), zeit: new Date().toISOString() }, befehl));
-  Ordner.anhaengen('.state/befehle.jsonl', zeile).then(function () {
+  befehlSenden(befehl).then(function () {
     knopf.classList.remove('sendet'); knopf.classList.add('kopiert');
     knopf.textContent = 'ausgelöst';
     setTimeout(function () { knopf.disabled = false; knopf.textContent = alt; knopf.classList.remove('kopiert'); }, 2200);
@@ -342,6 +350,65 @@ function befehlKnopf(text, befehl, extra) {
   b.title = 'Löst "' + befehl.befehl + '" für T-' + befehl.nr + ' aus.';
   b.onclick = function (ev) { ev.stopPropagation(); befehlAusloesen(befehl, b); };
   return b;
+}
+
+/* Ticket-beendende Aktionen (abschliessen, verwerfen, stop): wie beim Anlegen eines
+   Tickets zurück zur Übersicht navigieren, statt auf der Detailseite eines Tickets
+   stehen zu bleiben, das es dort bald nicht mehr gibt. */
+function befehlAusloesenUndVerlassen(befehl, knopf) {
+  var alt = knopf.textContent;
+  knopf.disabled = true; knopf.classList.remove('kopiert', 'fehler'); knopf.classList.add('sendet');
+  knopf.textContent = 'wird ausgelöst…';
+  befehlSenden(befehl).then(function () {
+    knopf.textContent = 'ausgelöst';
+    setTimeout(function () { allesZu(); zeichne(); }, 500);
+  }, function () {
+    knopf.disabled = false; knopf.classList.remove('sendet'); knopf.classList.add('fehler');
+    knopf.textContent = 'Fehler, nochmal?';
+    setTimeout(function () { knopf.textContent = alt; knopf.classList.remove('fehler'); }, 3000);
+  });
+}
+function befehlKnopfVerlassen(text, befehl, extra) {
+  var b = el('button', 'btn' + (extra ? ' ' + extra : ''), text);
+  b.title = 'Löst "' + befehl.befehl + '" für T-' + befehl.nr + ' aus und geht zurück zur Übersicht.';
+  b.onclick = function (ev) { ev.stopPropagation(); befehlAusloesenUndVerlassen(befehl, b); };
+  return b;
+}
+
+/* Ticket bleibt offen, aber sichtbar wartend: statt der unveränderten Eingabemaske
+   erscheint sofort "Claude arbeitet…", bis die Ticket-Datei wirklich eine andere ist.
+   Der 2-Sekunden-Abgleich liest dann die echte neue Frage/Review-Ansicht nach. */
+function wartetSchnappschuss(t) { return JSON.stringify([t.zustand, t.schritt, t.fortschritt, t.frage, t.art]); }
+function wartenAuf(t) {
+  st.wartet = { nr: t.nr, vorher: wartetSchnappschuss(t) };
+}
+function wartetSchon(t) {
+  if (!st.wartet || st.wartet.nr !== t.nr) return false;
+  if (wartetSchnappschuss(t) !== st.wartet.vorher) { st.wartet = null; return false; }
+  return true;
+}
+/* Wie befehlAusloesen, aber bei Erfolg nicht den Knopf zurücksetzen, sondern sofort in
+   den Wartezustand wechseln. Bei einem Fehler bleibt das Formular stehen und nutzbar. */
+function wartenAusloesen(t, befehl, knopf) {
+  var alt = knopf.textContent;
+  knopf.disabled = true; knopf.classList.remove('kopiert', 'fehler'); knopf.classList.add('sendet');
+  knopf.textContent = 'wird ausgelöst…';
+  befehlSenden(befehl).then(function () {
+    wartenAuf(t);
+    zeichne();
+  }, function () {
+    knopf.disabled = false; knopf.classList.remove('sendet'); knopf.classList.add('fehler');
+    knopf.textContent = 'Fehler, nochmal?';
+    setTimeout(function () { knopf.textContent = alt; knopf.classList.remove('fehler'); }, 3000);
+  });
+}
+function wartetBanner(text) {
+  var d = el('div', 'wartet-banner');
+  var k = el('div', 'live-kopf');
+  k.appendChild(el('span', 'live-punkt'));
+  k.appendChild(el('span', 'live-label', text));
+  d.appendChild(k);
+  return d;
 }
 
 /* Klartextzeile: was die Einstellung bedeutet */
@@ -1003,10 +1070,13 @@ function detail() {
     c.appendChild(el('p', 'q-what', 'Angelegt, wartet noch darauf, dass Claude anfängt.'));
     var ob = el('div', 'btns');
     ob.appendChild(befehlKnopf('Vordrängeln', { befehl: 'nur', nr: t.nr }, 'primary'));
-    ob.appendChild(befehlKnopf('Verwerfen', { befehl: 'verwerfen', nr: t.nr }));
+    ob.appendChild(befehlKnopfVerlassen('Verwerfen', { befehl: 'verwerfen', nr: t.nr }));
     c.appendChild(ob);
 
   } else if (t.zustand === 'frage') {
+    if (wartetSchon(t)) {
+      c.appendChild(wartetBanner('Antwort gesendet, Claude arbeitet…'));
+    } else {
     c.appendChild(el('p', 'q-what', t.frage || 'Claude braucht eine Antwort.'));
     var ta = el('textarea', 'q-answer'); ta.rows = 3;
     ta.placeholder = 'Antworten, oder Bilder einfügen';
@@ -1019,8 +1089,12 @@ function detail() {
     c.appendChild(bilderKnopf(st.frageAnhaenge));
 
     var qb = el('div', 'btns');
-    qb.appendChild(befehlKnopf('Ja', { befehl: 'antwort', nr: t.nr, text: 'ja' }));
-    qb.appendChild(befehlKnopf('Nein', { befehl: 'antwort', nr: t.nr, text: 'nein' }));
+    var jaKnopf = el('button', 'btn', 'Ja');
+    jaKnopf.onclick = function (ev) { ev.stopPropagation(); wartenAusloesen(t, { befehl: 'antwort', nr: t.nr, text: 'ja' }, jaKnopf); };
+    qb.appendChild(jaKnopf);
+    var neinKnopf = el('button', 'btn', 'Nein');
+    neinKnopf.onclick = function (ev) { ev.stopPropagation(); wartenAusloesen(t, { befehl: 'antwort', nr: t.nr, text: 'nein' }, neinKnopf); };
+    qb.appendChild(neinKnopf);
     qb.appendChild(befehlKnopf('Warum?', { befehl: 'warum', nr: t.nr }));
     qb.appendChild(el('span', 'spacer'));
     var senden = el('button', 'btn primary', 'Antwort senden');
@@ -1028,12 +1102,13 @@ function detail() {
       ev.stopPropagation();
       var txt = (st.frageText || '').trim();
       speichereAnhaenge(t.nr, 'antwort', st.frageAnhaenge).then(function (pfade) {
-        befehlAusloesen({ befehl: 'antwort', nr: t.nr, text: txt, anhaenge: pfade }, senden);
         st.frageText = ''; st.frageAnhaenge = [];
+        wartenAusloesen(t, { befehl: 'antwort', nr: t.nr, text: txt, anhaenge: pfade }, senden);
       });
     };
     qb.appendChild(senden);
     c.appendChild(qb);
+    }
 
   } else if (t.zustand === 'review') {
     c.appendChild(el('p', 'rev-satz', t.neu || 'Fertig zur Abnahme.'));
@@ -1057,12 +1132,15 @@ function detail() {
     c.appendChild(sp2);
     if (t.dateien) c.appendChild(dateienAbschnitt(String(t.dateien).split(',').map(function (s) { return s.trim(); }).filter(Boolean)));
 
+    if (wartetSchon(t)) {
+      c.appendChild(wartetBanner('Nachbesserung gesendet, Claude arbeitet…'));
+    } else {
     var rb = el('div', 'btns');
-    rb.appendChild(befehlKnopf('Abschliessen', { befehl: 'abschliessen', nr: t.nr }, 'ok'));
+    rb.appendChild(befehlKnopfVerlassen('Abschliessen', { befehl: 'abschliessen', nr: t.nr }, 'ok'));
     var nbKnopf = el('button', 'btn' + (st.nachbesserOffen ? ' primary' : ''), st.nachbesserOffen ? 'Nachbessern schliessen' : 'Nachbessern');
     nbKnopf.onclick = function () { st.nachbesserOffen = !st.nachbesserOffen; zeichne(); };
     rb.appendChild(nbKnopf);
-    rb.appendChild(befehlKnopf('Verwerfen', { befehl: 'verwerfen', nr: t.nr }));
+    rb.appendChild(befehlKnopfVerlassen('Verwerfen', { befehl: 'verwerfen', nr: t.nr }));
     rb.appendChild(el('span', 'spacer'));
     if (t.ideen) rb.appendChild(el('span', 'ideas', 'Nebenideen: ' + t.ideen + ' zum Anhaken'));
     c.appendChild(rb);
@@ -1090,13 +1168,14 @@ function detail() {
         ev.stopPropagation();
         var txt = (st.nachbesserText || '').trim();
         speichereAnhaenge(t.nr, 'nachbessern', st.nachbesserAnhaenge).then(function (pfade) {
-          befehlAusloesen({ befehl: 'nachbessern', nr: t.nr, text: txt, anhaenge: pfade }, nsend);
-          st.nachbesserText = ''; st.nachbesserAnhaenge = [];
+          st.nachbesserOffen = false; st.nachbesserText = ''; st.nachbesserAnhaenge = [];
+          wartenAusloesen(t, { befehl: 'nachbessern', nr: t.nr, text: txt, anhaenge: pfade }, nsend);
         });
       };
       nf.appendChild(nsend);
       nb.appendChild(nf);
       c.appendChild(nb);
+    }
     }
 
   } else if (t.zustand === 'wartet') {
@@ -1129,7 +1208,7 @@ function detail() {
     ab.appendChild(an);
     ab.appendChild(befehlKnopf('warum diese Stufe?', { befehl: 'warum', nr: t.nr }));
     ab.appendChild(befehlKnopf('Pause', { befehl: 'pause', nr: t.nr }));
-    ab.appendChild(befehlKnopf('Stop', { befehl: 'stop', nr: t.nr }, 'stop'));
+    ab.appendChild(befehlKnopfVerlassen('Stop', { befehl: 'stop', nr: t.nr }, 'stop'));
     c.appendChild(ab);
 
     if (st.anpassen) {
@@ -1196,6 +1275,17 @@ function detail() {
   return w;
 }
 
+/* Welche der drei Ansichten gerade steht. Ändert sie sich zwischen zwei zeichne()-Aufrufen,
+   war es eine echte Navigation und bekommt eine kurze Einblendung. Bleibt sie gleich (ein
+   Häkchen gesetzt, ein Schritt weiter im Assistenten, der 2-Sekunden-Datenabgleich), bleibt
+   es ruhig, sonst würde bei jedem Klick die ganze Ansicht neu aufblitzen. */
+var letzteAnsicht = null;
+function ansichtsSchluessel() {
+  if (st.einst) return 'einst';
+  if (st.ticket) return 'ticket:' + st.ticket;
+  return 'uebersicht';
+}
+
 /* ---------- Zeichnen ---------- */
 function zeichne() {
   var app = el('div', 'app');
@@ -1204,7 +1294,11 @@ function zeichne() {
   var band = verbindungBand();
   if (band) m.appendChild(band);
   m.appendChild(kopf());
-  m.appendChild(st.einst ? einstellungen() : (st.ticket ? detail() : uebersicht()));
+  var schluessel = ansichtsSchluessel();
+  var inhalt = st.einst ? einstellungen() : (st.ticket ? detail() : uebersicht());
+  if (schluessel !== letzteAnsicht) inhalt.classList.add('ansicht-eintritt');
+  letzteAnsicht = schluessel;
+  m.appendChild(inhalt);
   app.appendChild(m);
   var w = document.getElementById('wurzel') || document.body;
   w.innerHTML = '';

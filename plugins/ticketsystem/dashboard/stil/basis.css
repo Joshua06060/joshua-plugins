@@ -1,8 +1,9 @@
 /* Nur Aufbau und Abstände. Farben, Schrift, Kanten macht die jeweilige Stil-Datei. */
 *{box-sizing:border-box;margin:0;padding:0}
 html{--skala:1.2;--spalten:repeat(auto-fill,minmax(252px,1fr))}
-body{min-height:100vh;font:400 15px/1.6 var(--f,system-ui,sans-serif);
-  background:var(--bg,#111);color:var(--fg,#eee);zoom:var(--skala)}
+html,body{height:100%}
+body{font:400 15px/1.6 var(--f,system-ui,sans-serif);
+  background:var(--bg,#111);color:var(--fg,#eee);zoom:var(--skala);overflow:hidden}
 button,input,textarea{font:inherit;color:inherit;background:none;border:0;outline:0}
 button{cursor:pointer;text-align:left}
 :focus-visible{outline:2px solid var(--fokus,#7aa2ff);outline-offset:2px}
@@ -12,10 +13,34 @@ button{cursor:pointer;text-align:left}
 html[data-bewegung="reduziert"] *{animation:none !important;transition:none !important}
 @media (prefers-reduced-motion:reduce){*{animation:none !important;transition:none !important}}
 
-.app{display:flex;min-height:100vh}
+/* ---------- Bewegung: ein gemeinsames System, wirkt in jedem Design ---------- */
+.tblock,.btn,.pill,.proj,.side-knopf,.wahl-knopf,.beruf,.design-kachel,.chip,.pop-item{
+  transition:transform .15s ease,border-color .15s ease,background-color .15s ease,
+    box-shadow .15s ease,color .15s ease}
+.tblock:hover{transform:translateY(-2px)}
+.proj:hover,.design-kachel:hover{transform:translateY(-1px)}
+.btn:active,.pill:active,.side-knopf:active,.wahl-knopf:active,.beruf:active,.chip:active{transform:scale(.96)}
+/* Kacheln blenden sanft ein, statt abrupt zu erscheinen: neu angelegt oder von Claude aktualisiert */
+.tblock{animation:kachelEin .18s ease-out both}
+@keyframes kachelEin{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
+/* Ansichtswechsel (Übersicht/Ticket/Einstellungen): gerippe.js setzt die Klasse nur bei
+   echter Navigation, nicht bei jeder internen Änderung innerhalb derselben Ansicht */
+.ansicht-eintritt{animation:ansichtEin .18s ease-out both}
+@keyframes ansichtEin{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
+
+/* Feste Höhe statt min-height: die Seitenleiste (und damit "Einstellungen" unten
+   dran) darf nie mit einer langen Ticketliste mitwachsen. .main scrollt für sich.
+   Durch var(--skala) geteilt: "zoom" auf body vergrössert das gerenderte Ergebnis
+   nachträglich um genau diesen Faktor. Ohne die Teilung wäre .app bei 120 % Schrift
+   864px "hoch" auf einem 720px-Bildschirm, und alles unterhalb von 720px würde vom
+   overflow:hidden abgeschnitten statt scrollbar zu sein — genau das war der Fehler,
+   den diese Umstellung eigentlich beheben sollte. Mit der Teilung rechnet sich das
+   wieder exakt auf die echte Bildschirmhöhe heraus. */
+.app{display:flex;height:calc(100vh / var(--skala, 1));overflow:hidden}
 
 /* ---------- Seitenleiste: immer die Sessions ---------- */
-.sidebar{flex:0 0 214px;padding:18px 12px;display:flex;flex-direction:column;gap:3px}
+.sidebar{flex:0 0 214px;padding:18px 12px;display:flex;flex-direction:column;gap:3px;
+  overflow-y:auto}
 .side-head{margin-bottom:16px}
 .logo{font-size:14px;font-weight:600}
 .side-label{font-size:10px;text-transform:uppercase;letter-spacing:.12em;opacity:.5;
@@ -36,7 +61,8 @@ html[data-bewegung="reduziert"] *{animation:none !important;transition:none !imp
 .side-foot{font-size:10px;opacity:.4;line-height:1.55}
 
 /* ---------- Hauptfläche ---------- */
-.main{flex:1;min-width:0;padding:16px 26px 56px;display:flex;flex-direction:column;gap:14px}
+.main{flex:1;min-width:0;padding:16px 26px 56px;display:flex;flex-direction:column;gap:14px;
+  overflow-y:auto}
 
 /* Verbindungsband: fehlt der Ordner oder die Erlaubnis, steht das hier statt still zu bleiben */
 .connect-band{display:flex;align-items:center;gap:12px;flex-wrap:wrap;padding:11px 15px;
@@ -209,6 +235,11 @@ html[data-bewegung="reduziert"] *{animation:none !important;transition:none !imp
 @keyframes pochen{0%,100%{opacity:1}50%{opacity:.25}}
 .live-label{font-size:10px;text-transform:uppercase;letter-spacing:.12em;font-weight:600}
 .live-flaeche{height:150px;display:flex;align-items:center;justify-content:center;font-size:12px;opacity:.4}
+
+/* Nach Antwort/Nachbessern: sofort sichtbar, statt auf der unveränderten Eingabemaske
+   stehen zu bleiben. Ersetzt das Formular, bis die Ticket-Datei wirklich eine andere ist. */
+.wartet-banner{padding:13px 14px;border:1px solid var(--line,#333);border-radius:8px;
+  background:var(--panel2,var(--tief,#181818))}
 
 /* Anpassen */
 .anpassen{display:flex;flex-direction:column;gap:10px;padding-top:11px}

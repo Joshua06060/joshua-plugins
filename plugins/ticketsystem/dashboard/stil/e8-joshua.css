@@ -24,7 +24,7 @@ html[data-stil="e8"]{
   & .proj{border-radius:10px;border:1px solid transparent}
   & .proj:hover{border-color:var(--line);background:rgba(255,255,255,.025)}
   & .proj.is-active{border-color:rgba(0,226,123,.35);background:var(--neon-t);
-    box-shadow:0 0 21px -10px rgba(0,226,123,.44)}
+    box-shadow:0 0 10px -4px rgba(0,226,123,.5)}
   & .pname{font-weight:600;letter-spacing:-.01em}
   & .badge{background:var(--neon);color:#02150c;font-weight:700}
   & .psub{color:var(--ink);opacity:1}
@@ -52,7 +52,7 @@ html[data-stil="e8"]{
   & .compose-zu{border-radius:13px;color:var(--ink);opacity:1;font-weight:500}
   & .compose-zu:hover{background:rgba(255,255,255,.02);color:var(--fg)}
   & .plus{color:var(--neon)}
-  & .compose.is-open{border-color:rgba(0,226,123,.28);box-shadow:0 0 27px -18px rgba(0,226,123,.44)}
+  & .compose.is-open{border-color:rgba(0,226,123,.28);box-shadow:0 0 10px -5px rgba(0,226,123,.5)}
   & .compose textarea{border:1px solid var(--line);border-radius:11px;background:var(--tief);padding:13px 15px}
   & .compose textarea:focus{border-color:rgba(0,226,123,.5)}
   & .schreib-titel{letter-spacing:-.02em}
@@ -106,7 +106,8 @@ html[data-stil="e8"]{
   /* kein eigenes background hier, sonst überschreibt es die Gruppen-Tönung aus basis.css */
   & .tblock{border:1px solid var(--line);border-left-width:3px;border-radius:11px}
   & .tblock:hover{border-color:rgba(255,255,255,.16);border-left-color:var(--tc)}
-  & .tblock.z-frage,& .tblock.z-review{border-color:rgba(0,226,123,.24)}
+  & .tblock.z-frage{border-color:rgba(0,226,123,.24)}
+  & .tblock.z-review{border-color:rgba(0,226,123,.24)}
   & .tb-kopf b{letter-spacing:-.015em}
   & .tid{font-family:var(--fm);color:var(--ink);opacity:1}
   & .tag{border-radius:7px;border:1px solid var(--line);background:rgba(255,255,255,.04);
@@ -120,7 +121,7 @@ html[data-stil="e8"]{
   & .zeit.frist{color:#facc15}
   & .bar{background:rgba(255,255,255,.07);border-radius:99px}
   & .bar span{background:linear-gradient(90deg,var(--cyan),var(--neon));border-radius:99px;
-    box-shadow:0 0 9px rgba(0,226,123,.36)}
+    box-shadow:0 0 5px rgba(0,226,123,.4)}
   & .bar.done span{background:var(--neon)}
   & .strand{border-radius:9px;background:var(--panel2);border:1px solid var(--line)}
   & .strand span{color:var(--ink);opacity:1;font-weight:600}
@@ -140,7 +141,7 @@ html[data-stil="e8"]{
     font-weight:600;color:var(--fg)}
   & .btn:hover{border-color:rgba(255,255,255,.22)}
   & .btn.primary,& .btn.ok{background:var(--neon);border-color:var(--neon);color:#02150c;font-weight:700;
-    box-shadow:0 0 18px -8px rgba(0,226,123,.48)}
+    box-shadow:0 0 10px -3px rgba(0,226,123,.5)}
   & .btn.stop{color:var(--rot);border-color:rgba(255,92,122,.3);background:rgba(255,92,122,.06)}
   & .btn.ghost{color:var(--ink);border-color:transparent;box-shadow:none}
   & .ideas{color:var(--ink);opacity:1}

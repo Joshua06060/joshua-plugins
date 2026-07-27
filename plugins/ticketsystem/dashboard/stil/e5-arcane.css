@@ -24,12 +24,12 @@ html[data-stil="e5"]{
 
   & .sidebar{background:var(--panel2);border-right:1px solid var(--line)}
   & .logo{font-size:16px;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);
-    text-shadow:0 0 18px rgba(232,196,106,.4)}
-  & .side-label{letter-spacing:.28em;color:var(--gold2);opacity:1}
+    text-shadow:0 0 4px rgba(232,196,106,.35)}
+  & .side-label{letter-spacing:.28em;color:var(--ink);opacity:1}
   & .proj{border:1px solid transparent}
   & .proj:hover{border-color:var(--line);background:rgba(232,196,106,.04)}
   & .proj.is-active{border-color:var(--gold);background:rgba(232,196,106,.08);
-    box-shadow:0 0 24px -6px rgba(232,196,106,.35)}
+    box-shadow:0 0 10px -3px rgba(232,196,106,.4)}
   & .pname{letter-spacing:.04em}
   & .badge{background:var(--zaun);color:#fff;border-radius:0;font-family:var(--fm);
     box-shadow:0 0 12px rgba(224,50,155,.6)}
@@ -41,7 +41,7 @@ html[data-stil="e5"]{
   & .side-knopf:hover{background:rgba(232,196,106,.1)}
   & .side-knopf.is-active{background:var(--gold);color:#0a0d16}
   & .side-wert{color:var(--hex);letter-spacing:.06em}
-  & .side-foot{color:var(--gold2);opacity:1;letter-spacing:.05em}
+  & .side-foot{color:var(--ink);opacity:1;letter-spacing:.05em}
 
   & .topbar{border:1px solid var(--line);background:var(--panel);position:relative}
   & .topbar::before,& .topbar::after{content:"";position:absolute;width:9px;height:9px;border:1px solid var(--gold)}
@@ -49,7 +49,7 @@ html[data-stil="e5"]{
   & .topbar::after{bottom:-1px;right:-1px;border-left:0;border-top:0}
   & .back{border:1px solid var(--line);color:var(--gold);background:rgba(232,196,106,.05)}
   & .crumbs{font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink)}
-  & .crumbs b{color:var(--hex);text-shadow:0 0 14px rgba(79,216,232,.55)}
+  & .crumbs b{color:var(--hex)}
   & .crumb{color:var(--ink);letter-spacing:.1em;text-transform:uppercase}
   & .pill{border:1px solid var(--line);background:rgba(232,196,106,.05);letter-spacing:.12em;
     text-transform:uppercase;border-radius:0;color:var(--gold)}
@@ -67,7 +67,6 @@ html[data-stil="e5"]{
     font-size:16px;letter-spacing:.02em;line-height:1.5}
   & .schreib-titel{letter-spacing:.08em;text-transform:uppercase;color:var(--gold);font-weight:400;font-size:20px}
   & .schreib-hilfe{color:var(--ink);opacity:1;letter-spacing:.03em}
-    font-family:var(--fm);border-radius:0}
   & .anhang-weg{color:var(--zaun)}
 
   & .schritt-kopf{border-bottom:1px solid var(--line);padding-bottom:12px}
@@ -78,11 +77,11 @@ html[data-stil="e5"]{
   & .schritt-nr{font-family:var(--fm)}
   & .schritt.is-on .schritt-nr{background:var(--gold);color:#0a0d16}
   & .schritt.is-fertig .schritt-nr{background:var(--tox);color:#0a1a06}
-  & .wahl-label{color:var(--gold2);opacity:1;letter-spacing:.14em;text-transform:uppercase}
+  & .wahl-label{color:var(--ink);opacity:1;letter-spacing:.14em;text-transform:uppercase}
   & .wahl-knopf{border:1px solid var(--line);background:rgba(232,196,106,.04);border-radius:0;
     letter-spacing:.1em;text-transform:uppercase;color:var(--gold);font-size:11px}
   & .wahl-knopf:hover{background:rgba(232,196,106,.12)}
-  & .wahl-knopf.is-on{background:var(--gold);color:#0a0d16;box-shadow:0 0 22px -4px rgba(232,196,106,.6)}
+  & .wahl-knopf.is-on{background:var(--gold);color:#0a0d16;box-shadow:0 0 10px -3px rgba(232,196,106,.6)}
   & .beruf{border:1px solid var(--line);background:rgba(232,196,106,.04);border-radius:0;
     color:var(--gold);letter-spacing:.05em;font-size:11px}
   & .beruf:hover{background:rgba(232,196,106,.1)}
@@ -110,7 +109,7 @@ html[data-stil="e5"]{
   & .design-kachel.is-on{border-color:var(--gold);background:rgba(232,196,106,.14)}
   & .design-name{color:var(--gold);letter-spacing:.08em;text-transform:uppercase;font-weight:400}
 
-  & .gruppe{color:var(--gold2);opacity:1;letter-spacing:.2em}
+  & .gruppe{color:var(--ink);opacity:1;letter-spacing:.2em}
   & .gr-arbeit{color:var(--hex)}
   & .gr-fragen{color:var(--gold)}
   & .gr-review{color:var(--zaun)}
@@ -119,7 +118,7 @@ html[data-stil="e5"]{
   & .tblock{border:1px solid var(--line);border-left-width:3px;border-radius:0}
   & .tblock:hover{background:rgba(232,196,106,.06)}
   & .tb-kopf b{letter-spacing:.04em;color:var(--fg)}
-  & .tid{font-family:var(--fm);color:var(--gold2);opacity:1}
+  & .tid{font-family:var(--fm);color:var(--ink);opacity:1}
   & .tag{border:1px solid var(--line);background:rgba(232,196,106,.06);border-radius:0;
     letter-spacing:.1em;text-transform:uppercase;color:var(--gold)}
   & .tag.hot{border-color:var(--zaun);background:rgba(224,50,155,.14);color:var(--zaun)}
@@ -132,21 +131,21 @@ html[data-stil="e5"]{
   & .bar span{background:linear-gradient(90deg,var(--hex),var(--gold))}
   & .bar.done span{background:var(--tox);box-shadow:0 0 12px rgba(127,224,90,.6)}
   & .strand{border:1px solid var(--line);background:rgba(0,0,0,.32);border-radius:0}
-  & .strand span{color:var(--gold2);opacity:1;letter-spacing:.1em;text-transform:uppercase}
+  & .strand span{color:var(--ink);opacity:1;letter-spacing:.1em;text-transform:uppercase}
 
   & .q-what{letter-spacing:.02em;line-height:1.6}
   & .q-answer{border:1px solid var(--line);background:rgba(0,0,0,.42);border-radius:0;color:var(--fg)}
   & .rev-satz{letter-spacing:.02em;color:var(--fg)}
   & .rev-preview{border:1px solid var(--line);background:rgba(0,0,0,.42);color:var(--ink);letter-spacing:.06em}
   & .rev-art{border:1px solid var(--zaun);background:rgba(224,50,155,.14);color:var(--zaun);border-radius:0}
-  & .rev-label{color:var(--gold2);opacity:1;letter-spacing:.16em}
+  & .rev-label{color:var(--ink);opacity:1;letter-spacing:.16em}
   & .rev-liste li::before{color:var(--gold);opacity:1}
   & .rev-fakten{color:var(--ink);opacity:1;font-family:var(--fm)}
   & .btn{border:1px solid var(--line);background:rgba(232,196,106,.05);border-radius:0;
     letter-spacing:.1em;text-transform:uppercase;color:var(--gold);font-size:11px}
   & .btn:hover{background:rgba(232,196,106,.12)}
   & .btn.primary{background:var(--gold);color:#0a0d16;border-color:var(--gold)}
-  & .btn.ok{background:var(--tox);color:#0a1a06;border-color:var(--tox);box-shadow:0 0 20px -4px rgba(127,224,90,.6)}
+  & .btn.ok{background:var(--tox);color:#0a1a06;border-color:var(--tox);box-shadow:0 0 10px -3px rgba(127,224,90,.6)}
   & .btn.stop{border-color:rgba(224,50,155,.5);color:var(--zaun);background:rgba(224,50,155,.08)}
   & .btn.ghost{background:none;border-color:transparent;color:var(--ink)}
   & .ideas{color:var(--ink);opacity:1;letter-spacing:.04em}
@@ -156,7 +155,7 @@ html[data-stil="e5"]{
   & .live-flaeche{border:1px solid var(--line);background:rgba(0,0,0,.42);color:var(--ink);letter-spacing:.04em}
 
   & .anpassen{border-top:1px solid var(--line)}
-  & .srow label{color:var(--gold2);opacity:1;letter-spacing:.14em;text-transform:uppercase}
+  & .srow label{color:var(--ink);opacity:1;letter-spacing:.14em;text-transform:uppercase}
   & .track{background:rgba(255,255,255,.08);border:1px solid var(--line);height:7px}
   & .track span{background:linear-gradient(90deg,var(--hex),var(--gold));box-shadow:0 0 14px rgba(79,216,232,.5)}
   & .track i{background:var(--gold);border-radius:0;transform:rotate(45deg);width:11px;height:11px;
