@@ -142,6 +142,23 @@ function leseDatei(pfad) {
   });
 }
 
+/* Eine Binärdatei als anzeigbare URL holen, z. B. ein Bild aus .state/anhaenge/.
+   Der Aufrufer sollte die URL nach Gebrauch mit URL.revokeObjectURL wieder freigeben. */
+function leseBildUrl(pfad) {
+  if (!wurzel) return Promise.reject(neuerFehler('nicht-verbunden'));
+  var seg = teile(pfad), name = seg.pop();
+  return ordnerHandle(seg, false).then(function (ord) {
+    return ord.getFileHandle(name, { create: false });
+  }).then(function (fh) {
+    return fh.getFile();
+  }).then(function (f) {
+    return URL.createObjectURL(f);
+  }).catch(function (e) {
+    if (e && e.name === 'NotFoundError') return null;
+    throw e;
+  });
+}
+
 /* Alle Dateinamen in einem Unterordner, z. B. ".tickets". Fehlt der Ordner, leere Liste. */
 function listeOrdner(unterpfad) {
   if (!wurzel) return Promise.reject(neuerFehler('nicht-verbunden'));
@@ -208,6 +225,7 @@ window.Ordner = {
   verbindungTrennen: verbindungTrennen,
   verbunden: verbundenListe,
   leseDatei: leseDatei,
+  leseBildUrl: leseBildUrl,
   listeOrdner: listeOrdner,
   schreibeDatei: schreibeDatei,
   schreibeBinaer: schreibeBinaer,

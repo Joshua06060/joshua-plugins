@@ -285,8 +285,9 @@ Sobald der Monitor eine Änderung an dieser Datei meldet:
 
 1. Datei lesen, **jede** Zeile als JSON parsen. Eine Zeile, die sich nicht parsen lässt:
    überspringen, im Chat eine Zeile dazu sagen, mit den anderen weitermachen.
-2. Jede gültige Zeile ausführen, siehe Tabelle unten. Fehlt die Ticketnummer, überspringen
-   und sagen.
+2. Jede gültige Zeile ausführen, siehe Tabelle unten. Fehlt bei einem Befehl, der eine
+   Ticketnummer braucht, das Feld `nr` — oder gibt es die Nummer nicht: überspringen und
+   sagen. `alleAnhalten` braucht bewusst keine Nummer.
 3. **Bevor du die Datei zurückschreibst**, lies sie ein zweites Mal frisch ein — das
    Dashboard könnte zwischenzeitlich eine neue Zeile angehängt haben. Schreibe nur die
    Zeilen zurück, die **nicht** zu den gerade verarbeiteten gehören (Inhalt vergleichen,
@@ -306,6 +307,7 @@ Sobald der Monitor eine Änderung an dieser Datei meldet:
 | `pause` | `nr` | anhalten, `zustand` bleibt, Sperren bleiben |
 | `stop` | `nr` | abbrechen, `zustand: verworfen` |
 | `nur` | `nr` | dieses Ticket vorziehen, andere pausieren |
+| `alleAnhalten` | — | **kein `nr`.** Jedes laufende Ticket anhalten, Sperren behalten, eine Zeile melden wie viele es waren |
 
 Ein `befehl`-Wert, den es hier nicht gibt: Zeile überspringen (nicht ausführen, nicht
 löschen), im Chat sagen „unbekannter Befehl in der Warteschlange: …".

@@ -423,7 +423,20 @@ function kopf() {
   }
   h.appendChild(c);
   h.appendChild(el('span', 'spacer'));
-  h.appendChild(el('button', 'pill danger', 'Alles anhalten'));
+  /* Hält jedes laufende Ticket an. Ohne verbundenen Ordner gibt es keinen Weg, das
+     auszulösen — dann steht der Knopf abgeschaltet da, statt so zu tun als ginge es. */
+  var stopAlle = el('button', 'pill danger', 'Alles anhalten');
+  if (Ordner.verbunden()) {
+    stopAlle.title = 'Setzt alle laufenden Tickets auf Pause.';
+    stopAlle.onclick = function (ev) {
+      ev.stopPropagation();
+      befehlAusloesen({ befehl: 'alleAnhalten' }, stopAlle);
+    };
+  } else {
+    stopAlle.disabled = true;
+    stopAlle.title = 'Erst den Ordner verbinden, dann kann das Dashboard etwas auslösen.';
+  }
+  h.appendChild(stopAlle);
   return h;
 }
 
@@ -879,6 +892,69 @@ function dateienAbschnitt(namenListe) {
   return w;
 }
 
+/* Angehängte Bilder als Bilder zeigen, nicht als Text. Ein PNG durch die Datei-Ansicht
+   zu jagen ergäbe nur Zeichensalat. Nicht-Bilder landen weiter in der Datei-Ansicht. */
+function istBild(pfad) { return /\.(png|jpe?g|gif|webp|bmp|svg)$/i.test(pfad); }
+
+function bilderAbschnitt(pfade) {
+  var w = el('div', 'dateien-abschnitt');
+  var kn = el('button', 'mehr', '▸ ' + pfade.length + (pfade.length === 1 ? ' Bild' : ' Bilder') + ' ansehen');
+  var inhalt = el('div', 'anhang-grid'); inhalt.style.display = 'none';
+  var geladen = false;
+  kn.onclick = function (ev) {
+    ev.stopPropagation();
+    var auf = inhalt.style.display === 'none';
+    inhalt.style.display = auf ? '' : 'none';
+    kn.textContent = (auf ? '▾ ' : '▸ ') + pfade.length + (pfade.length === 1 ? ' Bild' : ' Bilder') + ' ansehen';
+    if (!auf || geladen) return;
+    geladen = true;
+    if (!Ordner.verbunden()) {
+      inhalt.appendChild(el('p', 'leer', 'Ordner nicht verbunden, Bilder können nicht gelesen werden.'));
+      return;
+    }
+    pfade.forEach(function (pfad) {
+      Ordner.leseBildUrl(pfad).then(function (url) {
+        var k = el('div', 'anhang-kachel');
+        k.title = pfad;
+        if (url) {
+          var bild = document.createElement('img');
+          bild.src = url; bild.alt = pfad;
+          k.appendChild(bild);
+        } else {
+          k.appendChild(el('span', 'anhang-fehlt', '?'));
+          k.title = pfad + ' — Datei nicht gefunden';
+        }
+        inhalt.appendChild(k);
+      });
+    });
+  };
+  w.appendChild(kn); w.appendChild(inhalt);
+  return w;
+}
+
+/* Was beim Anlegen gewählt wurde, bleibt am Ticket sichtbar. "automatisch" wird
+   weggelassen, sonst steht überall dasselbe Wort und man sieht das Besondere nicht. */
+function gewaehltZeile(t) {
+  var teile = [];
+  function nimm(label, wert) {
+    if (!wert && wert !== 0) return;
+    var s = String(wert).trim();
+    if (!s || s === 'automatisch' || s === '0') return;
+    teile.push(label + ': ' + s);
+  }
+  nimm('Dringlichkeit', t.dringend);
+  nimm('Gründlichkeit', t.gruendlich);
+  nimm('Beruf', t.beruf);
+  if (t.timer && String(t.timer) !== '0') teile.push('Timer: ' + t.timer + ' Min');
+  nimm('Isolation', t.isolation);
+  nimm('Freigabe', t.freigabe);
+  if (!teile.length) return null;
+  var d = el('div', 'gewaehlt');
+  d.appendChild(el('span', 'gewaehlt-label', 'Gewählt'));
+  teile.forEach(function (s) { d.appendChild(el('span', 'gewaehlt-wert', s)); });
+  return d;
+}
+
 /* ---------- Ebene 2: ein Ticket ---------- */
 function detail() {
   var t = findT(st.ticket);
@@ -1078,7 +1154,14 @@ function detail() {
     };
     c.appendChild(vKnopf); c.appendChild(vInhalt);
   }
-  if (Array.isArray(t.anhaenge) && t.anhaenge.length) c.appendChild(dateienAbschnitt(t.anhaenge));
+  if (Array.isArray(t.anhaenge) && t.anhaenge.length) {
+    var bildPfade = t.anhaenge.filter(istBild);
+    var restPfade = t.anhaenge.filter(function (p) { return !istBild(p); });
+    if (bildPfade.length) c.appendChild(bilderAbschnitt(bildPfade));
+    if (restPfade.length) c.appendChild(dateienAbschnitt(restPfade));
+  }
+  var gz = gewaehltZeile(t);
+  if (gz) c.appendChild(gz);
 
   w.appendChild(c);
   return w;
