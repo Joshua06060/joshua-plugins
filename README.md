@@ -101,6 +101,7 @@ DEIN-PROJEKT/
     .tickets/T-0001.md …    die Wahrheit, ein Ticket je Datei
     .state/zaehler.txt
     .state/befehle.jsonl    Warteschlange, Dashboard hängt an, Claude arbeitet ab
+    .state/erledigte-befehle.json   erledigte Befehl-IDs, verhindert doppelte Ausführung
     .state/session.json     der echte Sitzungsname
     .state/anhaenge/        Bilder aus dem Dashboard
     dashboard/               einmal kopiert, daten.js von Claude als Rückfalloption gepflegt

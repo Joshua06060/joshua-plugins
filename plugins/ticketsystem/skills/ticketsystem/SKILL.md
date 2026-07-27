@@ -73,6 +73,7 @@ TICKETSYSTEM/
   .tickets/         ein Ticket = eine Datei, das ist die Wahrheit
   .state/zaehler.txt        enthält die höchste vergebene Nummer, Start: 0
   .state/befehle.jsonl      leer, das Dashboard hängt hier Befehle an
+  .state/erledigte-befehle.json   leere Liste [], schützt vor doppelter Ausführung
   .state/session.json       dein Sitzungsname, siehe Schritt 5
   .state/anhaenge/          Bilder aus dem Dashboard
   dashboard/        Kopie von ${CLAUDE_PLUGIN_ROOT}/dashboard/
@@ -243,7 +244,10 @@ window.TICKETDATEN = {
 3. **Doppelt?** Gegen offene Tickets prüfen. Treffer heisst Notiz am bestehenden Ticket,
    **kein** zweites. Ausnahme bei „immer noch", „schon wieder", „erneut".
 4. **Nummer holen** aus `.state/zaehler.txt`, hochzählen, zurückschreiben. Lies sie
-   unmittelbar vor dem Schreiben neu — das Dashboard zählt sie ebenfalls hoch.
+   unmittelbar vor dem Schreiben neu — das Dashboard zählt sie ebenfalls hoch. **Prüfe vor
+   dem Schreiben, ob `.tickets/T-00NN.md` schon existiert**, und zähle notfalls weiter.
+   Sonst überschreibst du ein Ticket, das das Dashboard im selben Moment angelegt hat. Das
+   Dashboard hält sich an dieselbe Regel.
 5. **Ticket-Datei anlegen** mit `zustand: laeuft` (nicht `offen` — du fängst ja sofort an),
    `angelegt` und `begonnen` beide auf jetzt.
 6. **Eingang leeren**: verarbeiteten Text entfernen, Rohtext nach
@@ -277,23 +281,33 @@ Das Dashboard hängt jeden Knopfdruck als eine JSON-Zeile an `.state/befehle.jso
 zum Beispiel:
 
 ```
-{"befehl":"abschliessen","nr":43,"zeit":"2026-07-27T18:22:00Z"}
-{"befehl":"antwort","nr":41,"text":"ja, bitte so","anhaenge":[],"zeit":"…"}
+{"id":"m9x2k1-a7f3q9-1","befehl":"abschliessen","nr":43,"zeit":"2026-07-27T18:22:00Z"}
+{"id":"m9x2k4-b2c8d1-2","befehl":"antwort","nr":41,"text":"ja, bitte so","anhaenge":[],"zeit":"…"}
 ```
 
 Sobald der Monitor eine Änderung an dieser Datei meldet:
 
 1. Datei lesen, **jede** Zeile als JSON parsen. Eine Zeile, die sich nicht parsen lässt:
    überspringen, im Chat eine Zeile dazu sagen, mit den anderen weitermachen.
-2. Jede gültige Zeile ausführen, siehe Tabelle unten. Fehlt bei einem Befehl, der eine
+2. **Schon erledigt?** `.state/erledigte-befehle.json` lesen (eine Liste von `id`-Werten,
+   fehlt sie, gilt sie als leer). Jede Zeile, deren `id` dort steht, **kommentarlos
+   überspringen und aus der Warteschlange entfernen**. Warum das nötig ist: das Anhängen im
+   Dashboard ist ein Lesen-Ändern-Schreiben. Leerst du die Datei genau dazwischen, schreibt
+   das Dashboard eine bereits ausgeführte Zeile versehentlich zurück. Ohne diese Prüfung
+   würdest du sie ein zweites Mal ausführen — bei `verwerfen` hiesse das, Änderungen zweimal
+   zurückzunehmen. Eine Zeile **ohne** `id` führst du normal aus (von Hand geschrieben).
+3. Jede verbleibende Zeile ausführen, siehe Tabelle unten. Fehlt bei einem Befehl, der eine
    Ticketnummer braucht, das Feld `nr` — oder gibt es die Nummer nicht: überspringen und
    sagen. `alleAnhalten` braucht bewusst keine Nummer.
-3. **Bevor du die Datei zurückschreibst**, lies sie ein zweites Mal frisch ein — das
+4. Ausgeführte `id`-Werte an `.state/erledigte-befehle.json` anhängen. Die Liste auf die
+   letzten 200 Einträge kürzen, älteste zuerst — länger zurück kann keine Zeile mehr
+   auftauchen.
+5. **Bevor du die Warteschlange zurückschreibst**, lies sie ein zweites Mal frisch ein — das
    Dashboard könnte zwischenzeitlich eine neue Zeile angehängt haben. Schreibe nur die
-   Zeilen zurück, die **nicht** zu den gerade verarbeiteten gehören (Inhalt vergleichen,
-   nicht Zeilennummer). So geht kein frischer Befehl verloren, nur weil du gerade mittendrin
-   warst.
-4. Ticket-Datei und `daten.js` entsprechend aktualisieren, **eine** Zeile im Chat melden.
+   Zeilen zurück, die **nicht** zu den gerade verarbeiteten gehören (über `id` vergleichen,
+   nicht über die Zeilennummer). So geht kein frischer Befehl verloren, nur weil du gerade
+   mittendrin warst.
+6. Ticket-Datei und `daten.js` entsprechend aktualisieren, **eine** Zeile im Chat melden.
 
 | `befehl` | Felder | Was du tust |
 |---|---|---|

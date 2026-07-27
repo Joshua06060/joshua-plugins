@@ -292,22 +292,41 @@ function anhangGrid(arr) {
   w.appendChild(g);
   return w;
 }
-/* Anhänge als echte Dateien im Ordner ablegen, für ein bestimmtes Ticket */
+function ticketPfad(nr) { return '.tickets/T-' + String(nr).padStart(4, '0') + '.md'; }
+
+/* Anhänge als echte Dateien im Ordner ablegen, für ein bestimmtes Ticket.
+   Der Zeitstempel im Namen muss sein: sonst überschreibt die zweite Nachbesserung
+   am selben Ticket die Bilder der ersten, weil beide bei -1 anfangen. */
 function speichereAnhaenge(nr, praefix, liste) {
   if (!liste.length) return Promise.resolve([]);
+  var marke = Date.now().toString(36);
   return Promise.all(liste.map(function (a, i) {
     var endung = (/\.(\w+)$/.exec(a.name || '') || [])[1] || (/^data:image\/(\w+)/.exec(a.url) || [])[1] || 'png';
-    var pfad = '.state/anhaenge/T-' + String(nr).padStart(4, '0') + '-' + praefix + '-' + (i + 1) + '.' + endung;
+    var pfad = '.state/anhaenge/T-' + String(nr).padStart(4, '0') + '-' + praefix + '-' + marke + '-' + (i + 1) + '.' + endung;
     return Ordner.schreibeBinaer(pfad, a.url).then(function () { return pfad; });
   }));
 }
 
 /* ---------- Befehle auslösen: Zeile in .state/befehle.jsonl, Claude arbeitet sie ab ---------- */
+/* Eindeutig auch bei zwei Klicks in derselben Millisekunde und über mehrere offene
+   Dashboards hinweg: Zeit + Zufall + laufende Nummer. */
+var befehlZaehler = 0;
+function neueBefehlId() {
+  befehlZaehler++;
+  return Date.now().toString(36) + '-' + Math.random().toString(36).slice(2, 8) + '-' + befehlZaehler;
+}
+
 function befehlAusloesen(befehl, knopf) {
   var alt = knopf.textContent;
   knopf.disabled = true; knopf.classList.remove('kopiert', 'fehler'); knopf.classList.add('sendet');
   knopf.textContent = 'wird ausgelöst…';
-  var zeile = JSON.stringify(Object.assign({ zeit: new Date().toISOString() }, befehl));
+  /* Jede Zeile bekommt eine eindeutige id. Das Anhängen ist ein Lesen-Ändern-Schreiben:
+     leert Claude die Datei genau dazwischen, schreibt das Dashboard eine bereits
+     ausgeführte Zeile versehentlich zurück. Ohne id würde Claude sie ein zweites Mal
+     ausführen — bei "verwerfen" hiesse das, Änderungen zweimal zurückzunehmen. Mit id
+     erkennt Claude die Wiederholung und überspringt sie. */
+  var zeile = JSON.stringify(Object.assign(
+    { id: neueBefehlId(), zeit: new Date().toISOString() }, befehl));
   Ordner.anhaengen('.state/befehle.jsonl', zeile).then(function () {
     knopf.classList.remove('sendet'); knopf.classList.add('kopiert');
     knopf.textContent = 'ausgelöst';
@@ -704,8 +723,18 @@ function schreiben() {
 function ticketAnlegen(knopf) {
   var alt = knopf.textContent;
   knopf.disabled = true; knopf.textContent = 'wird angelegt…';
+  /* Freie Nummer suchen statt blind hochzählen. Claude zählt denselben Zähler hoch, und
+     schreibeDatei würde eine bestehende Ticket-Datei stillschweigend überschreiben. Also
+     erst prüfen, ob T-00NN.md schon da ist, und notfalls weiterzählen. */
+  function freieNummer(nr, versuche) {
+    if (versuche > 50) return Promise.reject(new Error('keine freie Ticketnummer gefunden'));
+    return Ordner.leseDatei(ticketPfad(nr)).then(function (vorhanden) {
+      return vorhanden == null ? nr : freieNummer(nr + 1, versuche + 1);
+    });
+  }
   Ordner.leseDatei('.state/zaehler.txt').then(function (roh) {
-    var nr = (parseInt(String(roh || '0').trim(), 10) || 0) + 1;
+    return freieNummer((parseInt(String(roh || '0').trim(), 10) || 0) + 1, 0);
+  }).then(function (nr) {
     return Ordner.schreibeDatei('.state/zaehler.txt', String(nr)).then(function () { return nr; });
   }).then(function (nr) {
     return speichereAnhaenge(nr, 'anhang', st.anhaenge).then(function (pfade) { return { nr: nr, pfade: pfade }; });
@@ -723,7 +752,7 @@ function ticketAnlegen(knopf) {
       anhaenge: r.pfade
     };
     var koerper = "Worum geht's: " + (st.text || '').trim();
-    return Ordner.schreibeDatei('.tickets/T-' + String(r.nr).padStart(4, '0') + '.md', Ticketdatei.stringify(kopf, koerper));
+    return Ordner.schreibeDatei(ticketPfad(r.nr), Ticketdatei.stringify(kopf, koerper));
   }).then(function () {
     knopf.textContent = 'angelegt';
     setTimeout(function () {
